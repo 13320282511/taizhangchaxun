@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { fakeSubmitForm,getProposer,getDocName,addStanding } from '../services/api';
+import { fakeSubmitForm, getProposer, getDocName, addStanding } from '../services/api';
 
 export default {
   namespace: 'addLedger',
@@ -11,32 +11,32 @@ export default {
       receiverAccount: 'test@example.com',
       receiverName: 'Alex',
       amount: '500',
-      doc_name:'',
+      doc_name: '',
     },
-    select:[],
+    select: [],
   },
 
   effects: {
     *submitRegularForm({ payload }, { call }) {
       let response = yield call(addStanding, payload);
-      if(response.code == 1){
-        console.log('okoklok')
+      if (response.code == 1) {
+        console.log('okoklok');
       }
       //message.success('提交成功');
     },
-    *querySelectUnit({payload},{call,put}){
-      let response = yield call(getProposer,payload);
+    *querySelectUnit({ payload }, { call, put }) {
+      let response = yield call(getProposer, payload);
       yield put({
-        type:'saveSelect',
-        payload:response.data,
-      })
+        type: 'saveSelect',
+        payload: response.data,
+      });
     },
-    *querySelectName({payload},{call,put}) {
-      let response = yield call(getDocName,payload);
-      let params = {doc_name:response.data[0].doc_name};
+    *querySelectName({ payload }, { call, put }) {
+      let response = yield call(getDocName, payload);
+      let params = { doc_name: response.data[0].doc_name };
       yield put({
-        type:'saveDocName',
-        payload:params,
+        type: 'saveDocName',
+        payload: params,
       });
     },
     *submitStepForm({ payload }, { call, put }) {
@@ -63,20 +63,20 @@ export default {
         },
       };
     },
-    saveSelect(state,{payload}){
+    saveSelect(state, { payload }) {
       return {
         ...state,
-        select:[...payload],
-      }
+        select: [...payload],
+      };
     },
-    saveDocName(state,{payload}) {
+    saveDocName(state, { payload }) {
       return {
         ...state,
-        step:{
+        step: {
           ...state.step,
           ...payload,
         },
-      }
+      };
     },
   },
 };

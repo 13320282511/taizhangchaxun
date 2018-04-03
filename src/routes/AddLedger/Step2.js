@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Form, Input, Button, Alert, Divider,Upload, Icon, Modal } from 'antd';
+import { Form, Input, Button, Alert, Divider, Upload, Icon, Modal } from 'antd';
 import { routerRedux } from 'dva/router';
 import { digitUppercase } from '../../utils/utils';
 import styles from './style.less';
@@ -19,43 +19,34 @@ class Step2 extends React.PureComponent {
   state = {
     previewVisible: false,
     previewImage: '',
-    fileList: [{
-      uid: -1,
-      name: 'xxx.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    }],
+    fileList: [
+      {
+        uid: -1,
+        name: 'xxx.png',
+        status: 'done',
+        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      },
+    ],
   };
 
-  handleCancel = () => this.setState({ previewVisible: false })
+  handleCancel = () => this.setState({ previewVisible: false });
 
-  handlePreview = (file) => {
+  handlePreview = file => {
     this.setState({
       previewImage: file.url || file.thumbUrl,
       previewVisible: true,
     });
-  }
+  };
 
-  handleChange = ({ fileList }) => this.setState({ fileList })
+  handleChange = ({ fileList }) => this.setState({ fileList });
   render() {
     const { form, data, dispatch, submitting } = this.props;
     const { getFieldDecorator, validateFields } = form;
     const onPrev = () => {
-      dispatch(routerRedux.push('/form/step-form'));
+      dispatch(routerRedux.push('/addLedger/step-form/info'));
     };
-    const onValidateForm = e => {
-      e.preventDefault();
-      validateFields((err, values) => {
-        if (!err) {
-          dispatch({
-            type: 'form/submitStepForm',
-            payload: {
-              ...data,
-              ...values,
-            },
-          });
-        }
-      });
+    const onValidateForm = () => {
+      dispatch(routerRedux.push('/addLedger/step-form/content'));
     };
     const { previewVisible, previewImage, fileList } = this.state;
     const uploadButton = (
@@ -66,26 +57,29 @@ class Step2 extends React.PureComponent {
     );
     return (
       <Form layout="horizontal" className={styles.stepForm}>
-          <div className="clearfix">
-              <Upload
-                action="//jsonplaceholder.typicode.com/posts/"
-                listType="picture-card"
-                fileList={fileList}
-                onPreview={this.handlePreview}
-                onChange={this.handleChange}
-              >
-                {fileList.length >= 3 ? null : uploadButton}
-              </Upload>
-              <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                <img alt="example" style={{ width: '100%' }} src={previewImage} />
-              </Modal>
-          </div>
+        <div className="clearfix">
+          <Upload
+            action="//jsonplaceholder.typicode.com/posts/"
+            listType="picture-card"
+            fileList={fileList}
+            onPreview={this.handlePreview}
+            onChange={this.handleChange}
+          >
+            {fileList.length >= 3 ? null : uploadButton}
+          </Upload>
+          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+            <img alt="example" style={{ width: '100%' }} src={previewImage} />
+          </Modal>
+        </div>
         <Form.Item>
           {/*<Button type="primary" onClick={onValidateForm} loading={submitting}>*/}
-            {/*提交*/}
+          {/*提交*/}
           {/*</Button>*/}
-          <Button onClick={onPrev} style={{ marginLeft: 8 }}>
-            上一步
+          {/*<Button onClick={onPrev} style={{ marginLeft: 8 }}>*/}
+          {/*上一步*/}
+          {/*</Button>*/}
+          <Button type="primary" onClick={onValidateForm}>
+            下一步
           </Button>
         </Form.Item>
       </Form>

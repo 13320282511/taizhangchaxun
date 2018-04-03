@@ -29,15 +29,12 @@ export default class StepForm extends PureComponent {
   render() {
     const { match, routerData } = this.props;
     return (
-      <PageHeaderLayout
-        title="分步表单"
-        content="将一个冗长或用户不熟悉的表单任务分成多个步骤，指导用户完成。"
-      >
+      <PageHeaderLayout title="" content="">
         <Card bordered={false}>
           <Fragment>
             <Steps current={this.getCurrentStep()} className={styles.steps}>
-              <Step title="填写转账信息" />
-              <Step title="确认转账信息" />
+              <Step title="填写台账信息" />
+              <Step title="上传批文" />
               <Step title="查询内容" />
               <Step title="完成" />
             </Steps>

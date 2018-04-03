@@ -21,7 +21,7 @@ export async function getProposer(params) {
 }
 //获取申请文件
 export async function getDocName(params) {
-  console.log('params',params)
+  console.log('params', params);
   return request(`/api/service/Standing/getDocName?${stringify(params)}`);
 }
 export async function removeRule(params) {
@@ -84,7 +84,12 @@ export async function fakeAccountLogin(params) {
     body: params,
   });
 }
-
+export async function getUnitName(params) {
+  return request('/api/service/Standing/getUnitName', {
+    method: 'POST',
+    body: params,
+  });
+}
 export async function fakeRegister(params) {
   return request('/api/register', {
     method: 'POST',

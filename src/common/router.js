@@ -72,29 +72,34 @@ export const getRouterData = app => {
     '/': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
-    '/operator/listOfBooks':{
-      component:dynamicWrapper(app,['ListOfBooks'],()=>import('../routes/Operator/ListOfBooks')),
+    '/operator/listOfBooks': {
+      component: dynamicWrapper(app, ['ListOfBooks'], () =>
+        import('../routes/Operator/ListOfBooks')
+      ),
     },
-    '/operator/detailList/:id':{
-      component:dynamicWrapper(app,['ListOfBooks'],()=>import('../routes/Operator/DetailList')),
+    '/operator/detailList/:id': {
+      name: '台账详情',
+      component: dynamicWrapper(app, ['ListOfBooks'], () =>
+        import('../routes/Operator/DetailList')
+      ),
     },
     '/addLedger/step-form': {
       component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/index')),
     },
     '/addLedger/step-form/info': {
-      name: '分步表单（填写转账信息）',
+      name: '填写台账信息',
       component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step1')),
     },
     '/addLedger/step-form/confirm': {
-      name: '分步表单（确认转账信息）',
+      name: '上传批文',
       component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step2')),
     },
     '/addLedger/step-form/content': {
-      name: '分步表单（查询内容）',
+      name: '查询内容',
       component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step4')),
     },
     '/addLedger/step-form/result': {
-      name: '分步表单（完成）',
+      name: '完成',
       component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step3')),
     },
     '/dashboard/analysis': {

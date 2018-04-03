@@ -142,7 +142,7 @@ export default class BasicProfile extends Component {
       },
     ];
     return (
-      <PageHeaderLayout title="基础详情页">
+      <PageHeaderLayout title="">
         <Card bordered={false}>
           <DescriptionList size="large" title="退款申请" style={{ marginBottom: 32 }}>
             <Description term="取货单号">1000000000</Description>

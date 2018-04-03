@@ -1,4 +1,4 @@
-import { queryRule, removeRule, addRule,queryListOfBooks } from '../services/api';
+import { queryRule, removeRule, addRule, queryListOfBooks, getUnitName } from '../services/api';
 
 export default {
   namespace: 'ListOfBooks',
@@ -8,6 +8,7 @@ export default {
       list: [],
       pagination: {},
     },
+    getUnitName: [],
   },
 
   effects: {
@@ -18,8 +19,13 @@ export default {
         payload: response,
       });
     },
-    *queryChengban({payload},{call,put}) {
-
+    *queryChengban({ payload }, { call, put }) {
+      const response = yield call(getUnitName, payload);
+      console.log('responese', response);
+      yield put({
+        type: 'getUnitName',
+        payload: response.data,
+      });
     },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(addRule, payload);
@@ -44,6 +50,12 @@ export default {
       return {
         ...state,
         data: action.payload,
+      };
+    },
+    getUnitName(state, action) {
+      return {
+        ...state,
+        getUnitName: action.payload,
       };
     },
   },

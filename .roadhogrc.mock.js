@@ -1,6 +1,13 @@
 import mockjs from 'mockjs';
-import { getRule, postRule,getListOfBooks } from './mock/rule';
-import { getActivities, getNotice, getFakeList,getProposer,getDocName } from './mock/api';
+import { getRule, postRule, getListOfBooks } from './mock/rule';
+import {
+  getActivities,
+  getNotice,
+  getFakeList,
+  getProposer,
+  getDocName,
+  getUnitName,
+} from './mock/api';
 import { getFakeChartData } from './mock/chart';
 import { getProfileBasicData } from './mock/profile';
 import { getProfileAdvancedData } from './mock/profile';
@@ -52,9 +59,9 @@ const proxy = {
   'GET /api/project/notice': getNotice,
   'GET /api/activities': getActivities,
   'GET /api/rule': getRule,
-  'GEt /api/listOfBooks':getListOfBooks,
-  'GEt /api/service/Standing/getProposer':getProposer,
-  'GEt /api/service/Standing/getDocName':getDocName,
+  'GEt /api/listOfBooks': getListOfBooks,
+  'GEt /api/service/Standing/getProposer': getProposer,
+  'GEt /api/service/Standing/getDocName': getDocName,
   'POST /api/rule': {
     $params: {
       pageSize: {
@@ -101,8 +108,11 @@ const proxy = {
   'POST /api/register': (req, res) => {
     res.send({ status: 'ok', currentAuthority: 'user' });
   },
-  'POST /api/service/Standing/addStanding':(req,res) => {
-    res.send({ message: 'Ok' ,code:1});
+  'POST /api/service/Standing/addStanding': (req, res) => {
+    res.send({ message: 'Ok', code: 1 });
+  },
+  'POST /api/service/Standing/getUnitName': (req, res) => {
+    res.send(getUnitName);
   },
   'GET /api/notices': getNotices,
   'GET /api/500': (req, res) => {

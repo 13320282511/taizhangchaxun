@@ -11,11 +11,7 @@ class Step3 extends React.PureComponent {
     const onFinish = () => {
       dispatch(routerRedux.push('/form/step-form'));
     };
-    const information = (
-      <div className={styles.information}>
-
-      </div>
-    );
+    const information = <div className={styles.information} />;
     const actions = (
       <Fragment>
         <Button type="primary" onClick={onFinish}>
