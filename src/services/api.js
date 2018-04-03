@@ -15,7 +15,15 @@ export async function queryRule(params) {
 export async function queryListOfBooks(params) {
   return request(`/api/listOfBooks?${stringify(params)}`);
 }
-
+//获取申请单位类型
+export async function getProposer(params) {
+  return request(`/api/service/Standing/getProposer`);
+}
+//获取申请文件
+export async function getDocName(params) {
+  console.log('params',params)
+  return request(`/api/service/Standing/getDocName?${stringify(params)}`);
+}
 export async function removeRule(params) {
   return request('/api/rule', {
     method: 'POST',

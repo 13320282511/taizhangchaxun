@@ -313,7 +313,6 @@ export default class TableList extends PureComponent {
   }
 
   render() {
-    console.log('this.props', this.props)
     const {ListOfBooks: {data}, loading} = this.props;
     const {selectedRows, modalVisible} = this.state;
 
@@ -356,7 +355,6 @@ export default class TableList extends PureComponent {
       {
         title: '操作',
         render(val) {
-          console.log('val', val)
           return <Fragment><Link to={`/operator/detailList/${val.id}`}>详情</Link></Fragment>
         },
       },

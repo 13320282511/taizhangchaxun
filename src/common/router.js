@@ -78,6 +78,21 @@ export const getRouterData = app => {
     '/operator/detailList/:id':{
       component:dynamicWrapper(app,['ListOfBooks'],()=>import('../routes/Operator/DetailList')),
     },
+    '/addLedger/step-form': {
+      component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/index')),
+    },
+    '/addLedger/step-form/info': {
+      name: '分步表单（填写转账信息）',
+      component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step1')),
+    },
+    '/AddLedger/step-form/confirm': {
+      name: '分步表单（确认转账信息）',
+      component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step2')),
+    },
+    '/AddLedger/step-form/result': {
+      name: '分步表单（完成）',
+      component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step3')),
+    },
     '/dashboard/analysis': {
       component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
     },

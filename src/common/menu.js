@@ -7,6 +7,11 @@ const menuData = [
     path: 'operator/listOfBooks',
   },
   {
+    name: '新增台账',
+    icon: 'dashboard',
+    path: 'addLedger/step-form',
+  },
+  {
     name: 'dashboard',
     icon: 'dashboard',
     path: 'dashboard',

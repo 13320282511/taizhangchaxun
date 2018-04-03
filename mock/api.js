@@ -188,6 +188,25 @@ export const getNotice = [
   },
 ];
 
+export const getProposer = {
+  code:1,
+  data:[
+    {
+      id:1,
+      proposer_name:'各区县纪委监委',
+    },
+    {
+      id:2,
+      proposer_name:'派驻（出）纪检组（纪工委）',
+    },
+  ],
+};
+export const getDocName = {
+  code:1,
+  data:[
+    {doc_name:'第1纪监察室20180400001'},
+  ],
+};
 export const getActivities = [
   {
     id: 'trend-1',
@@ -293,4 +312,6 @@ export default {
   getNotice,
   getActivities,
   getFakeList,
+  getProposer,
+  getDocName,
 };
