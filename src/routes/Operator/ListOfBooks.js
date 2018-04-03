@@ -198,43 +198,43 @@ export default class TableList extends PureComponent {
     });
   };
 
-  renderSimpleForm() {
-    const {getFieldDecorator} = this.props.form;
-    return (
-      <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{md: 8, lg: 24, xl: 48}}>
-          <Col md={8} sm={24}>
-            <FormItem label="规则编号">
-              {getFieldDecorator('no')(<Input placeholder="请输入"/>)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="使用状态">
-              {getFieldDecorator('status')(
-                <Select placeholder="请选择" style={{width: '100%'}}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <span className={styles.submitButtons}>
-              <Button type="primary" htmlType="submit">
-                查询
-              </Button>
-              <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>
-                重置
-              </Button>
-              <a style={{marginLeft: 8}} onClick={this.toggleForm}>
-                展开 <Icon type="down"/>
-              </a>
-            </span>
-          </Col>
-        </Row>
-      </Form>
-    );
-  }
+  // renderSimpleForm() {
+  //   const {getFieldDecorator} = this.props.form;
+  //   return (
+  //     <Form onSubmit={this.handleSearch} layout="inline">
+  //       <Row gutter={{md: 8, lg: 24, xl: 48}}>
+  //         <Col md={8} sm={24}>
+  //           <FormItem label="规则编号">
+  //             {getFieldDecorator('no')(<Input placeholder="请输入"/>)}
+  //           </FormItem>
+  //         </Col>
+  //         <Col md={8} sm={24}>
+  //           <FormItem label="使用状态">
+  //             {getFieldDecorator('status')(
+  //               <Select placeholder="请选择" style={{width: '100%'}}>
+  //                 <Option value="0">关闭</Option>
+  //                 <Option value="1">运行中</Option>
+  //               </Select>
+  //             )}
+  //           </FormItem>
+  //         </Col>
+  //         <Col md={8} sm={24}>
+  //           <span className={styles.submitButtons}>
+  //             <Button type="primary" htmlType="submit">
+  //               查询
+  //             </Button>
+  //             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>
+  //               重置
+  //             </Button>
+  //             <a style={{marginLeft: 8}} onClick={this.toggleForm}>
+  //               展开 <Icon type="down"/>
+  //             </a>
+  //           </span>
+  //         </Col>
+  //       </Row>
+  //     </Form>
+  //   );
+  // }
 
   renderAdvancedForm() {
     const {getFieldDecorator} = this.props.form;
@@ -243,17 +243,17 @@ export default class TableList extends PureComponent {
         <Row gutter={{md: 8, lg: 24, xl: 48}}>
           <Col md={8} sm={24}>
             <FormItem label="文号">
-              {getFieldDecorator('no')(<Input placeholder="请输入文号"/>)}
+              {getFieldDecorator('doc_name')(<Input placeholder="请输入文号"/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="申请单位：">
-              {getFieldDecorator('number')(<InputNumber style={{width: '100%'}}/>)}
+              {getFieldDecorator('proposer_unit')(<InputNumber style={{width: '100%'}}/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="承办单位：">
-              {getFieldDecorator('status')(
+              {getFieldDecorator('undertaker_unit')(
                 <Select placeholder="请选择" style={{width: '100%'}}>
                   <Option value="0">关闭</Option>
                   <Option value="1">运行中</Option>
@@ -299,9 +299,9 @@ export default class TableList extends PureComponent {
             <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>
               重置
             </Button>
-            <a style={{marginLeft: 8}} onClick={this.toggleForm}>
-              收起 <Icon type="up"/>
-            </a>
+            {/*<a style={{marginLeft: 8}} onClick={this.toggleForm}>*/}
+              {/*收起 <Icon type="up"/>*/}
+            {/*</a>*/}
           </span>
         </div>
       </Form>
@@ -309,7 +309,8 @@ export default class TableList extends PureComponent {
   }
 
   renderForm() {
-    return this.state.expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
+    // return this.state.expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
+    return this.renderAdvancedForm()
   }
 
   render() {
@@ -328,7 +329,7 @@ export default class TableList extends PureComponent {
       {
         title: '申请单位',
         dataIndex: 'proposer_unit',
-        sorter: true,
+        sorter: false,
         align: 'right',
         render: val => `${val} 万`,
         // mark to display a total number
@@ -337,7 +338,7 @@ export default class TableList extends PureComponent {
       {
         title: '承办单位',
         dataIndex: 'undertaker_unit',
-        sorter: true,
+        sorter: false,
         align: 'right',
       },
       {
@@ -373,7 +374,7 @@ export default class TableList extends PureComponent {
     };
 
     return (
-      <PageHeaderLayout title="查询表格">
+      <PageHeaderLayout title="">
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>

@@ -43,7 +43,14 @@ export async function addRule(params) {
     },
   });
 }
-
+export async function addStanding(params) {
+  return request('/api/service/Standing/addStanding', {
+    method: 'POST',
+    body: {
+      ...params,
+    },
+  });
+}
 export async function fakeSubmitForm(params) {
   return request('/api/forms', {
     method: 'POST',

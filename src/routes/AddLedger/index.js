@@ -20,6 +20,8 @@ export default class StepForm extends PureComponent {
         return 1;
       case 'result':
         return 2;
+      case 'content':
+        return 3;
       default:
         return 0;
     }
@@ -36,6 +38,7 @@ export default class StepForm extends PureComponent {
             <Steps current={this.getCurrentStep()} className={styles.steps}>
               <Step title="填写转账信息" />
               <Step title="确认转账信息" />
+              <Step title="查询内容" />
               <Step title="完成" />
             </Steps>
             <Switch>

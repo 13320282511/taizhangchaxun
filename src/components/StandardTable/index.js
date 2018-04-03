@@ -71,14 +71,14 @@ class StandardTable extends PureComponent {
       ...pagination,
     };
 
-    // const rowSelection = {
-    //   selectedRowKeys,
-    //   onChange: this.handleRowSelectChange,
-    //   getCheckboxProps: record => ({
-    //     disabled: record.disabled,
-    //   }),
-    // };
-    const rowSelection = false;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.handleRowSelectChange,
+      getCheckboxProps: record => ({
+        disabled: record.disabled,
+      }),
+    };
+    // const rowSelection = false;
     return (
       <div className={styles.standardTable}>
         {/*<div className={styles.tableAlert}>*/}

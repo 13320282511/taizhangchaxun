@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd';
-import { fakeSubmitForm,getProposer,getDocName } from '../services/api';
+import { fakeSubmitForm,getProposer,getDocName,addStanding } from '../services/api';
 
 export default {
   namespace: 'addLedger',
@@ -18,8 +18,11 @@ export default {
 
   effects: {
     *submitRegularForm({ payload }, { call }) {
-      yield call(fakeSubmitForm, payload);
-      message.success('提交成功');
+      let response = yield call(addStanding, payload);
+      if(response.code == 1){
+        console.log('okoklok')
+      }
+      //message.success('提交成功');
     },
     *querySelectUnit({payload},{call,put}){
       let response = yield call(getProposer,payload);

@@ -18,6 +18,9 @@ export default {
         payload: response,
       });
     },
+    *queryChengban({payload},{call,put}) {
+
+    },
     *add({ payload, callback }, { call, put }) {
       const response = yield call(addRule, payload);
       yield put({

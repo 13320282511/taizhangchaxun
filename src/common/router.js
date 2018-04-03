@@ -85,11 +85,15 @@ export const getRouterData = app => {
       name: '分步表单（填写转账信息）',
       component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step1')),
     },
-    '/AddLedger/step-form/confirm': {
+    '/addLedger/step-form/confirm': {
       name: '分步表单（确认转账信息）',
       component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step2')),
     },
-    '/AddLedger/step-form/result': {
+    '/addLedger/step-form/content': {
+      name: '分步表单（查询内容）',
+      component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step4')),
+    },
+    '/addLedger/step-form/result': {
       name: '分步表单（完成）',
       component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step3')),
     },

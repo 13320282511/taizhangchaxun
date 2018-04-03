@@ -25,9 +25,7 @@ class Step1 extends React.PureComponent {
     });
   }
   selectValue = (val,option) => {
-    console.log('val',val);
     let params = {org_id:val,org_short:option.props.children};
-    console.log('options',option);
     this.props.dispatch({
       type: 'addLedger/querySelectName',
       payload: params,
@@ -40,10 +38,10 @@ class Step1 extends React.PureComponent {
       validateFields((err, values) => {
         if (!err) {
           // dispatch({
-          //   type: 'form/saveStepFormData',
+          //   type: 'addLedger/submitRegularForm',
           //   payload: values,
           // });
-          dispatch(routerRedux.push('/form/step-form/confirm'));
+          dispatch(routerRedux.push('/addLedger/step-form/confirm'));
         }
       });
     };
@@ -52,7 +50,7 @@ class Step1 extends React.PureComponent {
         <Form layout="horizontal" className={styles.stepForm} hideRequiredMark>
           <Form.Item {...formItemLayout} label="查询类型:" help="客户、邀评人默认被分享">
             <div>
-              {getFieldDecorator('public', {
+              {getFieldDecorator('doc_type', {
                 initialValue: '1',
               })(
                 <Radio.Group>
@@ -69,38 +67,66 @@ class Step1 extends React.PureComponent {
                   return <Option value={item.id} key={index}>{item.proposer_name}</Option>
                 })}
               </Select>
-              {getFieldDecorator('receiverAccount', {
+              {getFieldDecorator('doc_name', {
                 initialValue: data.doc_name,
               })(<Input style={{ width: 'calc(100% - 100px)' }} disabled={true} />)}
             </Input.Group>
           </Form.Item>
-          <Form.Item {...formItemLayout} label="付款账户">
-            {getFieldDecorator('payAccount', {
+          <Form.Item {...formItemLayout} label="申请人1">
+            {getFieldDecorator('proposer_2nd', {
+              initialValue: data.receiverName,
+              rules: [{ required: true, message: '请输入输入申请人' }],
+            })(<Input placeholder="请输入输入申请人" />)}
+          </Form.Item>
+          <Form.Item {...formItemLayout} label="联系电话">
+            {getFieldDecorator('proposer_2nd_phone', {
+              initialValue: data.receiverName,
+              rules: [{ required: true, message: '请输入联系电话' }],
+            })(<Input placeholder="请输入输入联系电话" />)}
+          </Form.Item>
+          <Form.Item {...formItemLayout} label="申请人2">
+            {getFieldDecorator('proposer_1st', {
+              initialValue: data.receiverName,
+              rules: [{ required: true, message: '请输入输入申请人' }],
+            })(<Input placeholder="请输入输入申请人" />)}
+          </Form.Item>
+          <Form.Item {...formItemLayout} label="联系电话">
+            {getFieldDecorator('proposer_1st_phone', {
+              initialValue: data.receiverName,
+              rules: [{ required: true, message: '请输入联系电话' }],
+            })(<Input placeholder="请输入输入联系电话" />)}
+          </Form.Item>
+          <Form.Item {...formItemLayout} label="申请单位">
+            {getFieldDecorator('proposer', {
+              initialValue: data.receiverName,
+              rules: [{ required: true, message: '请输入输入申请人' }],
+            })(<Input placeholder="请输入输入申请人" />)}
+          </Form.Item>
+          <Form.Item {...formItemLayout} label="申请单位类型">
+            {getFieldDecorator('proposer_org_type', {
               initialValue: data.payAccount,
-              rules: [{ required: true, message: '请选择付款账户' }],
+              rules: [{ required: true, message: '请选择申请单位类型' }],
             })(
               <Select placeholder="test@example.com">
                 <Option value="ant-design@alipay.com">ant-design@alipay.com</Option>
               </Select>
             )}
           </Form.Item>
-          <Form.Item {...formItemLayout} label="收款人姓名">
-            {getFieldDecorator('receiverName', {
-              initialValue: data.receiverName,
-              rules: [{ required: true, message: '请输入收款人姓名' }],
-            })(<Input placeholder="请输入收款人姓名" />)}
+          <Form.Item {...formItemLayout} label="承办单位">
+            {getFieldDecorator('undertaker_id', {
+              initialValue: data.payAccount,
+              rules: [{ required: true, message: '请选择申请单位类型' }],
+            })(
+              <Select placeholder="test@example.com">
+                <Option value="ant-design@alipay.com">ant-design@alipay.com</Option>
+              </Select>
+            )}
           </Form.Item>
-          <Form.Item {...formItemLayout} label="转账金额">
-            {getFieldDecorator('amount', {
-              initialValue: data.amount,
-              rules: [
-                { required: true, message: '请输入转账金额' },
-                {
-                  pattern: /^(\d+)((?:\.\d+)?)$/,
-                  message: '请输入合法金额数字',
-                },
-              ],
-            })(<Input prefix="￥" placeholder="请输入金额" />)}
+          <Form.Item {...formItemLayout} label="最高级别审批人">
+            {getFieldDecorator('approver', {
+              initialValue: data.receiverName,
+              rules: [{ required: true, message: '请输入输入申请人' }],
+            })(<Input placeholder="请输入输入申请人" />)}
           </Form.Item>
           <Form.Item
             wrapperCol={{
@@ -119,15 +145,7 @@ class Step1 extends React.PureComponent {
         </Form>
         <Divider style={{ margin: '40px 0 24px' }} />
         <div className={styles.desc}>
-          <h3>说明</h3>
-          <h4>转账到支付宝账户</h4>
-          <p>
-            如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。
-          </p>
-          <h4>转账到银行卡</h4>
-          <p>
-            如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。
-          </p>
+
         </div>
       </Fragment>
     );

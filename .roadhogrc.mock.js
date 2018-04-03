@@ -101,6 +101,9 @@ const proxy = {
   'POST /api/register': (req, res) => {
     res.send({ status: 'ok', currentAuthority: 'user' });
   },
+  'POST /api/service/Standing/addStanding':(req,res) => {
+    res.send({ message: 'Ok' ,code:1});
+  },
   'GET /api/notices': getNotices,
   'GET /api/500': (req, res) => {
     res.status(500).send({
