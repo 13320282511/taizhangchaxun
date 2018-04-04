@@ -59,9 +59,15 @@ const proxy = {
   'GET /api/project/notice': getNotice,
   'GET /api/activities': getActivities,
   'GET /api/rule': getRule,
-  'GEt /api/listOfBooks': getListOfBooks,
-  'GEt /api/service/Standing/getProposer': getProposer,
-  'GEt /api/service/Standing/getDocName': getDocName,
+  'GET /api/listOfBooks': getListOfBooks,
+  'GET /api/service/Standing/getProposer': getProposer,
+  'GET /api/service/Standing/getDocName': getDocName,
+  'POST /api/service/Standing/addStanding': (req, res) => {
+    res.send({ message: 'Ok', code: 1 });
+  },
+  'POST /api/service/Standing/getUnitName': (req, res) => {
+    res.send(getUnitName);
+  },
   'POST /api/rule': {
     $params: {
       pageSize: {
@@ -107,12 +113,6 @@ const proxy = {
   },
   'POST /api/register': (req, res) => {
     res.send({ status: 'ok', currentAuthority: 'user' });
-  },
-  'POST /api/service/Standing/addStanding': (req, res) => {
-    res.send({ message: 'Ok', code: 1 });
-  },
-  'POST /api/service/Standing/getUnitName': (req, res) => {
-    res.send(getUnitName);
   },
   'GET /api/notices': getNotices,
   'GET /api/500': (req, res) => {

@@ -2,7 +2,7 @@ import { isUrl } from '../utils/utils';
 
 const menuData = [
   {
-    name: 'listOfBooks',
+    name: '台账列表',
     icon: 'dashboard',
     path: 'operator/listOfBooks',
   },
