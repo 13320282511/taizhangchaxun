@@ -21,8 +21,11 @@ export async function getProposer(params) {
 }
 //获取申请文件
 export async function getDocName(params) {
-  console.log('params', params);
   return request(`/api/service/Standing/getDocName?${stringify(params)}`);
+}
+//获取承办单位
+export async function getShortName(params) {
+  return request(`/api/service/Standing/getShortName?${stringify(params)}`);
 }
 export async function removeRule(params) {
   return request('/api/rule', {

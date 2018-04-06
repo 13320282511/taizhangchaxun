@@ -23,6 +23,10 @@ class Step1 extends React.PureComponent {
       type: 'addLedger/querySelectUnit',
       payload: '',
     });
+    this.props.dispatch({
+      type:'addLedger/selectShortName',
+      payload:'',
+    })
   }
   selectValue = (val, option) => {
     let params = { org_id: val, org_short: option.props.children };
@@ -127,8 +131,14 @@ class Step1 extends React.PureComponent {
               // initialValue: data.payAccount,
               rules: [{ required: true, message: '请选择申请单位类型' }],
             })(
-              <Select placeholder="1">
-                <Option value="1" />
+              <Select placeholder="请选择">
+                {this.props.selectShortName.map((item, index) => {
+                  return (
+                    <Option value={item.id} key={index}>
+                      {item.org_short}
+                    </Option>
+                  );
+                })}
               </Select>
             )}
           </Form.Item>
@@ -163,4 +173,5 @@ class Step1 extends React.PureComponent {
 export default connect(({ addLedger }) => ({
   data: addLedger.step,
   select: addLedger.select,
+  selectShortName:addLedger.selectShortName,
 }))(Step1);

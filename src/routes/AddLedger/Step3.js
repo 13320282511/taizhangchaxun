@@ -9,22 +9,21 @@ class Step3 extends React.PureComponent {
   render() {
     const { dispatch, data } = this.props;
     const onFinish = () => {
-      dispatch(routerRedux.push('/form/step-form'));
+      dispatch(routerRedux.push('/addLedger/step-form/info'));
     };
     const information = <div className={styles.information} />;
     const actions = (
       <Fragment>
         <Button type="primary" onClick={onFinish}>
-          再转一笔
+          再次添加
         </Button>
-        <Button>查看账单</Button>
       </Fragment>
     );
     return (
       <Result
         type="success"
         title="操作成功"
-        description="预计两小时内到账"
+        description="已成功录入一条台帐"
         extra={information}
         actions={actions}
         className={styles.result}

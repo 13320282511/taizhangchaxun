@@ -205,6 +205,10 @@ export const getDocName = {
   code: 1,
   data: [{ doc_name: '第1纪监察室20180400001' }],
 };
+export const getShortName = {
+  code: 1,
+  data: [{ id:1,org_short: '第1纪监察室' },{ id:2,org_short: '第2纪监察室' }],
+};
 export const getUnitName = {
   code: 1,
   data: [{ id: 1, proposer_name: '各区县纪委监委' }],
@@ -317,4 +321,5 @@ export default {
   getProposer,
   getDocName,
   getUnitName,
+  getShortName,
 };

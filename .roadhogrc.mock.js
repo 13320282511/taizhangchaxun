@@ -7,6 +7,7 @@ import {
   getProposer,
   getDocName,
   getUnitName,
+  getShortName,
 } from './mock/api';
 import { getFakeChartData } from './mock/chart';
 import { getProfileBasicData } from './mock/profile';
@@ -62,6 +63,7 @@ const proxy = {
   'GET /api/listOfBooks': getListOfBooks,
   'GET /api/service/Standing/getProposer': getProposer,
   'GET /api/service/Standing/getDocName': getDocName,
+  'GET /api/service/Standing/getShortName': getShortName,
   'POST /api/service/Standing/addStanding': (req, res) => {
     res.send({ message: 'Ok', code: 1 });
   },

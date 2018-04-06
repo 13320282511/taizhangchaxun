@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'dva';
 import { Button, Row, Col, Table, Icon, Card, Form } from 'antd';
-import TableForm from '../Forms/TableForm';
+import TableFormaddLedger from '../Forms/TableFormaddLedger';
 import { routerRedux } from 'dva/router';
 import Result from 'components/Result';
 import FooterToolbar from 'components/FooterToolbar';
@@ -11,18 +11,21 @@ const tableData = [
     key: '1',
     workId: '00001',
     name: 'John Brown',
+    number: '1',
     department: 'New York No. 1 Lake Park',
   },
   {
     key: '2',
     workId: '00002',
     name: 'Jim Green',
+    number: '77',
     department: 'London No. 1 Lake Park',
   },
   {
     key: '3',
     workId: '00003',
     name: 'Joe Black',
+    number: '88',
     department: 'Sidney No. 1 Lake Park',
   },
 ];
@@ -47,6 +50,7 @@ class Step3 extends React.PureComponent {
             type: 'form/submitAdvancedForm',
             payload: values,
           });
+          dispatch(routerRedux.push('/addLedger/step-form/result'));
         }
       });
     };
@@ -93,7 +97,7 @@ class Step3 extends React.PureComponent {
         <Card title="成员管理" bordered={false}>
           {getFieldDecorator('members', {
             initialValue: tableData,
-          })(<TableForm />)}
+          })(<TableFormaddLedger />)}
         </Card>
         <FooterToolbar style={{ width: this.state.width }}>
           {getErrorInfo()}
