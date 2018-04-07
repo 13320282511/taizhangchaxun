@@ -24,9 +24,9 @@ class Step1 extends React.PureComponent {
       payload: '',
     });
     this.props.dispatch({
-      type:'addLedger/selectShortName',
-      payload:'',
-    })
+      type: 'addLedger/selectShortName',
+      payload: '',
+    });
   }
   selectValue = (val, option) => {
     let params = { org_id: val, org_short: option.props.children };
@@ -173,5 +173,5 @@ class Step1 extends React.PureComponent {
 export default connect(({ addLedger }) => ({
   data: addLedger.step,
   select: addLedger.select,
-  selectShortName:addLedger.selectShortName,
+  selectShortName: addLedger.selectShortName,
 }))(Step1);

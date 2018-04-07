@@ -10,7 +10,8 @@ import {
   getShortName,
 } from './mock/api';
 import { getFakeChartData } from './mock/chart';
-import { getProfileBasicData } from './mock/profile';
+// import { getProfileBasicData } from './mock/profile';
+import { getProfileBasicData } from './mock/DetailListOfBooks/DetailListOfBooks';
 import { getProfileAdvancedData } from './mock/profile';
 import { getNotices } from './mock/notices';
 import { format, delay } from 'roadhog-api-doc';
@@ -70,6 +71,9 @@ const proxy = {
   'POST /api/service/Standing/getUnitName': (req, res) => {
     res.send(getUnitName);
   },
+  'POST /api/service/Standing/standingDetail': (req,res) => {
+    res.send(getProfileBasicData);
+  },
   'POST /api/rule': {
     $params: {
       pageSize: {
@@ -113,10 +117,10 @@ const proxy = {
       currentAuthority: 'guest',
     });
   },
-  'POST /api/register': (req, res) => {
-    res.send({ status: 'ok', currentAuthority: 'user' });
-  },
-  'GET /api/notices': getNotices,
+  // 'POST /api/register': (req, res) => {
+  //   res.send({ status: 'ok', currentAuthority: 'user' });
+  // },
+  // 'GET /api/notices': getNotices,
   'GET /api/500': (req, res) => {
     res.status(500).send({
       timestamp: 1513932555104,

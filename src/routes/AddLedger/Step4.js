@@ -38,6 +38,7 @@ class Step3 extends React.PureComponent {
     console.log('text', text);
   };
   render() {
+    console.log('this.propsss',this.props)
     const { form, dispatch, submitting } = this.props;
     console.log('this.props', this.props);
     const { getFieldDecorator, validateFieldsAndScroll, getFieldsError } = form;
@@ -109,8 +110,11 @@ class Step3 extends React.PureComponent {
     );
   }
 }
-export default connect(({ global, loading }) => ({
-  collapsed: global.collapsed,
+export default connect(({ addLedger,global, loading }) => ({
+  addLedger:addLedger,
+  collapsed: addLedger.collapsed,
+  loading:loading,
+  global:global,
   submitting: loading.effects['form/submitAdvancedForm'],
 }))(Form.create()(Step3));
 // export default connect(({form}) => ({

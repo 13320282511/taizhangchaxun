@@ -40,7 +40,7 @@ class Step2 extends React.PureComponent {
 
   handleChange = ({ fileList }) => this.setState({ fileList });
   render() {
-    const { form, data, dispatch, submitting } = this.props;
+    const { form, dispatch, submitting } = this.props;
     const { getFieldDecorator, validateFields } = form;
     const onPrev = () => {
       dispatch(routerRedux.push('/addLedger/step-form/info'));
@@ -89,5 +89,5 @@ class Step2 extends React.PureComponent {
 
 export default connect(({ form, loading }) => ({
   submitting: loading.effects['form/submitStepForm'],
-  data: form.step,
+  // data: form.step,
 }))(Step2);

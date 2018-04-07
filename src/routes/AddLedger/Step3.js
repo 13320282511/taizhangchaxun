@@ -7,7 +7,7 @@ import styles from './style.less';
 
 class Step3 extends React.PureComponent {
   render() {
-    const { dispatch, data } = this.props;
+    const { dispatch} = this.props;
     const onFinish = () => {
       dispatch(routerRedux.push('/addLedger/step-form/info'));
     };
@@ -33,5 +33,5 @@ class Step3 extends React.PureComponent {
 }
 
 export default connect(({ form }) => ({
-  data: form.step,
+  // data: form.step,
 }))(Step3);

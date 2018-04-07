@@ -207,7 +207,7 @@ export const getDocName = {
 };
 export const getShortName = {
   code: 1,
-  data: [{ id:1,org_short: '第1纪监察室' },{ id:2,org_short: '第2纪监察室' }],
+  data: [{ id: 1, org_short: '第1纪监察室' }, { id: 2, org_short: '第2纪监察室' }],
 };
 export const getUnitName = {
   code: 1,

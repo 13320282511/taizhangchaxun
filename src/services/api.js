@@ -93,6 +93,12 @@ export async function getUnitName(params) {
     body: params,
   });
 }
+export async function queryBasicListOfBooks(params) {
+  return request('/api/service/Standing/standingDetail', {
+    method: 'POST',
+    body: params,
+  });
+}
 export async function fakeRegister(params) {
   return request('/api/register', {
     method: 'POST',

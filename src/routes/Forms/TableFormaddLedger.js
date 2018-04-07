@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
-import { Table, Button, Input, message, Popconfirm, Divider,InputNumber,Select } from 'antd';
+import { Table, Button, Input, message, Popconfirm, Divider, InputNumber, Select } from 'antd';
 import styles from './style.less';
 
 export default class TableFormaddLedger extends PureComponent {
@@ -47,7 +47,7 @@ export default class TableFormaddLedger extends PureComponent {
       workId: '',
       name: '',
       department: '',
-      number:'',
+      number: '',
       editable: true,
       isNew: true,
     });
@@ -55,7 +55,7 @@ export default class TableFormaddLedger extends PureComponent {
     this.setState({ data: newData });
   };
   handleKeyPress(e, key) {
-    console.log('e',e)
+    console.log('e', e);
     if (e.key === 'Enter') {
       this.saveRow(e, key);
     }
@@ -64,9 +64,9 @@ export default class TableFormaddLedger extends PureComponent {
     const newData = this.state.data.map(item => ({ ...item }));
     const target = this.getRowByKey(key, newData);
     if (target) {
-      if(typeof e == 'number' || typeof e == 'string'){
+      if (typeof e == 'number' || typeof e == 'string') {
         target[fieldName] = e;
-      }else{
+      } else {
         target[fieldName] = e.target.value;
       }
       this.setState({ data: newData });
@@ -122,22 +122,24 @@ export default class TableFormaddLedger extends PureComponent {
         render: (text, record) => {
           if (record.editable) {
             return (
-            <Select
-              value={text}
-              showSearch
-              style={{ width: 200 }}
-              placeholder="Select a person"
-              optionFilterProp="children"
-              onChange={e => this.handleFieldChange(e, 'name', record.key)}
-              // onChange={handleChange}
-              // onFocus={handleFocus}
-              // onBlur={handleBlur}
-              filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="tom">Tom</Option>
-            </Select>
+              <Select
+                value={text}
+                showSearch
+                style={{ width: 200 }}
+                placeholder="Select a person"
+                optionFilterProp="children"
+                onChange={e => this.handleFieldChange(e, 'name', record.key)}
+                // onChange={handleChange}
+                // onFocus={handleFocus}
+                // onBlur={handleBlur}
+                filterOption={(input, option) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                <Option value="jack">Jack</Option>
+                <Option value="lucy">Lucy</Option>
+                <Option value="tom">Tom</Option>
+              </Select>
               // <Input
               //   value={text}
               //   autoFocus
@@ -196,12 +198,13 @@ export default class TableFormaddLedger extends PureComponent {
         render: (text, record) => {
           if (record.editable) {
             return (
-              <InputNumber defaultValue={1}
-                           value={text}
-                           min={1}
-                           max={9999999}
-                           onChange={e => this.handleFieldChange(e, 'number', record.key)}
-                           // onKeyPress={e => this.handleKeyPress(e, record.key)}
+              <InputNumber
+                defaultValue={1}
+                value={text}
+                min={1}
+                max={9999999}
+                onChange={e => this.handleFieldChange(e, 'number', record.key)}
+                // onKeyPress={e => this.handleKeyPress(e, record.key)}
               />
             );
           }

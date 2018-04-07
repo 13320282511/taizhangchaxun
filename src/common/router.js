@@ -79,7 +79,7 @@ export const getRouterData = app => {
     },
     '/operator/detailList/:id': {
       name: '台账详情',
-      component: dynamicWrapper(app, ['ListOfBooks'], () =>
+      component: dynamicWrapper(app, ['detailListOfBooks'], () =>
         import('../routes/Operator/DetailList')
       ),
     },
