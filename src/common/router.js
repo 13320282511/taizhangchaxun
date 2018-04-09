@@ -75,6 +75,9 @@ export const getRouterData = app => {
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },
+    '/errorlogin':{
+      component: dynamicWrapper(app, [], () => import('../layouts/ErrorLogin')),
+    },
     '/user/login': {
       component: dynamicWrapper(app, ['login'], () => import('../routes/User/Login')),
     },
@@ -108,59 +111,21 @@ export const getRouterData = app => {
       name: '完成',
       component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step3')),
     },
-    // '/form/basic-form': {
-    //   component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/BasicForm')),
-    // },
-    // '/form/step-form': {
-    //   component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm')),
-    // },
-    // '/form/step-form/info': {
-    //   name: '分步表单（填写转账信息）',
-    //   component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm/Step1')),
-    // },
-    // '/form/step-form/confirm': {
-    //   name: '分步表单（确认转账信息）',
-    //   component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm/Step2')),
-    // },
-    // '/form/step-form/result': {
-    //   name: '分步表单（完成）',
-    //   component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm/Step3')),
-    // },
-    // '/form/advanced-form': {
-    //   component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/AdvancedForm')),
-    // },
-    // '/list/table-list': {
-    //   component: dynamicWrapper(app, ['rule'], () => import('../routes/List/TableList')),
-    // },
-    // '/list/basic-list': {
-    //   component: dynamicWrapper(app, ['list'], () => import('../routes/List/BasicList')),
-    // },
-    // '/list/card-list': {
-    //   component: dynamicWrapper(app, ['list'], () => import('../routes/List/CardList')),
-    // },
-    // '/list/search': {
-    //   component: dynamicWrapper(app, ['list'], () => import('../routes/List/List')),
-    // },
-    // '/list/search/projects': {
-    //   component: dynamicWrapper(app, ['list'], () => import('../routes/List/Projects')),
-    // },
-    // '/list/search/applications': {
-    //   component: dynamicWrapper(app, ['list'], () => import('../routes/List/Applications')),
-    // },
-    // '/list/search/articles': {
-    //   component: dynamicWrapper(app, ['list'], () => import('../routes/List/Articles')),
-    // },
-    // '/profile/basic': {
-    //   component: dynamicWrapper(app, ['profile'], () => import('../routes/Profile/BasicProfile')),
-    // },
-    // '/profile/advanced': {
-    //   component: dynamicWrapper(app, ['profile'], () =>
-    //     import('../routes/Profile/AdvancedProfile')
-    //   ),
-    // },
     // '/result/success': {
     //   component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
     // },
+    '/errorlogin/result/fail': {
+      component: dynamicWrapper(app, [], () => import('../routes/Result/Error')),
+    },
+    '/errorlogin/exception/403': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
+    },
+    '/errorlogin/exception/404': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
+    },
+    '/errorlogin/exception/500': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/500')),
+    },
     '/result/fail': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Error')),
     },

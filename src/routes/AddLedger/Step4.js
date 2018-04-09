@@ -34,13 +34,9 @@ class Step3 extends React.PureComponent {
     width: '100%',
   };
   addContent = (val, text) => {
-    console.log('vallll', val.target);
-    console.log('text', text);
   };
   render() {
-    console.log('this.propsss',this.props)
     const { form, dispatch, submitting } = this.props;
-    console.log('this.props', this.props);
     const { getFieldDecorator, validateFieldsAndScroll, getFieldsError } = form;
     const errors = getFieldsError();
     let dataId = localStorage.getItem('dataId');

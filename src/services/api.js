@@ -146,12 +146,7 @@ export async function submitmakeEffect(params) {
     body: params,
   });
 }
-export async function fakeRegister(params) {
-  return request('/api/register', {
-    method: 'POST',
-    body: params,
-  });
-}
+
 export async function postStandingDetai(params) {
   return request('/api/service/Standing/standingDetai', {
     method: 'POST',
@@ -166,4 +161,10 @@ export async function DetailapplyList(params) {
 }
 export async function queryNotices() {
   return request('/api/notices');
+}
+export async function fakeRegister(params) {
+  return request('/api/register', {
+    method: 'POST',
+    body: params,
+  });
 }

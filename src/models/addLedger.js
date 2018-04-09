@@ -96,7 +96,7 @@ export default {
     },
     *saveOperationApply({payload},{call}) {
       let res = yield call(operationApply,payload);
-      console.log('res9999',res);
+      return res;
     },
     *getApplyTypePost({payload},{call,put}) {
       let res = yield call(getApplyType,payload);
@@ -105,16 +105,10 @@ export default {
         type:'saveSelectType',
         payload:data
       })
-      console.log('res777',res)
     },
     *getAddApply({payload},{call,put}) {
       let res = yield call(addApply,payload);
-      // let data = res && res.data && res.data.list;
-      // yield put({
-      //   type:'saveSelectType',
-      //   payload:data
-      // })
-      // console.log('res777',res)
+      return res;
     },
     *postMakeEffect({payload},{call,put}) {
       let res = yield call(submitmakeEffect,payload);

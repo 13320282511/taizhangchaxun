@@ -9,9 +9,12 @@ const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 
 @connect(({ login, loading }) => ({
   login,
-  submitting: loading.effects['login/login'],
+  // submitting: loading.effects['login/login'],
 }))
 export default class LoginPage extends Component {
+  constructor(props) {
+    super(props);
+  }
   state = {
     type: 'account',
     autoLogin: true,
@@ -52,8 +55,8 @@ export default class LoginPage extends Component {
         <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
           <Tab key="account" tab="">
             {login.status === 'error' &&
-              login.type === 'account' &&
-              !login.submitting &&
+              // login.type === 'account' &&
+              // !login.submitting &&
               this.renderMessage('账户或密码错误')}
             <UserName name="username" placeholder="请输入用户名" />
             <Password name="password" placeholder="请输入密码" />
@@ -76,7 +79,7 @@ export default class LoginPage extends Component {
               {/*忘记密码*/}
             {/*</a>*/}
           {/*</div>*/}
-          <Submit loading={submitting}>登录</Submit>
+          <Submit loading={login.submittingLogin}>登录</Submit>
           {/*<div className={styles.other}>*/}
             {/*其他登录方式*/}
             {/*<Icon className={styles.icon} type="alipay-circle" />*/}

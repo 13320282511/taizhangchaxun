@@ -2,7 +2,6 @@ import fetch from 'dva/fetch';
 import { notification } from 'antd';
 import { routerRedux } from 'dva/router';
 import store from '../index';
-import Cookies from 'js-cookie';
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -19,6 +18,10 @@ const codeMessage = {
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
+};
+const commonVariables = {
+  //判断是否在登录时候出现异常
+  loginUrl: '/api/login',
 };
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -46,7 +49,6 @@ export default function request(url, options) {
   const defaultOptions = {
     credentials: 'include',
   };
-  console.log('Cookies',Cookies.get('cookie'))
   const newOptions = { ...defaultOptions, ...options };
   if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
     if (!(newOptions.body instanceof FormData)) {
@@ -77,6 +79,20 @@ export default function request(url, options) {
     .catch(e => {
       const { dispatch } = store;
       const status = e.name;
+      if(url == commonVariables.loginUrl){
+        if (status === 403) {
+          dispatch(routerRedux.push('/errorlogin/exception/403'));
+          return;
+        }
+        if (status <= 504 && status >= 500) {
+          dispatch(routerRedux.push('/errorlogin/exception/500'));
+          return;
+        }
+        if (status >= 404 && status < 422) {
+          dispatch(routerRedux.push('/errorlogin/exception/404'));
+          return;
+        }
+      }
       if (status === 401) {
         dispatch({
           type: 'login/logout',

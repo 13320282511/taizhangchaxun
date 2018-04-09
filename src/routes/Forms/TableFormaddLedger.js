@@ -7,11 +7,6 @@ import {Form} from "antd/lib/index";
 class TableFormaddLedger extends PureComponent {
   constructor(props) {
     super(props);
-    console.log('props', props)
-    // this.state = {
-    //   data: props.value,
-    //   loading: false,
-    // };
     this.state = {
       data: [],
       loading: false,
@@ -50,7 +45,18 @@ class TableFormaddLedger extends PureComponent {
       target.editable = !target.editable;
       this.setState({data: newData});
     }
-  };
+  }
+
+  //查询类型转换
+  typeIdQuery(target) {
+    let id = 0;
+    this.props.addLedger.seletType.map((item, index) => {
+      if (item.type_name == target.id) {
+        return id = item.id;
+      }
+    })
+    return id;
+  }
 
   remove(key) {
     this.setState({
@@ -60,35 +66,37 @@ class TableFormaddLedger extends PureComponent {
     let standing_id = parseInt(localStorage.getItem('dataId'));
     let params = {
       condition: target.condition,
-      id: target.id,
+      id: this.typeIdQuery(target),
       content: target.content,
       num: target.num,
       operation: 'delete',
-      standing_id:standing_id
+      standing_id: standing_id
     };
     let that = this;
     let dispatch = this.props.dispatch;
-    let promiseAdd = new Promise(function (resolve, reject) {
-      resolve(dispatch({
-        type: 'addLedger/saveOperationApply',
-        payload: params
-      }))
-    })
-    promiseAdd.then((value)=>{
-      console.log('value',value)
-      //delete target.isNew;
-      //that.toggleEditable(e, key);
-      // that.props.onChange(that.state.data);
-      const newData = this.state.data.filter(item => item.key !== key);
-      this.setState({data: newData});
+    dispatch({
+      type: 'addLedger/saveOperationApply',
+      payload: params
+    }).then((value) => {
+      if (value && value.code && value.code == 1) {
+        const newData = this.state.data.filter(item => item.key !== key);
+        this.setState({data: newData});
+        that.setState({
+          loading: false,
+        });
+      } else {
+        that.setState({
+          loading: false,
+        });
+        message.error('删除失败');
+      }
+    }).catch((error) => {
       that.setState({
         loading: false,
       });
-
-    }).catch()
+    })
     const newData = this.state.data.filter(item => item.key !== key);
     this.setState({data: newData});
-    //this.props.onChange(newData);
   }
 
   newMember = () => {
@@ -119,7 +127,15 @@ class TableFormaddLedger extends PureComponent {
     const target = this.getRowByKey(key, newData);
     if (target) {
       if (typeof e == 'number' || typeof e == 'string') {
-        target[fieldName] = e;
+        if (fieldName == 'id') {
+          this.props.addLedger.seletType.map((item, index) => {
+            if (item.id == e) {
+              target[fieldName] = item.type_name;
+            }
+          })
+        } else {
+          target[fieldName] = e;
+        }
       } else {
         target[fieldName] = e.target.value;
       }
@@ -148,30 +164,36 @@ class TableFormaddLedger extends PureComponent {
     let standing_id = parseInt(localStorage.getItem('dataId'));
     let params = {
       condition: target.condition,
-      id: target.id,
+      id: this.typeIdQuery(target),
       content: target.content,
       num: target.num,
       operation: 'edit',
-      standing_id:standing_id
+      standing_id: standing_id
     };
     let that = this;
     let dispatch = this.props.dispatch;
-    let promiseAdd = new Promise(function (resolve, reject) {
-      resolve(dispatch({
-        type: 'addLedger/saveOperationApply',
-        payload: params
-      }))
-    })
-    promiseAdd.then((value)=>{
-      console.log('value',value)
-      delete target.isNew;
-      that.toggleEditable(e, key);
-      // that.props.onChange(that.state.data);
+    dispatch({
+      type: 'addLedger/saveOperationApply',
+      payload: params
+    }).then((value) => {
+      if (value && value.code && value.code == 1) {
+        delete target.isNew;
+        that.toggleEditable(e, key);
+        that.setState({
+          loading: false,
+        });
+      } else {
+        that.setState({
+          loading: false,
+        });
+        message.error('保存失败');
+      }
+    }).catch((error) => {
       that.setState({
         loading: false,
       });
+    })
 
-    }).catch()
   }
 
   addsaveRow(e, key) {
@@ -196,29 +218,35 @@ class TableFormaddLedger extends PureComponent {
     let standing_id = parseInt(localStorage.getItem('dataId'));
     let params = {
       condition: target.condition,
-      id: target.id,
+      id: this.typeIdQuery(target),
       content: target.content,
       num: target.num,
       standing_id: standing_id
     };
     let that = this;
     let dispatch = this.props.dispatch;
-    let promiseAdd = new Promise(function (resolve, reject) {
-      resolve(dispatch({
-        type: 'addLedger/getAddApply',
-        payload: params
-      }))
-    })
-    promiseAdd.then((value)=>{
-      console.log('value',value)
-      delete target.isNew;
-      that.toggleEditable(e, key);
-      // that.props.onChange(that.state.data);
+    dispatch({
+      type: 'addLedger/getAddApply',
+      payload: params
+    }).then((value) => {
+      if (value && value.code && value.code == 1) {
+        delete target.isNew;
+        that.toggleEditable(e, key);
+        // that.props.onChange(that.state.data);
+        that.setState({
+          loading: false,
+        });
+      } else {
+        that.setState({
+          loading: false,
+        });
+        message.error('增加失败');
+      }
+    }).catch((error) => {
       that.setState({
         loading: false,
       });
-
-    }).catch()
+    })
   }
 
   cancel(e, key) {
@@ -246,15 +274,10 @@ class TableFormaddLedger extends PureComponent {
           if (record.editable) {
             return (
               <Select
-                value={text}
+                value={text ? text : '请输入类型'}
                 showSearch
                 style={{width: 200}}
-                placeholder="Select a person"
-                optionFilterProp="children"
                 onChange={e => this.handleFieldChange(e, 'id', record.key)}
-                // onChange={handleChange}
-                // onFocus={handleFocus}
-                // onBlur={handleBlur}
                 filterOption={(input, option) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
@@ -264,17 +287,7 @@ class TableFormaddLedger extends PureComponent {
                     <Option value={item.id}>{item.type_name}</Option>
                   )
                 })}
-                {/*<Option value="jack">Jack</Option>*/}
-                {/*<Option value="lucy">Lucy</Option>*/}
-                {/*<Option value="tom">Tom</Option>*/}
               </Select>
-              // <Input
-              //   value={text}
-              //   autoFocus
-              //   onChange={e => this.handleFieldChange(e, 'name', record.key)}
-              //   // onKeyPress={e => this.handleKeyPress(e, record.key)}
-              //   placeholder="成员姓名"
-              // />
             );
           }
           return text;
@@ -292,7 +305,7 @@ class TableFormaddLedger extends PureComponent {
                 value={text}
                 onChange={e => this.handleFieldChange(e, 'content', record.key)}
                 // onKeyPress={e => this.handleKeyPress(e, record.key)}
-                placeholder="工号"
+                placeholder="查询内容"
               />
             );
           }
@@ -311,7 +324,7 @@ class TableFormaddLedger extends PureComponent {
                 value={text}
                 onChange={e => this.handleFieldChange(e, 'condition', record.key)}
                 // onKeyPress={e => this.handleKeyPress(e, record.key)}
-                placeholder="所属部门"
+                placeholder="查询条件（可为空）"
               />
             );
           }
