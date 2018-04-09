@@ -47,21 +47,21 @@ const progressColumns = [
 }))
 export default class BasicProfile extends Component {
   componentDidMount() {
-    const { dispatch,match } = this.props;
+    const { dispatch, match } = this.props;
     let urlArray = match.url.split('/');
     dispatch({
       type: 'detailListOfBooks/fetchBasic',
-      payload:{id:parseInt(urlArray[urlArray.length-1])}
+      payload: { id: parseInt(urlArray[urlArray.length - 1]) },
     });
     dispatch({
       type: 'detailListOfBooks/fetchDetailPiwen',
-      payload:{standing_id:parseInt(urlArray[urlArray.length-1])}
-    })
+      payload: { standing_id: parseInt(urlArray[urlArray.length - 1]) },
+    });
   }
 
   render() {
     const { detailListOfBooks, loading } = this.props;
-    console.log('this.props',this.props)
+    console.log('this.props', this.props);
     const { basicstandingDetail, basicProgress } = detailListOfBooks;
     let goodsData = [];
     if (basicstandingDetail.length) {
@@ -106,7 +106,11 @@ export default class BasicProfile extends Component {
       <PageHeaderLayout title="">
         <Card bordered={false}>
           <Divider style={{ marginBottom: 32 }} />
-          <DescriptionList size="large" title={basicstandingDetail.doc_name} style={{ marginBottom: 32 }}>
+          <DescriptionList
+            size="large"
+            title={basicstandingDetail.doc_name}
+            style={{ marginBottom: 32 }}
+          >
             <Description term="查询类型">{basicstandingDetail.doc_type}</Description>
             <Description term="查询员" />
             <Description term="申请人1">{basicstandingDetail.proposer_1st}</Description>
@@ -114,16 +118,16 @@ export default class BasicProfile extends Component {
             <Description term="申请人2">{basicstandingDetail.proposer_2nd}</Description>
             <Description term="联系电话">{basicstandingDetail.proposer_2nd_phone}</Description>
             <Description term="申请单位">{basicstandingDetail.proposer}</Description>
-            <Description term="申请单位类型" >{basicstandingDetail.proposer_name}</Description>
-            <Description term="承办单位" >{basicstandingDetail.org_name}</Description>
+            <Description term="申请单位类型">{basicstandingDetail.proposer_name}</Description>
+            <Description term="承办单位">{basicstandingDetail.org_name}</Description>
             <Description term="最高级别审批人">{basicstandingDetail.approver}</Description>
             <Description term="查询时间">{basicstandingDetail.create_time}</Description>
-            <Description term="结果反馈时间" >{basicstandingDetail.feedback_time}</Description>
+            <Description term="结果反馈时间">{basicstandingDetail.feedback_time}</Description>
           </DescriptionList>
           <Divider style={{ marginBottom: 32 }} />
           {/*<div className={styles.title}>批文</div>*/}
           {/*<DescriptionList size="large" title="" style={{ marginBottom: 32 }}>*/}
-            {/*<Description term="结果反馈时间" />*/}
+          {/*<Description term="结果反馈时间" />*/}
           {/*</DescriptionList>*/}
           <div className={styles.title}>查询结果</div>
           <Table

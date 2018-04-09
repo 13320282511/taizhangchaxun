@@ -5,13 +5,13 @@ const menuData = [
     name: '台账列表',
     icon: 'dashboard',
     path: 'operator/listOfBooks',
-    authority: ['admin', 'user','sjfxy'],
+    authority: ['admin', 'user', 'sjfxy'],
   },
   {
     name: '新增台账',
     icon: 'table',
     path: 'addLedger/step-form',
-    authority: ['admin', 'user','sjfxy'],
+    authority: ['admin', 'user', 'sjfxy'],
   },
 ];
 

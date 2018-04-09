@@ -245,7 +245,7 @@ export default class TableList extends PureComponent {
 
   render() {
     const { ListOfBooks, loading } = this.props;
-    const {data} = ListOfBooks;
+    const { data } = ListOfBooks;
     const { selectedRows, modalVisible } = this.state;
 
     const columns = [

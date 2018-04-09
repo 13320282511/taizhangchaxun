@@ -150,16 +150,15 @@ export default class GlobalHeader extends PureComponent {
           {/*/>*/}
           {/*</NoticeIcon>*/}
 
-
           {/*{currentUser.name ? (*/}
-            {/*<Dropdown overlay={menu}>*/}
-              {/*<span className={`${styles.action} ${styles.account}`}>*/}
-                {/*<Avatar size="small" className={styles.avatar} src={currentUser.avatar} />*/}
-                {/*<span className={styles.name}>{currentUser.name}</span>*/}
-              {/*</span>*/}
-            {/*</Dropdown>*/}
+          {/*<Dropdown overlay={menu}>*/}
+          {/*<span className={`${styles.action} ${styles.account}`}>*/}
+          {/*<Avatar size="small" className={styles.avatar} src={currentUser.avatar} />*/}
+          {/*<span className={styles.name}>{currentUser.name}</span>*/}
+          {/*</span>*/}
+          {/*</Dropdown>*/}
           {/*) : (*/}
-            {/*<Spin size="small" style={{ marginLeft: 8 }} />*/}
+          {/*<Spin size="small" style={{ marginLeft: 8 }} />*/}
           {/*)}*/}
         </div>
       </div>

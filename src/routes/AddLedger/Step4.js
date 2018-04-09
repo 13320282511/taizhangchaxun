@@ -33,14 +33,13 @@ class Step3 extends React.PureComponent {
   state = {
     width: '100%',
   };
-  addContent = (val, text) => {
-  };
+  addContent = (val, text) => {};
   render() {
     const { form, dispatch, submitting } = this.props;
     const { getFieldDecorator, validateFieldsAndScroll, getFieldsError } = form;
     const errors = getFieldsError();
     let dataId = localStorage.getItem('dataId');
-    let params = {id:parseInt(dataId)};
+    let params = { id: parseInt(dataId) };
     const validate = () => {
       validateFieldsAndScroll((error, values) => {
         if (!error) {
@@ -49,7 +48,7 @@ class Step3 extends React.PureComponent {
             type: 'addLedger/postMakeEffect',
             payload: params,
           });
-         // dispatch(routerRedux.push('/addLedger/step-form/result'));
+          // dispatch(routerRedux.push('/addLedger/step-form/result'));
         }
       });
     };
@@ -108,11 +107,11 @@ class Step3 extends React.PureComponent {
     );
   }
 }
-export default connect(({ addLedger,global, loading }) => ({
-  addLedger:addLedger,
+export default connect(({ addLedger, global, loading }) => ({
+  addLedger: addLedger,
   collapsed: addLedger.collapsed,
-  loading:loading,
-  global:global,
+  loading: loading,
+  global: global,
   submitting: loading.effects['form/submitAdvancedForm'],
 }))(Form.create()(Step3));
 // export default connect(({form}) => ({

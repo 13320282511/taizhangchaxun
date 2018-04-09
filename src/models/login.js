@@ -1,7 +1,7 @@
-import {routerRedux} from 'dva/router';
-import {fakeAccountLogin} from '../services/api';
-import {setAuthority} from '../utils/authority';
-import {reloadAuthorized} from '../utils/Authorized';
+import { routerRedux } from 'dva/router';
+import { fakeAccountLogin } from '../services/api';
+import { setAuthority } from '../utils/authority';
+import { reloadAuthorized } from '../utils/Authorized';
 
 export default {
   namespace: 'login',
@@ -24,11 +24,11 @@ export default {
     //     yield put(routerRedux.push('/'));
     //   }
     // },
-    * login({payload}, {call, put}) {
+    *login({ payload }, { call, put }) {
       yield put({
         type: 'submittingStatus',
         payload: true,
-      })
+      });
       const response = yield call(fakeAccountLogin, payload);
       yield put({
         type: 'changeLoginStatus',
@@ -38,7 +38,7 @@ export default {
       yield put({
         type: 'submittingStatus',
         payload: false,
-      })
+      });
       if (response && response.code && response.code == 1) {
         reloadAuthorized();
         yield put(routerRedux.push('/operator/listOfBooks'));
@@ -46,15 +46,15 @@ export default {
         yield put({
           type: 'statusIf',
           payload: 'error',
-        })
+        });
         return;
       }
       yield put({
         type: 'statusIf',
         payload: '',
-      })
+      });
     },
-    * logout(_, {put, select}) {
+    *logout(_, { put, select }) {
       try {
         // get location pathname
         const urlParams = new URL(window.location.href);
@@ -77,7 +77,7 @@ export default {
   },
 
   reducers: {
-    changeLoginStatus(state, {payload}) {
+    changeLoginStatus(state, { payload }) {
       setAuthority(payload.data);
       return {
         ...state,
@@ -85,17 +85,17 @@ export default {
         type: payload.type,
       };
     },
-    submittingStatus(state, {payload}) {
+    submittingStatus(state, { payload }) {
       return {
         ...state,
         submittingLogin: payload,
-      }
+      };
     },
-    statusIf(state, {payload}) {
+    statusIf(state, { payload }) {
       return {
         ...state,
         status: payload,
-      }
-    }
+      };
+    },
   },
 };

@@ -79,7 +79,7 @@ export default function request(url, options) {
     .catch(e => {
       const { dispatch } = store;
       const status = e.name;
-      if(url == commonVariables.loginUrl){
+      if (url == commonVariables.loginUrl) {
         if (status === 403) {
           dispatch(routerRedux.push('/errorlogin/exception/403'));
           return;

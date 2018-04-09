@@ -75,7 +75,7 @@ export const getRouterData = app => {
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },
-    '/errorlogin':{
+    '/errorlogin': {
       component: dynamicWrapper(app, [], () => import('../layouts/ErrorLogin')),
     },
     '/user/login': {

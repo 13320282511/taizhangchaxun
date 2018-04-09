@@ -1,4 +1,11 @@
-import { queryRule, removeRule, addRule, queryListOfBooks, getUnitName,getShortName } from '../services/api';
+import {
+  queryRule,
+  removeRule,
+  addRule,
+  queryListOfBooks,
+  getUnitName,
+  getShortName,
+} from '../services/api';
 import Cookies from 'js-cookie';
 
 export default {
@@ -9,15 +16,15 @@ export default {
       list: [],
       pagination: {},
     },
-    getUnitName:[],
+    getUnitName: [],
     getShortName: [],
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {
       let cookie = Cookies.get('user_id');
-      let org_id = {org_id:cookie};
-      let payloads = {...payload,...org_id};
+      let org_id = { org_id: cookie };
+      let payloads = { ...payload, ...org_id };
       const response = yield call(queryListOfBooks, payloads);
       let data = response && response.data;
       yield put({

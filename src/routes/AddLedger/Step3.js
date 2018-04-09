@@ -7,7 +7,7 @@ import styles from './style.less';
 
 class Step3 extends React.PureComponent {
   render() {
-    const { dispatch} = this.props;
+    const { dispatch } = this.props;
     const onFinish = () => {
       dispatch(routerRedux.push('/addLedger/step-form/info'));
     };

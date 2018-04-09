@@ -15,7 +15,7 @@ export async function queryRule(params) {
 export async function queryListOfBooks(params) {
   // return request(`/api/listOfBooks?${stringify(params)}`);
   // return request(`/api/service/Standing/standingList?${stringify(params)}`);
-  return request('/api/service/Standing/standingList',{
+  return request('/api/service/Standing/standingList', {
     method: 'POST',
     body: {
       ...params,
@@ -37,7 +37,6 @@ export async function getDocName(params) {
       method: 'post',
     },
   });
-
 }
 // export async function getShortName(params) {
 //   return request(`/api/service/Standing/getShortName?${stringify(params)}`);

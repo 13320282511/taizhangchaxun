@@ -1,20 +1,20 @@
 /**
  * Created by zj on 2018/4/7.
  */
-import { postStandingDetai,DetailapplyList} from '../services/api';
+import { postStandingDetai, DetailapplyList } from '../services/api';
 
 export default {
   namespace: 'detailListOfBooks',
 
   state: {
     basicstandingDetail: {},
-    standingDetailQuery:[],
+    standingDetailQuery: [],
   },
 
   effects: {
-    *fetchBasic({payload}, { call, put }) {
-      const response = yield call(postStandingDetai,payload);
-      let data = response && response.data
+    *fetchBasic({ payload }, { call, put }) {
+      const response = yield call(postStandingDetai, payload);
+      let data = response && response.data;
       yield put({
         type: 'show',
         payload: data,
@@ -27,8 +27,8 @@ export default {
       //   payload: response,
       // });
     },
-    *fetchDetailPiwen({payload},{call,put}) {
-      const response = yield call(DetailapplyList,payload);
+    *fetchDetailPiwen({ payload }, { call, put }) {
+      const response = yield call(DetailapplyList, payload);
       let data = response && response.data && response.data.list;
       yield put({
         type: 'queryDetail',
@@ -41,14 +41,14 @@ export default {
     show(state, { payload }) {
       return {
         ...state,
-        basicstandingDetail:{...payload},
+        basicstandingDetail: { ...payload },
       };
     },
-    queryDetail(state,{payload}) {
+    queryDetail(state, { payload }) {
       return {
         ...state,
-        standingDetailQuery:[...payload]
-      }
-    }
+        standingDetailQuery: [...payload],
+      };
+    },
   },
 };
