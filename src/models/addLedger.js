@@ -1,12 +1,18 @@
-import { routerRedux } from 'dva/router';
-import { message } from 'antd';
+import {routerRedux} from 'dva/router';
+import {message} from 'antd';
 import {
   fakeSubmitForm,
   getProposer,
   getDocName,
   addStanding,
   getShortName,
+  getUnitName,
+  operationApply,
+  getApplyType,
+  addApply,
+  submitmakeEffect,
 } from '../services/api';
+import Cookies from 'js-cookie';
 
 export default {
   namespace: 'addLedger',
@@ -21,34 +27,54 @@ export default {
     },
     select: [],
     selectShortName: [],
+    selectProposer: [],
+    seletType:[],
   },
 
   effects: {
-    *submitRegularForm({ payload }, { call }) {
-      let response = yield call(addStanding, payload);
+    * submitRegularForm({payload}, {call, put}) {
+      let cookie = Cookies.get('user_id');
+      cookie = cookie ? cookie : '';
+      let dataId = {user_id: cookie};
+      let payloads = {...payload, ...dataId};
+      let response = yield call(addStanding, payloads);
       if (response.code == 1) {
-        console.log('okoklok');
+        yield put(routerRedux.push('/addLedger/step-form/confirm'));
+        localStorage.setItem('dataId',response.data);
+      } else if (response.code == -1) {
+        message.success('提交失败');
+      } else if (response.code == -1) {
+        message.success('序号已被占用');
       }
       //message.success('提交成功');
     },
-    *querySelectUnit({ payload }, { call, put }) {
-      let response = yield call(getProposer, payload);
+    * querySelectUnit({payload}, {call, put}) {
+      // let response = yield call(getProposer, payload);
+      let response = yield call(getUnitName, payload);
       let data = response && response.data;
       yield put({
         type: 'saveSelect',
         payload: data,
       });
     },
-    *querySelectName({ payload }, { call, put }) {
+    * queryProposer({payload}, {call, put}) {
+      let response = yield call(getProposer, payload);
+      let data = response && response.data;
+      yield put({
+        type: 'saveSelectProposer',
+        payload: data,
+      });
+    },
+    * querySelectName({payload}, {call, put}) {
       let response = yield call(getDocName, payload);
-      let data = response && response.data.length>0 && response.data[0].doc_name;
-      let params = { doc_name: data };
+      let data = response && response.data && response.data.doc_name;
+      let params = {doc_name: data};
       yield put({
         type: 'saveDocName',
         payload: params,
       });
     },
-    *selectShortName({ payload }, { call, put }) {
+    * selectShortName({payload}, {call, put}) {
       let res = yield call(getShortName, payload);
       let data = res.code == 1 ? res.data : '';
       yield put({
@@ -56,7 +82,7 @@ export default {
         payload: data,
       });
     },
-    *submitStepForm({ payload }, { call, put }) {
+    * submitStepForm({payload}, {call, put}) {
       yield call(fakeSubmitForm, payload);
       yield put({
         type: 'saveStepFormData',
@@ -64,14 +90,40 @@ export default {
       });
       yield put(routerRedux.push('/form/step-form/result'));
     },
-    *submitAdvancedForm({ payload }, { call }) {
+    * submitAdvancedForm({payload}, {call}) {
       yield call(fakeSubmitForm, payload);
       message.success('提交成功');
     },
+    *saveOperationApply({payload},{call}) {
+      let res = yield call(operationApply,payload);
+      console.log('res9999',res);
+    },
+    *getApplyTypePost({payload},{call,put}) {
+      let res = yield call(getApplyType,payload);
+      let data = res && res.data && res.data.list;
+      yield put({
+        type:'saveSelectType',
+        payload:data
+      })
+      console.log('res777',res)
+    },
+    *getAddApply({payload},{call,put}) {
+      let res = yield call(addApply,payload);
+      // let data = res && res.data && res.data.list;
+      // yield put({
+      //   type:'saveSelectType',
+      //   payload:data
+      // })
+      // console.log('res777',res)
+    },
+    *postMakeEffect({payload},{call,put}) {
+      let res = yield call(submitmakeEffect,payload);
+      yield put(routerRedux.push('/addLedger/step-form/result'));
+    }
   },
 
   reducers: {
-    saveStepFormData(state, { payload }) {
+    saveStepFormData(state, {payload}) {
       return {
         ...state,
         step: {
@@ -80,13 +132,13 @@ export default {
         },
       };
     },
-    saveSelect(state, { payload }) {
+    saveSelect(state, {payload}) {
       return {
         ...state,
         select: [...payload],
       };
     },
-    saveDocName(state, { payload }) {
+    saveDocName(state, {payload}) {
       return {
         ...state,
         step: {
@@ -95,11 +147,23 @@ export default {
         },
       };
     },
-    saveSelectShortName(state, { payload }) {
+    saveSelectProposer(state, {payload}) {
+      return {
+        ...state,
+        selectProposer: [...payload],
+      };
+    },
+    saveSelectShortName(state, {payload}) {
       return {
         ...state,
         selectShortName: [...payload],
       };
+    },
+    saveSelectType(state,{payload}) {
+      return {
+        ...state,
+        seletType:[...payload],
+      }
     },
   },
 };

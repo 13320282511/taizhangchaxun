@@ -11,6 +11,18 @@ export default {
   },
 
   effects: {
+    // *login({ payload }, { call, put }) {
+    //   const response = yield call(fakeAccountLogin, payload);
+    //   yield put({
+    //     type: 'changeLoginStatus',
+    //     payload: response,
+    //   });
+    //   // Login successfully
+    //   if (response.status === 'ok') {
+    //     reloadAuthorized();
+    //     yield put(routerRedux.push('/'));
+    //   }
+    // },
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       yield put({
@@ -18,9 +30,9 @@ export default {
         payload: response,
       });
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.code == 1) {
         reloadAuthorized();
-        yield put(routerRedux.push('/'));
+        yield put(routerRedux.push('/operator/listOfBooks'));
       }
     },
     *logout(_, { put, select }) {
@@ -36,7 +48,7 @@ export default {
           type: 'changeLoginStatus',
           payload: {
             status: false,
-            currentAuthority: 'guest',
+            data: 'guest',
           },
         });
         reloadAuthorized();
@@ -47,7 +59,7 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+      setAuthority(payload.data);
       return {
         ...state,
         status: payload.status,

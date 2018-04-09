@@ -27,6 +27,10 @@ class Step1 extends React.PureComponent {
       type: 'addLedger/selectShortName',
       payload: '',
     });
+    this.props.dispatch({
+      type: 'addLedger/queryProposer',
+      payload: '',
+    });
   }
   selectValue = (val, option) => {
     let params = { org_id: val, org_short: option.props.children };
@@ -45,7 +49,7 @@ class Step1 extends React.PureComponent {
             type: 'addLedger/submitRegularForm',
             payload: values,
           });
-          dispatch(routerRedux.push('/addLedger/step-form/confirm'));
+          // dispatch(routerRedux.push('/addLedger/step-form/confirm'));
         }
       });
     };
@@ -55,26 +59,40 @@ class Step1 extends React.PureComponent {
           <Form.Item {...formItemLayout} label="查询类型:" help="">
             <div>
               {getFieldDecorator('doc_type', {
-                initialValue: '1',
+                initialValue: '一般',
               })(
                 <Radio.Group>
-                  <Radio value="1">一般</Radio>
-                  <Radio value="2">特殊</Radio>
+                  <Radio value="一般">一般</Radio>
+                  <Radio value="特殊">特殊</Radio>
                 </Radio.Group>
               )}
             </div>
           </Form.Item>
           <Form.Item {...formItemLayout} label="文号">
             <Input.Group compact>
-              <Select defaultValue="请选择" style={{ width: 100 }} onSelect={this.selectValue}>
-                {this.props.select.map((item, index) => {
-                  return (
-                    <Option value={item.id} key={index}>
-                      {item.proposer_name}
-                    </Option>
-                  );
-                })}
-              </Select>
+              {getFieldDecorator('org_id', {
+                // initialValue: data.payAccount,
+                rules: [{ required: true, message: '请选择申请单位类型' }],
+              })(
+                <Select placeholder="请选择" style={{ width: 100 }} onSelect={this.selectValue}>
+                  {this.props.select.map((item, index) => {
+                    return (
+                      <Option value={item.id} key={index}>
+                        {item.unit_org}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+              {/*<Select defaultValue="请选择" style={{ width: 100 }} onSelect={this.selectValue}>*/}
+                {/*{this.props.select.map((item, index) => {*/}
+                  {/*return (*/}
+                    {/*<Option value={item.id} key={index}>*/}
+                      {/*{item.unit_org}*/}
+                    {/*</Option>*/}
+                  {/*);*/}
+                {/*})}*/}
+              {/*</Select>*/}
               {getFieldDecorator('doc_name', {
                 initialValue: data.doc_name,
               })(<Input style={{ width: 'calc(100% - 100px)' }} disabled={true} />)}
@@ -116,7 +134,7 @@ class Step1 extends React.PureComponent {
               rules: [{ required: true, message: '请选择申请单位类型' }],
             })(
               <Select placeholder="请选择">
-                {this.props.select.map((item, index) => {
+                {this.props.selectProposer.length>0 && this.props.selectProposer.map((item, index) => {
                   return (
                     <Option value={item.id} key={index}>
                       {item.proposer_name}
@@ -129,7 +147,7 @@ class Step1 extends React.PureComponent {
           <Form.Item {...formItemLayout} label="承办单位">
             {getFieldDecorator('undertaker_id', {
               // initialValue: data.payAccount,
-              rules: [{ required: true, message: '请选择申请单位类型' }],
+              rules: [{ required: true, message: '请选择承办单位' }],
             })(
               <Select placeholder="请选择">
                 {this.props.selectShortName.map((item, index) => {
@@ -174,4 +192,5 @@ export default connect(({ addLedger }) => ({
   data: addLedger.step,
   select: addLedger.select,
   selectShortName: addLedger.selectShortName,
+  selectProposer:addLedger.selectProposer,
 }))(Step1);

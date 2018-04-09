@@ -10,34 +10,34 @@ const { Description } = DescriptionList;
 const progressColumns = [
   {
     title: '类型',
-    dataIndex: 'time',
-    key: 'time',
+    dataIndex: 'type',
+    key: 'type',
   },
   {
-    title: '当前进度',
-    dataIndex: 'rate',
-    key: 'rate',
+    title: '查询内容',
+    dataIndex: 'content',
+    key: 'content',
+  },
+  // {
+  //   title: '状态',
+  //   dataIndex: 'status',
+  //   key: 'status',
+  //   render: text =>
+  //     text === 'success' ? (
+  //       <Badge status="success" text="成功" />
+  //     ) : (
+  //       <Badge status="processing" text="进行中" />
+  //     ),
+  // },
+  {
+    title: '查询条件',
+    dataIndex: 'condition',
+    key: 'condition',
   },
   {
-    title: '状态',
-    dataIndex: 'status',
-    key: 'status',
-    render: text =>
-      text === 'success' ? (
-        <Badge status="success" text="成功" />
-      ) : (
-        <Badge status="processing" text="进行中" />
-      ),
-  },
-  {
-    title: '操作员ID',
-    dataIndex: 'operator',
-    key: 'operator',
-  },
-  {
-    title: '耗时',
-    dataIndex: 'cost',
-    key: 'cost',
+    title: '数量',
+    dataIndex: 'num',
+    key: 'num',
   },
 ];
 
@@ -51,8 +51,12 @@ export default class BasicProfile extends Component {
     let urlArray = match.url.split('/');
     dispatch({
       type: 'detailListOfBooks/fetchBasic',
-      payload:{id:urlArray[urlArray.length-1]}
+      payload:{id:parseInt(urlArray[urlArray.length-1])}
     });
+    dispatch({
+      type: 'detailListOfBooks/fetchDetailPiwen',
+      payload:{standing_id:parseInt(urlArray[urlArray.length-1])}
+    })
   }
 
   render() {
@@ -102,7 +106,7 @@ export default class BasicProfile extends Component {
       <PageHeaderLayout title="">
         <Card bordered={false}>
           <Divider style={{ marginBottom: 32 }} />
-          <DescriptionList size="large" title="文号：简称一201801" style={{ marginBottom: 32 }}>
+          <DescriptionList size="large" title={basicstandingDetail.doc_name} style={{ marginBottom: 32 }}>
             <Description term="查询类型">{basicstandingDetail.doc_type}</Description>
             <Description term="查询员" />
             <Description term="申请人1">{basicstandingDetail.proposer_1st}</Description>
@@ -110,23 +114,23 @@ export default class BasicProfile extends Component {
             <Description term="申请人2">{basicstandingDetail.proposer_2nd}</Description>
             <Description term="联系电话">{basicstandingDetail.proposer_2nd_phone}</Description>
             <Description term="申请单位">{basicstandingDetail.proposer}</Description>
-            <Description term="申请单位类型" />
-            <Description term="承办单位" />
+            <Description term="申请单位类型" >{basicstandingDetail.proposer_name}</Description>
+            <Description term="承办单位" >{basicstandingDetail.org_name}</Description>
             <Description term="最高级别审批人">{basicstandingDetail.approver}</Description>
             <Description term="查询时间">{basicstandingDetail.create_time}</Description>
-            <Description term="结果反馈时间" />
+            <Description term="结果反馈时间" >{basicstandingDetail.feedback_time}</Description>
           </DescriptionList>
           <Divider style={{ marginBottom: 32 }} />
-          <div className={styles.title}>批文</div>
-          <DescriptionList size="large" title="" style={{ marginBottom: 32 }}>
-            <Description term="结果反馈时间" />
-          </DescriptionList>
+          {/*<div className={styles.title}>批文</div>*/}
+          {/*<DescriptionList size="large" title="" style={{ marginBottom: 32 }}>*/}
+            {/*<Description term="结果反馈时间" />*/}
+          {/*</DescriptionList>*/}
           <div className={styles.title}>查询结果</div>
           <Table
             style={{ marginBottom: 16 }}
             pagination={false}
             loading={loading}
-            dataSource={basicProgress}
+            dataSource={this.props.detailListOfBooks.standingDetailQuery}
             columns={progressColumns}
           />
         </Card>

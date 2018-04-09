@@ -7,27 +7,27 @@ import Result from 'components/Result';
 import FooterToolbar from 'components/FooterToolbar';
 import styles from './style.less';
 const tableData = [
-  {
-    key: '1',
-    workId: '00001',
-    name: 'John Brown',
-    number: '1',
-    department: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    workId: '00002',
-    name: 'Jim Green',
-    number: '77',
-    department: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    workId: '00003',
-    name: 'Joe Black',
-    number: '88',
-    department: 'Sidney No. 1 Lake Park',
-  },
+  // {
+  //   key:'1',
+  //   id: '1',
+  //   content: '00001',
+  //   condition: 'John Brown',
+  //   num: '1',
+  // },
+  // {
+  //   key:'2',
+  //   id: '2',
+  //   content: '00001',
+  //   condition: 'John Brown',
+  //   num: '1',
+  // },
+  // {
+  //   key:'4',
+  //   id: '3',
+  //   content: '00001',
+  //   condition: 'John Brown',
+  //   num: '1',
+  // },
 ];
 class Step3 extends React.PureComponent {
   state = {
@@ -43,15 +43,17 @@ class Step3 extends React.PureComponent {
     console.log('this.props', this.props);
     const { getFieldDecorator, validateFieldsAndScroll, getFieldsError } = form;
     const errors = getFieldsError();
+    let dataId = localStorage.getItem('dataId');
+    let params = {id:parseInt(dataId)};
     const validate = () => {
       validateFieldsAndScroll((error, values) => {
         if (!error) {
           // submit the values
           dispatch({
-            type: 'form/submitAdvancedForm',
-            payload: values,
+            type: 'addLedger/postMakeEffect',
+            payload: params,
           });
-          dispatch(routerRedux.push('/addLedger/step-form/result'));
+         // dispatch(routerRedux.push('/addLedger/step-form/result'));
         }
       });
     };

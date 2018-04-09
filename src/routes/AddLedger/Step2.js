@@ -59,11 +59,12 @@ class Step2 extends React.PureComponent {
       <Form layout="horizontal" className={styles.stepForm}>
         <div className="clearfix">
           <Upload
-            action="//jsonplaceholder.typicode.com/posts/"
+            action="/api/service/upload/upload"
             listType="picture-card"
             fileList={fileList}
             onPreview={this.handlePreview}
             onChange={this.handleChange}
+            withCredentials={true}
           >
             {fileList.length >= 3 ? null : uploadButton}
           </Upload>

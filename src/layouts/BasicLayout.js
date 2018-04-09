@@ -111,9 +111,9 @@ class BasicLayout extends React.PureComponent {
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
-    let title = 'Ant Design Pro';
+    let title = '慧耀科技';
     if (routerData[pathname] && routerData[pathname].name) {
-      title = `${routerData[pathname].name} - Ant Design Pro`;
+      title = `${routerData[pathname].name} - 慧耀科技`;
     }
     return title;
   }
@@ -251,7 +251,7 @@ class BasicLayout extends React.PureComponent {
               // ]}
               copyright={
                 <Fragment>
-                  Copyright <Icon type="copyright" /> 慧耀科技
+                  Copyright <Icon type="copyright" /> 台帐查询系统
                 </Fragment>
               }
             />

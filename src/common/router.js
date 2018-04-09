@@ -72,6 +72,12 @@ export const getRouterData = app => {
     '/': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
+    '/user': {
+      component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
+    },
+    '/user/login': {
+      component: dynamicWrapper(app, ['login'], () => import('../routes/User/Login')),
+    },
     '/operator/listOfBooks': {
       component: dynamicWrapper(app, ['ListOfBooks'], () =>
         import('../routes/Operator/ListOfBooks')
@@ -155,35 +161,29 @@ export const getRouterData = app => {
     // '/result/success': {
     //   component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
     // },
-    // '/result/fail': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Result/Error')),
-    // },
-    // '/exception/403': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
-    // },
-    // '/exception/404': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
-    // },
-    // '/exception/500': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Exception/500')),
-    // },
-    // '/exception/trigger': {
-    //   component: dynamicWrapper(app, ['error'], () =>
-    //     import('../routes/Exception/triggerException')
-    //   ),
-    // },
-    '/user': {
-      component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
+    '/result/fail': {
+      component: dynamicWrapper(app, [], () => import('../routes/Result/Error')),
     },
-    '/user/login': {
-      component: dynamicWrapper(app, ['login'], () => import('../routes/User/Login')),
+    '/exception/403': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
     },
-    '/user/register': {
-      component: dynamicWrapper(app, ['register'], () => import('../routes/User/Register')),
+    '/exception/404': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
     },
-    '/user/register-result': {
-      component: dynamicWrapper(app, [], () => import('../routes/User/RegisterResult')),
+    '/exception/500': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/500')),
     },
+    '/exception/trigger': {
+      component: dynamicWrapper(app, ['error'], () =>
+        import('../routes/Exception/triggerException')
+      ),
+    },
+    // '/user/register': {
+    //   component: dynamicWrapper(app, ['register'], () => import('../routes/User/Register')),
+    // },
+    // '/user/register-result': {
+    //   component: dynamicWrapper(app, [], () => import('../routes/User/RegisterResult')),
+    // },
     // '/user/:id': {
     //   component: dynamicWrapper(app, [], () => import('../routes/User/SomeComponent')),
     // },

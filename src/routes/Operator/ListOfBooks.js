@@ -75,10 +75,10 @@ export default class TableList extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'ListOfBooks/queryChengban',
+      type: 'ListOfBooks/fetch',
     });
     dispatch({
-      type: 'ListOfBooks/fetch',
+      type: 'ListOfBooks/queryChengban',
     });
   }
 
@@ -93,8 +93,8 @@ export default class TableList extends PureComponent {
     }, {});
 
     const params = {
-      currentPage: pagination.current,
-      pageSize: pagination.pageSize,
+      page: pagination.current,
+      page_size: pagination.pageSize,
       ...formValues,
       ...filters,
     };
@@ -207,11 +207,11 @@ export default class TableList extends PureComponent {
             <FormItem label="承办单位：">
               {getFieldDecorator('undertaker_unit')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
-                  {ListOfBooks.getUnitName.length > 0
-                    ? ListOfBooks.getUnitName.map((item, index) => {
+                  {ListOfBooks.getShortName.length > 0
+                    ? ListOfBooks.getShortName.map((item, index) => {
                         return (
                           <Option value={item.id} key={index}>
-                            {item.proposer_name}
+                            {item.org_short}
                           </Option>
                         );
                       })
@@ -244,7 +244,8 @@ export default class TableList extends PureComponent {
   }
 
   render() {
-    const { ListOfBooks: { data }, loading } = this.props;
+    const { ListOfBooks, loading } = this.props;
+    const {data} = ListOfBooks;
     const { selectedRows, modalVisible } = this.state;
 
     const columns = [
@@ -258,16 +259,16 @@ export default class TableList extends PureComponent {
       },
       {
         title: '申请单位',
-        dataIndex: 'proposer_unit',
+        dataIndex: 'proposer',
         sorter: false,
         align: 'right',
-        render: val => `${val} 万`,
-        // mark to display a total number
+        // render: val => `${val} 万`,
+        // // mark to display a total number
         needTotal: true,
       },
       {
         title: '承办单位',
-        dataIndex: 'undertaker_unit',
+        dataIndex: 'org_short',
         sorter: false,
         align: 'right',
       },

@@ -1,4 +1,5 @@
-import { queryRule, removeRule, addRule, queryListOfBooks, getUnitName } from '../services/api';
+import { queryRule, removeRule, addRule, queryListOfBooks, getUnitName,getShortName } from '../services/api';
+import Cookies from 'js-cookie';
 
 export default {
   namespace: 'ListOfBooks',
@@ -8,23 +9,36 @@ export default {
       list: [],
       pagination: {},
     },
-    getUnitName: [],
+    getUnitName:[],
+    getShortName: [],
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryListOfBooks, payload);
+      let cookie = Cookies.get('user_id');
+      let org_id = {org_id:cookie};
+      let payloads = {...payload,...org_id};
+      const response = yield call(queryListOfBooks, payloads);
+      let data = response && response.data;
       yield put({
         type: 'save',
-        payload: response,
+        payload: data,
       });
     },
+    // *queryChengban({ payload }, { call, put }) {
+    //   const response = yield call(getUnitName, payload);
+    //   console.log('responese', response);
+    //   yield put({
+    //     type: 'getUnitName',
+    //     payload: response.data,
+    //   });
+    // },
     *queryChengban({ payload }, { call, put }) {
-      const response = yield call(getUnitName, payload);
-      console.log('responese', response);
+      const response = yield call(getShortName, payload);
+      let data = response && response.data;
       yield put({
-        type: 'getUnitName',
-        payload: response.data,
+        type: 'getShortNameSave',
+        payload: data,
       });
     },
     *add({ payload, callback }, { call, put }) {
@@ -52,10 +66,16 @@ export default {
         data: action.payload,
       };
     },
-    getUnitName(state, action) {
+    getUnitNameSave(state, action) {
       return {
         ...state,
         getUnitName: action.payload,
+      };
+    },
+    getShortNameSave(state, action) {
+      return {
+        ...state,
+        getShortName: action.payload,
       };
     },
   },
