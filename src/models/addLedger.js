@@ -11,6 +11,7 @@ import {
   getApplyType,
   addApply,
   submitmakeEffect,
+  uploadImg,
 } from '../services/api';
 import Cookies from 'js-cookie';
 
@@ -114,6 +115,10 @@ export default {
       let res = yield call(submitmakeEffect, payload);
       yield put(routerRedux.push('/addLedger/step-form/result'));
     },
+    *uploadImg({payload},{call,put}) {
+      let res = yield call(uploadImg,payload);
+      return res;
+    }
   },
 
   reducers: {

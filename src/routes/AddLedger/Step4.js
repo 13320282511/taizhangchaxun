@@ -29,6 +29,12 @@ const tableData = [
   //   num: '1',
   // },
 ];
+const leaderColor = {
+  departmentLevel:'#000',
+  hallLevel:'#666',
+  ministryLevel:'red'
+};
+
 class Step3 extends React.PureComponent {
   state = {
     width: '100%',
@@ -92,10 +98,15 @@ class Step3 extends React.PureComponent {
     };
     return (
       <div>
+        <div className={styles["class-leaver-wrap"]}>
+          <div className={styles["class-leaver"]}><h1 style={{backgroundColor:leaderColor['departmentLevel']}}></h1><span style={{color:leaderColor['departmentLevel']}}>处级</span></div>
+          <div className={styles["class-leaver"]}><h1 style={{backgroundColor:leaderColor['hallLevel']}}></h1><span style={{color:leaderColor['hallLevel']}}>厅级</span></div>
+          <div className={styles["class-leaver"]}><h1 style={{backgroundColor:leaderColor['ministryLevel']}}></h1><span style={{color:leaderColor['ministryLevel']}}>部级及以上</span></div>
+        </div>
         <Card title="成员管理" bordered={false}>
           {getFieldDecorator('members', {
             initialValue: tableData,
-          })(<TableFormaddLedger />)}
+          })(<TableFormaddLedger leaderColor={leaderColor}/>)}
         </Card>
         <FooterToolbar style={{ width: this.state.width }}>
           {getErrorInfo()}

@@ -158,6 +158,12 @@ export async function DetailapplyList(params) {
     body: params,
   });
 }
+export async function uploadImg(params) {
+  return request('/api/service/Standing/addApproval', {
+    method: 'POST',
+    body: params,
+  });
+}
 export async function queryNotices() {
   return request('/api/notices');
 }
@@ -167,3 +173,4 @@ export async function fakeRegister(params) {
     body: params,
   });
 }
+
