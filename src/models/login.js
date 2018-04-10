@@ -67,10 +67,11 @@ export default {
           type: 'changeLoginStatus',
           payload: {
             status: false,
-            data: 'guest',
+            data: '',
+            type:'',
           },
         });
-        reloadAuthorized();
+        setAuthority('');
         yield put(routerRedux.push('/user/login'));
       }
     },

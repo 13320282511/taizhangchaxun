@@ -290,6 +290,7 @@ export default class TableList extends PureComponent {
           return (
             <Fragment>
               <Link to={`/operator/detailList/${val.id}`}>详情</Link>
+              <Link to={`/operator/uploadResult/${val.id}`}>上传结果</Link>
             </Fragment>
           );
         },

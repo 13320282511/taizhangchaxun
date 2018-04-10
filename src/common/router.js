@@ -92,6 +92,12 @@ export const getRouterData = app => {
         import('../routes/Operator/DetailList')
       ),
     },
+    '/operator/uploadResult/:id': {
+      name: '台账详情',
+      component: dynamicWrapper(app, ['detailListOfBooks'], () =>
+        import('../routes/UploadResult/UploadResult')
+      ),
+    },
     '/addLedger/step-form': {
       component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/index')),
     },
