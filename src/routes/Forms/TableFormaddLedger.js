@@ -3,9 +3,7 @@ import { Table, Button, Input, message, Popconfirm, Divider, InputNumber, Select
 import styles from './style.less';
 import { connect } from 'dva';
 import { Form } from 'antd/lib/index';
-const returnData = [
-  45643,34343434,123,1234
-];
+const returnData = [45643, 34343434, 123, 1234];
 class TableFormaddLedger extends PureComponent {
   constructor(props) {
     super(props);
@@ -35,29 +33,29 @@ class TableFormaddLedger extends PureComponent {
 
   index = 0;
   cacheOriginData = {};
-  toggleEditable = (e, key,boolean) => {
+  toggleEditable = (e, key, boolean) => {
     e.preventDefault();
     const newData = this.state.data.map(item => ({ ...item }));
     const target = this.getRowByKey(key, newData);
     let contentData = target.content;
-    function showhtml(contentData){
-      let html = {__html: contentData};
-      return <div dangerouslySetInnerHTML={html} style={{color:'#000'}}></div>;
+    function showhtml(contentData) {
+      let html = { __html: contentData };
+      return <div dangerouslySetInnerHTML={html} style={{ color: '#000' }} />;
     }
-    if(boolean == 'true') {
+    if (boolean == 'true') {
       let arrayData = contentData.split(',');
-      for(let i =0;i<arrayData.length;i++) {
-        for(let j=0;j<returnData.length;j++) {
-          if(arrayData[i] == returnData[j]) {
-            arrayData[i]= `<span style="color:red">${arrayData[i]}</span>`
+      for (let i = 0; i < arrayData.length; i++) {
+        for (let j = 0; j < returnData.length; j++) {
+          if (arrayData[i] == returnData[j]) {
+            arrayData[i] = `<span style="color:red">${arrayData[i]}</span>`;
           }
         }
       }
       let stringData = arrayData.join(',');
       target.content = showhtml(stringData);
-    }else{
+    } else {
       let dataHtml = target.content.props.dangerouslySetInnerHTML.__html;
-      let clearHtml=dataHtml.replace(/<\/?.+?>/g,"");
+      let clearHtml = dataHtml.replace(/<\/?.+?>/g, '');
       target.content = clearHtml;
     }
     if (target) {
@@ -196,8 +194,8 @@ class TableFormaddLedger extends PureComponent {
       operation: 'edit',
       standing_id: standing_id,
     };
-    console.log('e',e)
-    console.log('key',key)
+    console.log('e', e);
+    console.log('key', key);
     let that = this;
     let dispatch = this.props.dispatch;
     dispatch({
@@ -208,7 +206,7 @@ class TableFormaddLedger extends PureComponent {
         if (value && value.code && value.code == 1) {
           delete target.isNew;
           // const dataReturn
-          that.toggleEditable(e, key,'true',);
+          that.toggleEditable(e, key, 'true');
           that.setState({
             loading: false,
           });
@@ -262,7 +260,7 @@ class TableFormaddLedger extends PureComponent {
       .then(value => {
         if (value && value.code && value.code == 1) {
           delete target.isNew;
-          that.toggleEditable(e, key,'true');
+          that.toggleEditable(e, key, 'true');
           // that.props.onChange(that.state.data);
           that.setState({
             loading: false,

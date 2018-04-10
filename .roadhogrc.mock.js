@@ -71,7 +71,7 @@ const proxy = {
   'POST /api/service/Standing/getUnitName': (req, res) => {
     res.send(getUnitName);
   },
-  'POST /api/service/Standing/standingDetail': (req,res) => {
+  'POST /api/service/Standing/standingDetail': (req, res) => {
     res.send(getProfileBasicData);
   },
   'POST /api/rule': {
@@ -98,11 +98,11 @@ const proxy = {
     if (password === '123456' && username === 'sjfxy') {
       res.setHeader('Cookie', '*');
       res.send({
-        code:1,
+        code: 1,
         status: 'ok',
         type,
         currentAuthority: 'sjfxy',
-        data:'sjfxy',
+        data: 'sjfxy',
       });
       return;
     }

@@ -1,11 +1,10 @@
-import React, {PureComponent} from 'react';
-import {Upload, Icon, message,Butto,Button,Divider} from 'antd';
+import React, { PureComponent } from 'react';
+import { Upload, Icon, message, Butto, Button, Divider } from 'antd';
 // import fetch from 'dva/fetch';
-import {connect} from 'dva';
+import { connect } from 'dva';
 import request from '../../utils/request';
 
 const Dragger = Upload.Dragger;
-
 
 export default class UploadResult extends PureComponent {
   constructor(props) {
@@ -13,13 +12,13 @@ export default class UploadResult extends PureComponent {
     this.state = {
       fileList: [],
       uploading: false,
-    }
+    };
   }
 
   handleUpload = () => {
-    const {fileList} = this.state;
+    const { fileList } = this.state;
     const formData = new FormData();
-    fileList.forEach((file) => {
+    fileList.forEach(file => {
       formData.append('files[]', file);
     });
 
@@ -29,18 +28,20 @@ export default class UploadResult extends PureComponent {
 
     // You can use any AJAX library you like
     let that = this;
-    request('//jsonplaceholder.typicode.com/posts/',{method: 'post', body: formData}).then((value)=>{
-      that.setState({
-        fileList: [],
-        uploading: false,
+    request('//jsonplaceholder.typicode.com/posts/', { method: 'post', body: formData })
+      .then(value => {
+        that.setState({
+          fileList: [],
+          uploading: false,
+        });
+        message.success('upload successfully.');
+      })
+      .catch(error => {
+        that.setState({
+          uploading: false,
+        });
+        message.error('upload failed.');
       });
-      message.success('upload successfully.');
-    }).catch((error)=>{
-      that.setState({
-        uploading: false,
-      });
-      message.error('upload failed.');
-    })
     // reqwest({
     //   url: '//jsonplaceholder.typicode.com/posts/',
     //   method: 'post',
@@ -60,14 +61,14 @@ export default class UploadResult extends PureComponent {
     //     message.error('upload failed.');
     //   },
     // });
-  }
+  };
 
   render() {
-    const {uploading} = this.state;
+    const { uploading } = this.state;
     const props = {
       action: '//jsonplaceholder.typicode.com/posts/',
-      onRemove: (file) => {
-        this.setState(({fileList}) => {
+      onRemove: file => {
+        this.setState(({ fileList }) => {
           const index = fileList.indexOf(file);
           const newFileList = fileList.slice();
           newFileList.splice(index, 1);
@@ -76,8 +77,8 @@ export default class UploadResult extends PureComponent {
           };
         });
       },
-      beforeUpload: (file) => {
-        this.setState(({fileList}) => ({
+      beforeUpload: file => {
+        this.setState(({ fileList }) => ({
           fileList: [...fileList, file],
         }));
         return false;
@@ -90,7 +91,7 @@ export default class UploadResult extends PureComponent {
           <Upload {...props}>
             <label>上传回执单</label>
             <Button>
-              <Icon type="upload"/> Select File
+              <Icon type="upload" /> Select File
             </Button>
           </Upload>
           <Button
@@ -103,12 +104,12 @@ export default class UploadResult extends PureComponent {
             {uploading ? 'Uploading' : 'Start Upload'}
           </Button>
         </div>
-        <Divider></Divider>
+        <Divider />
         <div>
           <Upload {...props}>
             <label>上传回执单</label>
             <Button>
-              <Icon type="upload"/> Select File
+              <Icon type="upload" /> Select File
             </Button>
           </Upload>
           <Button
@@ -122,6 +123,6 @@ export default class UploadResult extends PureComponent {
           </Button>
         </div>
       </div>
-    )
-  };
+    );
+  }
 }

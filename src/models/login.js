@@ -68,7 +68,7 @@ export default {
           payload: {
             status: false,
             data: '',
-            type:'',
+            type: '',
           },
         });
         setAuthority('');
