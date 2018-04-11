@@ -45,7 +45,6 @@ class Step2 extends React.PureComponent {
 
   render() {
     const {dispatch, submitting,addLeader} = this.props;
-    console.log('this.props',this.props)
     const onPrev = () => {
       dispatch(routerRedux.push('/addLedger/step-form/info'));
     };

@@ -1,128 +1,117 @@
 import React, { PureComponent } from 'react';
-import { Upload, Icon, message, Butto, Button, Divider } from 'antd';
+import { Upload, Icon, message, Butto, Button, Divider,Modal } from 'antd';
 // import fetch from 'dva/fetch';
 import { connect } from 'dva';
-import request from '../../utils/request';
-
+import cookies from 'js-cookie';
 const Dragger = Upload.Dragger;
+import {routerRedux} from 'dva/router';
 
-export default class UploadResult extends PureComponent {
+
+class UploadResult extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      previewVisible: false,
+      previewImage: '',
       fileList: [],
-      uploading: false,
+      fileListResult: [],
+      fileUpUrl:[],
     };
   }
+  handleCancel = () => this.setState({previewVisible: false})
 
-  handleUpload = () => {
-    const { fileList } = this.state;
-    const formData = new FormData();
-    fileList.forEach(file => {
-      formData.append('files[]', file);
-    });
-
+  handlePreview = file => {
     this.setState({
-      uploading: true,
-    });
-
-    // You can use any AJAX library you like
-    let that = this;
-    request('//jsonplaceholder.typicode.com/posts/', { method: 'post', body: formData })
-      .then(value => {
-        that.setState({
-          fileList: [],
-          uploading: false,
-        });
-        message.success('upload successfully.');
-      })
-      .catch(error => {
-        that.setState({
-          uploading: false,
-        });
-        message.error('upload failed.');
-      });
-    // reqwest({
-    //   url: '//jsonplaceholder.typicode.com/posts/',
-    //   method: 'post',
-    //   processData: false,
-    //   data: formData,
-    //   success: () => {
-    //     this.setState({
-    //       fileList: [],
-    //       uploading: false,
-    //     });
-    //     message.success('upload successfully.');
-    //   },
-    //   error: () => {
-    //     this.setState({
-    //       uploading: false,
-    //     });
-    //     message.error('upload failed.');
-    //   },
-    // });
-  };
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
+    })
+  }
+  handleChange = ({fileList}) => {
+    this.setState({fileList})
+  }
+  handleChangeResult = ({fileList}) => {
+    this.setState({fileListResult:fileList})
+  }
 
   render() {
-    const { uploading } = this.state;
-    const props = {
-      action: '//jsonplaceholder.typicode.com/posts/',
-      onRemove: file => {
-        this.setState(({ fileList }) => {
-          const index = fileList.indexOf(file);
-          const newFileList = fileList.slice();
-          newFileList.splice(index, 1);
-          return {
-            fileList: newFileList,
-          };
-        });
-      },
-      beforeUpload: file => {
-        this.setState(({ fileList }) => ({
-          fileList: [...fileList, file],
-        }));
-        return false;
-      },
-      fileList: this.state.fileList,
+    const {dispatch, submitting,ListOfBooks} = this.props;
+    const onValidateForm = () => {
+      let urlNumber = [];
+      let urlNumberResult = [];
+      for(let i=0;i<this.state.fileList.length;i++){
+        urlNumber.push(this.state.fileList[i].response.url);
+      }
+      for(let i=0;i<this.state.fileListResult.length;i++){
+        urlNumberResult.push(this.state.fileListResult[i].response.url);
+      }
+      let dataId = cookies.get('user_id');
+      let params = {feedbackFile:{fileId:2,url:urlNumberResult},feedbackUpload:{fileId:1,url:urlNumber},id:parseInt(dataId)};
+
+      this.props.dispatch({
+        type:'ListOfBooks/uploadFile',
+        payload: params,
+      }).then((value)=>{
+        if(value.code == 1) {
+          message.success("上传成功");
+         dispatch(routerRedux.push('/operator/listOfBooks'));
+        }else{
+          message.error("上传失败");
+        }
+      }).catch((error)=>{
+        message.error("上传失败");
+      })
     };
+    const {previewVisible, previewImage, fileList,fileListResult} = this.state;
+    const uploadButton = (
+      <div>
+        <Icon type="plus"/>
+        <div className="ant-upload-text">Upload</div>
+      </div>
+    );
     return (
       <div>
         <div>
-          <Upload {...props}>
-            <label>上传回执单</label>
-            <Button>
-              <Icon type="upload" /> Select File
-            </Button>
-          </Upload>
-          <Button
-            className="upload-demo-start"
-            type="primary"
-            onClick={this.handleUpload}
-            disabled={this.state.fileList.length === 0}
-            loading={uploading}
+          <div>上传回执单</div>
+          <Upload
+            action="/api/service/upload/upload"
+            listType="picture-card"
+            // fileList={fileList}
+            onPreview={this.handlePreview}
+            onChange={this.handleChange}
+            withCredentials={true}
           >
-            {uploading ? 'Uploading' : 'Start Upload'}
-          </Button>
+            {fileList.length >= 20 ? null : uploadButton}
+          </Upload>
+          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+            <img alt="example" style={{width: '100%'}} src={previewImage}/>
+          </Modal>
         </div>
         <Divider />
         <div>
-          <Upload {...props}>
-            <label>上传回执单</label>
-            <Button>
-              <Icon type="upload" /> Select File
-            </Button>
-          </Upload>
-          <Button
-            className="upload-demo-start"
-            type="primary"
-            onClick={this.handleUpload}
-            disabled={this.state.fileList.length === 0}
-            loading={uploading}
+          <div>上传反馈结果</div>
+          <Upload
+            action="/api/service/upload/upload"
+            listType="picture-card"
+            fileList={fileListResult}
+            onPreview={this.handlePreview}
+            onChange={this.handleChangeResult}
+            withCredentials={true}
           >
-            {uploading ? 'Uploading' : 'Start Upload'}
+            {fileListResult.length >= 20 ? null : uploadButton}
+          </Upload>
+          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+            <img alt="example" style={{width: '100%'}} src={previewImage}/>
+          </Modal>
+        </div>
+        <div>
+          <Button type="primary" onClick={onValidateForm}>
+            保存并发送结果
           </Button>
         </div>
       </div>
     );
   }
 }
+export default connect(({ListOfBooks})=>({
+  ListOfBooks,
+}))(UploadResult);

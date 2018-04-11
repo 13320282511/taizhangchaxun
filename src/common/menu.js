@@ -5,7 +5,7 @@ const menuData = [
     name: '台账列表',
     icon: 'dashboard',
     path: 'operator/listOfBooks',
-    authority: ['admin', 'user', 'sjfxy','cxy'],
+    authority: ['admin', 'user', 'sjfxy','cxy','auditor','sqyh','dzqzy'],
   },
   {
     name: '新增台账',

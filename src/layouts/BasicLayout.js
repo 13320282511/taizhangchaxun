@@ -15,7 +15,7 @@ import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.svg';
-
+import cookies from 'js-cookie';
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute, check } = Authorized;
 
@@ -104,8 +104,16 @@ class BasicLayout extends React.PureComponent {
         isMobile: mobile,
       });
     });
+    let userId = cookies.get('user_id');
+    let params = {id:parseInt(userId)}
+    // if(!userId){
+    //   this.props.dispatch(routerRedux.push('/'))
+    // }else{
+    //   this.props.dispatch(routerRedux.push('/operator/listOfBooks'));
+    // }
     this.props.dispatch({
       type: 'user/fetchCurrent',
+      payload:params
     });
   }
   getPageTitle() {

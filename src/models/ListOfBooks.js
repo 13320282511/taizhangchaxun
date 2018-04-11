@@ -5,6 +5,7 @@ import {
   queryListOfBooks,
   getUnitName,
   getShortName,
+  uploadFile,
 } from '../services/api';
 import Cookies from 'js-cookie';
 
@@ -64,6 +65,10 @@ export default {
       });
       if (callback) callback();
     },
+    *uploadFile({payload},{call,put}){
+      const res = yield call(uploadFile,payload);
+      return res;
+    }
   },
 
   reducers: {

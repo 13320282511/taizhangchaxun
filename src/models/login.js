@@ -2,6 +2,7 @@ import { routerRedux } from 'dva/router';
 import { fakeAccountLogin } from '../services/api';
 import { setAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
+import cookies from 'js-cookie';
 
 export default {
   namespace: 'login',
@@ -12,18 +13,6 @@ export default {
   },
 
   effects: {
-    // *login({ payload }, { call, put }) {
-    //   const response = yield call(fakeAccountLogin, payload);
-    //   yield put({
-    //     type: 'changeLoginStatus',
-    //     payload: response,
-    //   });
-    //   // Login successfully
-    //   if (response.status === 'ok') {
-    //     reloadAuthorized();
-    //     yield put(routerRedux.push('/'));
-    //   }
-    // },
     *login({ payload }, { call, put }) {
       yield put({
         type: 'submittingStatus',
@@ -62,6 +51,11 @@ export default {
         // add the parameters in the url
         urlParams.searchParams.set('redirect', pathname);
         window.history.replaceState(null, 'login', urlParams.href);
+        localStorage.clear();
+        let cookieData = cookies.get();
+        for(let i in cookieData){
+          cookies.set(i,'');
+        }
       } finally {
         yield put({
           type: 'changeLoginStatus',

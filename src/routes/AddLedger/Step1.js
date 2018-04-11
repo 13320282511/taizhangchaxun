@@ -4,7 +4,7 @@ import { Form, Input, Button, Select, Divider, Radio } from 'antd';
 import { routerRedux } from 'dva/router';
 import styles from './style.less';
 
-const { Option } = Select;
+const { Option,OptGroup} = Select;
 
 const formItemLayout = {
   labelCol: {
@@ -31,6 +31,13 @@ class Step1 extends React.PureComponent {
       type: 'addLedger/queryProposer',
       payload: '',
     });
+  }
+  handleChangeJilian=(val)=>{
+    console.log('val',val)
+  }
+  selectJilian = (val,key)=>{
+    // console.log('key',key);
+    // console.log('valuee',val)
   }
   selectValue = (val, option) => {
     let params = { org_id: val, org_short: option.props.children };
@@ -107,8 +114,9 @@ class Step1 extends React.PureComponent {
           <Form.Item {...formItemLayout} label="联系电话">
             {getFieldDecorator('proposer_2nd_phone', {
               // initialValue: data.receiverName,
-              rules: [{ required: true, message: '请输入联系电话' }],
+              rules: [{ required: true,message: '请输入联系电话' }],
             })(<Input placeholder="请输入输入联系电话" />)}
+            {/*pattern:new RegExp(/^((/(/d{3}/))|(/d{3}/-))?13[0-9]/d{8}|15[89]/d{8}/)*/}
           </Form.Item>
           <Form.Item {...formItemLayout} label="申请人2">
             {getFieldDecorator('proposer_1st', {
@@ -161,6 +169,30 @@ class Step1 extends React.PureComponent {
               </Select>
             )}
           </Form.Item>
+
+          {/*<Form.Item {...formItemLayout} label="反馈单位/账号">*/}
+            {/*{getFieldDecorator('proposer', {*/}
+              {/*// initialValue: data.payAccount,*/}
+              {/*rules: [{ required: true, message: '请选择承办单位' }],*/}
+            {/*})(*/}
+              {/*<Select*/}
+              {/*defaultValue="lucy"*/}
+              {/*style={{ }}*/}
+              {/*onChange={this.handleChangeJilian}*/}
+              {/*onSelect={this.selectJilian}*/}
+              {/*placeholder="请选择反馈单位类型"*/}
+              {/*>*/}
+                {/*<OptGroup label="Manager">*/}
+                {/*<Option value="1">Jack</Option>*/}
+                {/*<Option value="2">Lucy</Option>*/}
+                {/*</OptGroup>*/}
+                {/*<OptGroup label="Engineer">*/}
+                {/*<Option value="Yiminghe">yiminghe</Option>*/}
+                {/*</OptGroup>*/}
+              {/*</Select>*/}
+            {/*)}*/}
+          {/*</Form.Item>*/}
+
           <Form.Item {...formItemLayout} label="最高级别审批人">
             {getFieldDecorator('approver', {
               // initialValue: data.receiverName,

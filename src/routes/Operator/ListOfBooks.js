@@ -22,7 +22,7 @@ import {
 import { Link } from 'dva/router';
 import StandardTable from 'components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-
+import {getAuthority} from '../../utils/authority';
 import styles from './TableList.less';
 
 const FormItem = Form.Item;
@@ -247,8 +247,21 @@ export default class TableList extends PureComponent {
     const { ListOfBooks, loading } = this.props;
     const { data } = ListOfBooks;
     const { selectedRows, modalVisible } = this.state;
-
+    const detailAlink = (value,id)=>{
+      if(getAuthority() == 'sqyh' || getAuthority()=='auditor'){
+        return '';
+      }else if(value){
+        return (<Link to={`/operator/uploadResult/${id}`}>上传结果</Link>)
+      }
+      return '';
+    }
     const columns = [
+      {
+        dataIndex:'id',
+        colSpan:0,
+        columnWidth:'0',
+        className:styles.hidden,
+      },
       {
         title: '文号',
         dataIndex: 'doc_name',
@@ -289,8 +302,8 @@ export default class TableList extends PureComponent {
         render(val) {
           return (
             <Fragment>
-              <Link to={`/operator/detailList/${val.id}`}>详情</Link>
-              <Link to={`/operator/uploadResult/${val.id}`}>上传结果</Link>
+              <Link to={`/operator/detailList/${val.id}`}>详情</Link>&nbsp;&nbsp;
+              {detailAlink(val.feedback_time,val.id)}
             </Fragment>
           );
         },
@@ -320,22 +333,23 @@ export default class TableList extends PureComponent {
                   新建
                 </Button>
               </Link>
-              {selectedRows.length > 0 && (
-                <span>
-                  <Button>批量操作</Button>
-                  <Dropdown overlay={menu}>
-                    <Button>
-                      更多操作 <Icon type="down" />
-                    </Button>
-                  </Dropdown>
-                </span>
-              )}
+              {/*{selectedRows.length > 0 && (*/}
+                {/*<span>*/}
+                  {/*<Button>批量操作</Button>*/}
+                  {/*<Dropdown overlay={menu}>*/}
+                    {/*<Button>*/}
+                      {/*更多操作 <Icon type="down" />*/}
+                    {/*</Button>*/}
+                  {/*</Dropdown>*/}
+                {/*</span>*/}
+              {/*)}*/}
             </div>
             <StandardTable
               selectedRows={selectedRows}
               loading={loading}
               data={data}
               columns={columns}
+              rowKey="id"
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
             />

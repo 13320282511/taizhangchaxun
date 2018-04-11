@@ -93,8 +93,8 @@ export const getRouterData = app => {
       ),
     },
     '/operator/uploadResult/:id': {
-      name: '台账详情',
-      component: dynamicWrapper(app, ['detailListOfBooks'], () =>
+      name: '上传结果',
+      component: dynamicWrapper(app, ['ListOfBooks'], () =>
         import('../routes/UploadResult/UploadResult')
       ),
     },

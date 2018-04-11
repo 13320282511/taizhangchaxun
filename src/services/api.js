@@ -164,6 +164,18 @@ export async function uploadImg(params) {
     body: params,
   });
 }
+export async function uploadFile(params) {
+  return request('/api/service/Standing/feedback', {
+    method: 'POST',
+    body: params,
+  });
+}
+export async function standingApproval(params) {
+  return request('/api/service/Standing/standingApproval', {
+    method: 'POST',
+    body: params,
+  });
+}
 export async function queryNotices() {
   return request('/api/notices');
 }
@@ -173,4 +185,3 @@ export async function fakeRegister(params) {
     body: params,
   });
 }
-

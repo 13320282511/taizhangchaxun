@@ -57,11 +57,14 @@ export default class BasicProfile extends Component {
       type: 'detailListOfBooks/fetchDetailPiwen',
       payload: { standing_id: parseInt(urlArray[urlArray.length - 1]) },
     });
+    dispatch({
+      type:'detailListOfBooks/piwenDetail',
+      payload:{ id: parseInt(urlArray[urlArray.length - 1]) },
+    })
   }
 
   render() {
     const { detailListOfBooks, loading } = this.props;
-    console.log('this.props', this.props);
     const { basicstandingDetail, basicProgress } = detailListOfBooks;
     let goodsData = [];
     if (basicstandingDetail.length) {
@@ -125,10 +128,12 @@ export default class BasicProfile extends Component {
             <Description term="结果反馈时间">{basicstandingDetail.feedback_time}</Description>
           </DescriptionList>
           <Divider style={{ marginBottom: 32 }} />
-          {/*<div className={styles.title}>批文</div>*/}
-          {/*<DescriptionList size="large" title="" style={{ marginBottom: 32 }}>*/}
-          {/*<Description term="结果反馈时间" />*/}
-          {/*</DescriptionList>*/}
+          <div>批文</div>
+          <div className={styles["piwen-img"]}>
+            {detailListOfBooks.imgSrcPiwen.map((item,index)=>{
+              return <img src={item} key={index}/>
+            })}
+          </div>
           <div className={styles.title}>查询结果</div>
           <Table
             style={{ marginBottom: 16 }}
@@ -136,6 +141,7 @@ export default class BasicProfile extends Component {
             loading={loading}
             dataSource={this.props.detailListOfBooks.standingDetailQuery}
             columns={progressColumns}
+            // rowKey="num"
           />
         </Card>
       </PageHeaderLayout>
