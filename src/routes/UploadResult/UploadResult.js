@@ -3,20 +3,26 @@ import { Upload, Icon, message, Butto, Button, Divider,Modal } from 'antd';
 // import fetch from 'dva/fetch';
 import { connect } from 'dva';
 import cookies from 'js-cookie';
-const Dragger = Upload.Dragger;
+// const Dragger = Upload.Dragger;
 import {routerRedux} from 'dva/router';
 
 
 class UploadResult extends PureComponent {
   constructor(props) {
     super(props);
+    let {match} = this.props;
+    let arraySplit = match.url.split('/');
     this.state = {
       previewVisible: false,
       previewImage: '',
       fileList: [],
       fileListResult: [],
       fileUpUrl:[],
+      id:parseInt(arraySplit[arraySplit.length-2]),
+      idWrap:parseInt(arraySplit[arraySplit.length-3]),
+      type:arraySplit[arraySplit.length-1],
     };
+
   }
   handleCancel = () => this.setState({previewVisible: false})
 
@@ -34,7 +40,7 @@ class UploadResult extends PureComponent {
   }
 
   render() {
-    const {dispatch, submitting,ListOfBooks} = this.props;
+    const {dispatch, ListOfBooks} = this.props;
     const onValidateForm = () => {
       let urlNumber = [];
       let urlNumberResult = [];
@@ -45,19 +51,20 @@ class UploadResult extends PureComponent {
         urlNumberResult.push(this.state.fileListResult[i].response.url);
       }
       let dataId = cookies.get('user_id');
-      let params = {feedbackFile:{fileId:2,url:urlNumberResult},feedbackUpload:{fileId:1,url:urlNumber},id:parseInt(dataId)};
-
+      // let params = {feedbackFile:{fileId:2,url:urlNumberResult},feedbackUpload:{fileId:1,url:urlNumber},id:parseInt(dataId)};
+      let params = {feedbackFile:{fileId:2,url:urlNumberResult},feedbackUpload:{fileId:1,url:urlNumber},id:this.state.id,type:this.state.type};
       this.props.dispatch({
         type:'ListOfBooks/uploadFile',
         payload: params,
       }).then((value)=>{
         if(value.code == 1) {
           message.success("上传成功");
-         dispatch(routerRedux.push('/operator/listOfBooks'));
+         dispatch(routerRedux.push(`/operator/detailList/${this.state.idWrap}`));
         }else{
           message.error("上传失败");
         }
       }).catch((error)=>{
+        console.log('error',error);
         message.error("上传失败");
       })
     };
@@ -105,7 +112,7 @@ class UploadResult extends PureComponent {
         </div>
         <div>
           <Button type="primary" onClick={onValidateForm}>
-            保存并发送结果
+            保存
           </Button>
         </div>
       </div>

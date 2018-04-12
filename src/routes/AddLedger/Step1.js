@@ -19,6 +19,10 @@ const formItemLayout = {
 class Step1 extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      fankuiUnit:{},
+      disabled:true,
+    };
     this.props.dispatch({
       type: 'addLedger/querySelectUnit',
       payload: '',
@@ -34,6 +38,21 @@ class Step1 extends React.PureComponent {
   }
   handleChangeJilian=(val)=>{
     console.log('val',val)
+  }
+  handleChangeChengban=(val)=>{
+    let params = {id:15};
+    let that = this;
+    this.props.dispatch({
+      type: 'addLedger/getAccountNameTo',
+      payload: params,
+    }).then((res)=>{
+      that.setState({
+        fankuiUnit:{...res.data}
+      })
+      console.log('res',res)
+    }).catch((error)=>{
+      console.log('error',error);
+    });
   }
   selectJilian = (val,key)=>{
     // console.log('key',key);
@@ -130,12 +149,12 @@ class Step1 extends React.PureComponent {
               rules: [{ required: true, message: '请输入联系电话' }],
             })(<Input placeholder="请输入输入联系电话" />)}
           </Form.Item>
-          <Form.Item {...formItemLayout} label="申请单位">
-            {getFieldDecorator('proposer', {
-              // initialValue: data.receiverName,
-              rules: [{ required: true, message: '请输入输入申请人' }],
-            })(<Input placeholder="请输入输入申请人" />)}
-          </Form.Item>
+          {/*<Form.Item {...formItemLayout} label="申请单位">*/}
+            {/*{getFieldDecorator('proposer', {*/}
+              {/*// initialValue: data.receiverName,*/}
+              {/*rules: [{ required: true, message: '请输入输入申请人' }],*/}
+            {/*})(<Input placeholder="请输入输入申请人" />)}*/}
+          {/*</Form.Item>*/}
           <Form.Item {...formItemLayout} label="申请单位类型">
             {getFieldDecorator('proposer_org_type', {
               // initialValue: data.payAccount,
@@ -158,7 +177,9 @@ class Step1 extends React.PureComponent {
               // initialValue: data.payAccount,
               rules: [{ required: true, message: '请选择承办单位' }],
             })(
-              <Select placeholder="请选择">
+              <Select
+                onChange={this.handleChangeChengban}
+                placeholder="请选择">
                 {this.props.selectShortName.map((item, index) => {
                   return (
                     <Option value={item.id} key={index}>
@@ -170,18 +191,19 @@ class Step1 extends React.PureComponent {
             )}
           </Form.Item>
 
-          {/*<Form.Item {...formItemLayout} label="反馈单位/账号">*/}
-            {/*{getFieldDecorator('proposer', {*/}
-              {/*// initialValue: data.payAccount,*/}
-              {/*rules: [{ required: true, message: '请选择承办单位' }],*/}
-            {/*})(*/}
-              {/*<Select*/}
-              {/*defaultValue="lucy"*/}
-              {/*style={{ }}*/}
-              {/*onChange={this.handleChangeJilian}*/}
-              {/*onSelect={this.selectJilian}*/}
-              {/*placeholder="请选择反馈单位类型"*/}
-              {/*>*/}
+          <Form.Item {...formItemLayout} label="反馈单位/账号">
+            {getFieldDecorator('proposer', {
+              // initialValue: data.payAccount,
+              rules: [{ required: true, message: '请选择反馈单位/账号' }],
+            })(
+              <Select
+              defaultValue="lucy"
+              style={{ }}
+              onChange={this.handleChangeJilian}
+              onSelect={this.selectJilian}
+              placeholder="请选择反馈单位类型"
+              disabled={this.state.disabled ? 'true' : 'false'}
+              >
                 {/*<OptGroup label="Manager">*/}
                 {/*<Option value="1">Jack</Option>*/}
                 {/*<Option value="2">Lucy</Option>*/}
@@ -189,9 +211,12 @@ class Step1 extends React.PureComponent {
                 {/*<OptGroup label="Engineer">*/}
                 {/*<Option value="Yiminghe">yiminghe</Option>*/}
                 {/*</OptGroup>*/}
-              {/*</Select>*/}
-            {/*)}*/}
-          {/*</Form.Item>*/}
+                {/*{this.state.fankuiUnit.map((item,index)=>{*/}
+                  {/*return ()*/}
+                {/*})}*/}
+              </Select>
+            )}
+          </Form.Item>
 
           <Form.Item {...formItemLayout} label="最高级别审批人">
             {getFieldDecorator('approver', {

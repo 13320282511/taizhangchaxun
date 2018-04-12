@@ -176,6 +176,12 @@ export async function standingApproval(params) {
     body: params,
   });
 }
+export async function getAccountName(params) {
+  return request('/api/service/Standing/getAccountName', {
+    method: 'POST',
+    body: params,
+  });
+}
 export async function queryNotices() {
   return request('/api/notices');
 }

@@ -6,32 +6,10 @@ import { routerRedux } from 'dva/router';
 import Result from 'components/Result';
 import FooterToolbar from 'components/FooterToolbar';
 import styles from './style.less';
-const tableData = [
-  // {
-  //   key:'1',
-  //   id: '1',
-  //   content: '00001',
-  //   condition: 'John Brown',
-  //   num: '1',
-  // },
-  // {
-  //   key:'2',
-  //   id: '2',
-  //   content: '00001',
-  //   condition: 'John Brown',
-  //   num: '1',
-  // },
-  // {
-  //   key:'4',
-  //   id: '3',
-  //   content: '00001',
-  //   condition: 'John Brown',
-  //   num: '1',
-  // },
-];
+const tableData = [];
 const leaderColor = {
-  departmentLevel:'#000',
-  hallLevel:'#666',
+  departmentLevel:'blue',
+  hallLevel:'orange',
   ministryLevel:'red'
 };
 

@@ -19,14 +19,7 @@ class Step2 extends React.PureComponent {
   state = {
     previewVisible: false,
     previewImage: '',
-    fileList: [
-      {
-        uid: -1,
-        name: 'xxx.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-    ],
+    fileList: [],
     fileUpUrl:[],
   };
 

@@ -22,7 +22,6 @@ import {
 import { Link } from 'dva/router';
 import StandardTable from 'components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import {getAuthority} from '../../utils/authority';
 import styles from './TableList.less';
 
 const FormItem = Form.Item;
@@ -247,14 +246,7 @@ export default class TableList extends PureComponent {
     const { ListOfBooks, loading } = this.props;
     const { data } = ListOfBooks;
     const { selectedRows, modalVisible } = this.state;
-    const detailAlink = (value,id)=>{
-      if(getAuthority() == 'sqyh' || getAuthority()=='auditor'){
-        return '';
-      }else if(value){
-        return (<Link to={`/operator/uploadResult/${id}`}>上传结果</Link>)
-      }
-      return '';
-    }
+
     const columns = [
       {
         dataIndex:'id',
@@ -303,7 +295,6 @@ export default class TableList extends PureComponent {
           return (
             <Fragment>
               <Link to={`/operator/detailList/${val.id}`}>详情</Link>&nbsp;&nbsp;
-              {detailAlink(val.feedback_time,val.id)}
             </Fragment>
           );
         },

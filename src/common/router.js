@@ -92,7 +92,7 @@ export const getRouterData = app => {
         import('../routes/Operator/DetailList')
       ),
     },
-    '/operator/uploadResult/:id': {
+    '/operator/uploadResult/:standingId/:id/:type': {
       name: '上传结果',
       component: dynamicWrapper(app, ['ListOfBooks'], () =>
         import('../routes/UploadResult/UploadResult')

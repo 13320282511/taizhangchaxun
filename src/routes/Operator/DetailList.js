@@ -1,12 +1,29 @@
-import React, { Component } from 'react';
+import React, { Component,Fragment } from 'react';
 import { connect } from 'dva';
-import { Card, Badge, Table, Divider } from 'antd';
+import { Link } from 'dva/router';
+import { Card, Badge, Table, Divider,Button  } from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './BasicProfile.less';
-
+import {getAuthority} from "../../utils/authority";
 const { Description } = DescriptionList;
-
+const detailAlink = (value,standingId,id,type)=>{
+  if(getAuthority() == 'sqyh' || getAuthority()=='auditor'){
+    return '';
+  }else if(value){
+    return (<Link to={`/operator/uploadResult/${standingId}/${id}/${type}`}>上传</Link>)
+  }
+  return '';
+};
+const downLoadDisplay = (value,id)=>{
+  if(getAuthority() == 'sqyh' || getAuthority()=='auditor'){
+    return '';
+  }else if(value.length>0){
+    // return (<Link to={`/operator/uploadResult/${id}`}>下载结果</Link>)
+    return <a href={`/api/service/Standing/feedbackDownload?id=${id}`} target="_blank">下载结果</a>
+  }
+  return '';
+};
 const progressColumns = [
   {
     title: '类型',
@@ -18,17 +35,6 @@ const progressColumns = [
     dataIndex: 'content',
     key: 'content',
   },
-  // {
-  //   title: '状态',
-  //   dataIndex: 'status',
-  //   key: 'status',
-  //   render: text =>
-  //     text === 'success' ? (
-  //       <Badge status="success" text="成功" />
-  //     ) : (
-  //       <Badge status="processing" text="进行中" />
-  //     ),
-  // },
   {
     title: '查询条件',
     dataIndex: 'condition',
@@ -39,6 +45,49 @@ const progressColumns = [
     dataIndex: 'num',
     key: 'num',
   },
+  {
+    title:'反馈结果',
+    dataIndex:'feedback_file',
+    key:'feedback_file',
+    render(val) {
+      const feedback_file = val? val: [];
+      return (
+        <div className={styles.huizhidan}>
+          {feedback_file.map((item,index)=>{
+            return (<img src={item} key={index}/>)
+          })}
+        </div>
+      );
+    }
+  },
+  {
+    title:'回执单',
+    dataIndex:'feedback_upload',
+    key:'feedback_upload',
+    render(val) {
+      const feedbackFile = val? val: [];
+      return (
+        <div className={styles.huizhidan}>
+          {feedbackFile.map((item,index)=>{
+            return (<img src={item} key={index}/>)
+          })}
+        </div>
+      );
+    }
+  },
+  {
+    title:'操作',
+    render(val) {
+
+      return (
+        <Fragment>
+          {/*<Link to={`/operator/detailList/${val.id}`}>详情</Link>&nbsp;&nbsp;*/}
+          {detailAlink(val,val.standing_id,val.id,val.type)} &nbsp;&nbsp;
+          {downLoadDisplay(val.feedback_file,val.id)}
+        </Fragment>
+      );
+    },
+  }
 ];
 
 @connect(({ detailListOfBooks, loading }) => ({
@@ -46,6 +95,18 @@ const progressColumns = [
   loading: loading.effects['detailListOfBooks/fetchBasic'],
 }))
 export default class BasicProfile extends Component {
+  constructor(props) {
+    super(props);
+    let {detailListOfBooks} = this.props;
+    // this.state={
+    //   name:'7777'
+    // }
+    // setTimeout(()=>{
+    //   this.setState({
+    //     name:'wydi'
+    //   })
+    // },3000)
+  }
   componentDidMount() {
     const { dispatch, match } = this.props;
     let urlArray = match.url.split('/');
@@ -128,13 +189,24 @@ export default class BasicProfile extends Component {
             <Description term="结果反馈时间">{basicstandingDetail.feedback_time}</Description>
           </DescriptionList>
           <Divider style={{ marginBottom: 32 }} />
-          <div>批文</div>
-          <div className={styles["piwen-img"]}>
-            {detailListOfBooks.imgSrcPiwen.map((item,index)=>{
-              return <img src={item} key={index}/>
-            })}
+          <div className={styles.title}>
+            <span>批文</span>
           </div>
-          <div className={styles.title}>查询结果</div>
+          <div className={styles["piwen-img"]}>
+            {/*{this.state.name}*/}
+            <img src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"/>
+            {detailListOfBooks.imgSrcPiwen.map((item,index)=>{
+              return <img src={item} key={index} alt={index}/>
+            })}
+            {/*{this.state.imgUrlPiwen.map((item,index)=>{*/}
+              {/*return <img src={item} key={index} alt={index}/>*/}
+            {/*})}*/}
+          </div>
+          <Divider style={{ marginBottom: 32 }} />
+          <div className={styles.title}>
+            <span>查询结果</span>
+            <Button className="btn" type="primary">发送结果</Button>
+          </div>
           <Table
             style={{ marginBottom: 16 }}
             pagination={false}

@@ -35,7 +35,7 @@ class TableFormaddLedger extends PureComponent {
 
   index = 0;
   cacheOriginData = {};
-  toggleEditable = (e, key, boolean, dataReturn) => {
+  toggleEditable = (e, key, boolean, dataReturnTtoal,action) => {
     e.preventDefault();
     const newData = this.state.data.map(item => ({...item}));
     const target = this.getRowByKey(key, newData);
@@ -47,6 +47,13 @@ class TableFormaddLedger extends PureComponent {
     }
 
     if (boolean == 'true') {
+      let dataReturn = dataReturnTtoal;
+      if(action == 'edite'){
+
+      }else if(action == 'add'){
+        dataReturn = dataReturnTtoal.verifyCard ? dataReturnTtoal.verifyCard : {};
+        target.id = dataReturnTtoal.id;
+      }
       let arrayData = contentData.split(',');
       let departmentLevel = dataReturn.departmentLevel ? dataReturn.departmentLevel : [];
       let hallLevel = dataReturn.hallLevel ? dataReturn.hallLevel : [];
@@ -68,6 +75,7 @@ class TableFormaddLedger extends PureComponent {
           }
         }
       }
+      console.log('arrayData',arrayData)
       let stringData = arrayData.join(',');
       target.content = showhtml(stringData);
     } else {
@@ -89,7 +97,7 @@ class TableFormaddLedger extends PureComponent {
   typeIdQuery(target) {
     let id = 0;
     this.props.addLedger.seletType.map((item, index) => {
-      if (item.type_name == target.id) {
+      if (item.type_name == target.type) {
         return (id = item.id);
       }
     });
@@ -104,11 +112,12 @@ class TableFormaddLedger extends PureComponent {
     let standing_id = parseInt(localStorage.getItem('dataId'));
     let params = {
       condition: target.condition,
-      id: this.typeIdQuery(target),
+      type: this.typeIdQuery(target),
       content: target.content,
       num: target.num,
       operation: 'delete',
       standing_id: standing_id,
+      id:target.id,
     };
     let that = this;
     let dispatch = this.props.dispatch;
@@ -140,11 +149,13 @@ class TableFormaddLedger extends PureComponent {
   }
 
   newMember = () => {
+    let standing_id = parseInt(localStorage.getItem('dataId'));
     const newData = this.state.data.map(item => ({...item}));
     console.log('newData', newData);
     newData.push({
       key: `NEW_TEMP_ID_${this.index}`,
       id: '',
+      type:'',
       num: '',
       content: '',
       condition: '',
@@ -167,7 +178,7 @@ class TableFormaddLedger extends PureComponent {
     const target = this.getRowByKey(key, newData);
     if (target) {
       if (typeof e == 'number' || typeof e == 'string') {
-        if (fieldName == 'id') {
+        if (fieldName == 'type') {
           this.props.addLedger.seletType.map((item, index) => {
             if (item.id == e) {
               target[fieldName] = item.type_name;
@@ -193,7 +204,7 @@ class TableFormaddLedger extends PureComponent {
       return;
     }
     const target = this.getRowByKey(key) || {};
-    if (!target.content || !target.condition || !target.id) {
+    if (!target.content || !target.type) {
       message.error('请填写完整成员信息。');
       e.target.focus();
       this.setState({
@@ -204,11 +215,12 @@ class TableFormaddLedger extends PureComponent {
     let standing_id = parseInt(localStorage.getItem('dataId'));
     let params = {
       condition: target.condition,
-      id: this.typeIdQuery(target),
+      type: this.typeIdQuery(target),
       content: target.content,
       num: target.num,
       operation: 'edit',
       standing_id: standing_id,
+      id:target.id,
     };
     let that = this;
     let dispatch = this.props.dispatch;
@@ -223,7 +235,7 @@ class TableFormaddLedger extends PureComponent {
           //   123, 124, 222, 111, 58
           // ];
           let dataReturn = value.data ? value.data : {};
-          that.toggleEditable(e, key, 'true', dataReturn);
+          that.toggleEditable(e, key, 'true', dataReturn,'edite');
           that.setState({
             loading: false,
           });
@@ -252,7 +264,7 @@ class TableFormaddLedger extends PureComponent {
       return;
     }
     const target = this.getRowByKey(key) || {};
-    if (!target.content || !target.condition || !target.id) {
+    if (!target.content || !target.type) {
       message.error('请填写完整成员信息。');
       e.target.focus();
       this.setState({
@@ -263,7 +275,7 @@ class TableFormaddLedger extends PureComponent {
     let standing_id = parseInt(localStorage.getItem('dataId'));
     let params = {
       condition: target.condition,
-      id: this.typeIdQuery(target),
+      type: this.typeIdQuery(target),
       content: target.content,
       num: target.num,
       standing_id: standing_id,
@@ -278,7 +290,7 @@ class TableFormaddLedger extends PureComponent {
         if (value && value.code && value.code == 1) {
           delete target.isNew;
           let dataReturn = value.data ? value.data : {};
-          that.toggleEditable(e, key, 'true', dataReturn);
+          that.toggleEditable(e, key, 'true', dataReturn,'add');
           that.setState({
             loading: false,
           });
@@ -290,6 +302,7 @@ class TableFormaddLedger extends PureComponent {
         }
       })
       .catch((error) => {
+        console.log('error',error)
         that.setState({
           loading: false,
         });
@@ -313,9 +326,14 @@ class TableFormaddLedger extends PureComponent {
   render() {
     const columns = [
       {
+        dataIndex:'id',
+        key:'id',
+        className:styles.cloumnsNone,
+      },
+      {
         title: '类型',
-        dataIndex: 'id',
-        key: 'id',
+        dataIndex: 'type',
+        key: 'type',
         width: '20%',
         render: (text, record) => {
           if (record.editable) {
@@ -324,7 +342,7 @@ class TableFormaddLedger extends PureComponent {
                 value={text ? text : '请输入类型'}
                 showSearch
                 style={{width: 200}}
-                onChange={e => this.handleFieldChange(e, 'id', record.key)}
+                onChange={e => this.handleFieldChange(e, 'type', record.key)}
                 filterOption={(input, option) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
