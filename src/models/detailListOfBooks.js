@@ -1,7 +1,7 @@
 /**
  * Created by zj on 2018/4/7.
  */
-import { postStandingDetai, DetailapplyList,standingApproval } from '../services/api';
+import { postStandingDetai, DetailapplyList,standingApproval,postSendResult } from '../services/api';
 
 export default {
   namespace: 'detailListOfBooks',
@@ -52,6 +52,10 @@ export default {
         }
 
       }
+    },
+    *detailSendResult({payload},{call,put}) {
+      let res = yield call(postSendResult,payload);
+      return res;
     }
   },
 

@@ -1,6 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
 import {
   Row,
   Col,
@@ -8,21 +7,16 @@ import {
   Form,
   Input,
   Select,
-  Icon,
   Button,
-  Dropdown,
   Menu,
   InputNumber,
-  DatePicker,
   Modal,
-  message,
-  Badge,
-  Divider,
 } from 'antd';
 import { Link } from 'dva/router';
 import StandardTable from 'components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './TableList.less';
+import {getAuthority} from "../../utils/authority";
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -30,8 +24,6 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const statusMap = ['default', 'processing', 'success', 'error'];
-const status = ['关闭', '运行中', '已上线', '异常'];
 
 const CreateForm = Form.create()(props => {
   const { modalVisible, form, handleAdd, handleModalVisible } = props;
@@ -70,7 +62,16 @@ export default class TableList extends PureComponent {
     selectedRows: [],
     formValues: {},
   };
-
+  newCreateProject = ()=>{
+    if(getAuthority() == 'sjfxy' || getAuthority()=='cxy' || getAuthority()=='dzqzy'){
+      return (<Link to="/addLedger/step-form">
+        <Button icon="plus" type="primary">
+          新建
+        </Button>
+      </Link>);
+    }
+    return '';
+  }
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -319,21 +320,7 @@ export default class TableList extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
-              <Link to="/addLedger/step-form">
-                <Button icon="plus" type="primary">
-                  新建
-                </Button>
-              </Link>
-              {/*{selectedRows.length > 0 && (*/}
-                {/*<span>*/}
-                  {/*<Button>批量操作</Button>*/}
-                  {/*<Dropdown overlay={menu}>*/}
-                    {/*<Button>*/}
-                      {/*更多操作 <Icon type="down" />*/}
-                    {/*</Button>*/}
-                  {/*</Dropdown>*/}
-                {/*</span>*/}
-              {/*)}*/}
+              {this.newCreateProject()}
             </div>
             <StandardTable
               selectedRows={selectedRows}

@@ -93,33 +93,33 @@ const proxy = {
   'GET /api/fake_chart_data': getFakeChartData,
   'GET /api/profile/basic': getProfileBasicData,
   'GET /api/profile/advanced': getProfileAdvancedData,
-  'POST /api/login': (req, res) => {
-    const { password, username, type } = req.body;
-    if (password === '123456' && username === 'sjfxy') {
-      res.setHeader('Cookie', '*');
-      res.send({
-        code: 1,
-        status: 'ok',
-        type,
-        currentAuthority: 'sjfxy',
-        data: 'sjfxy',
-      });
-      return;
-    }
-    if (password === '123456' && username === 'user') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'user',
-      });
-      return;
-    }
-    res.send({
-      status: 'error',
-      type,
-      currentAuthority: 'guest',
-    });
-  },
+  // 'POST /api/login': (req, res) => {
+  //   const { password, username, type } = req.body;
+  //   if (password === '123456' && username === 'sjfxy') {
+  //     res.setHeader('Cookie', '*');
+  //     res.send({
+  //       code: 1,
+  //       status: 'ok',
+  //       type,
+  //       currentAuthority: 'sjfxy',
+  //       data: 'sjfxy',
+  //     });
+  //     return;
+  //   }
+  //   if (password === '123456' && username === 'user') {
+  //     res.send({
+  //       status: 'ok',
+  //       type,
+  //       currentAuthority: 'user',
+  //     });
+  //     return;
+  //   }
+  //   res.send({
+  //     status: 'error',
+  //     type,
+  //     currentAuthority: 'guest',
+  //   });
+  // },
   // 'POST /api/register': (req, res) => {
   //   res.send({ status: 'ok', currentAuthority: 'user' });
   // },

@@ -22,6 +22,8 @@ const codeMessage = {
 const commonVariables = {
   //判断是否在登录时候出现异常
   loginUrl: '/api/login',
+  authorityUrl:'/api/service/pseron/authority',
+  commonPerson:'/api/service/pseron/getPerson',
 };
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -90,6 +92,20 @@ export default function request(url, options) {
         }
         if (status >= 404 && status < 422) {
           dispatch(routerRedux.push('/errorlogin/exception/404'));
+          return;
+        }
+      }
+      if(url == commonVariables.authorityUrl || url == commonVariables.commonPerson){
+        if (status === 403) {
+          dispatch(routerRedux.push('/user/login'));
+          return;
+        }
+        if (status <= 504 && status >= 500) {
+          dispatch(routerRedux.push('/user/login'));
+          return;
+        }
+        if (status >= 404 && status < 422) {
+          dispatch(routerRedux.push('/user/login'));
           return;
         }
       }

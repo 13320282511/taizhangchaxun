@@ -182,6 +182,18 @@ export async function getAccountName(params) {
     body: params,
   });
 }
+export async function postSendResult(params) {
+  return request('/api/service/Standing/sendResult', {
+    method: 'POST',
+    body: params,
+  });
+}
+export async function postAuthority(params) {
+  return request('/api/service/pseron/authority', {
+    method: 'POST',
+    body: params,
+  });
+}
 export async function queryNotices() {
   return request('/api/notices');
 }

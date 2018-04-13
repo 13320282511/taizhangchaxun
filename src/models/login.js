@@ -1,7 +1,7 @@
-import { routerRedux } from 'dva/router';
-import { fakeAccountLogin } from '../services/api';
-import { setAuthority } from '../utils/authority';
-import { reloadAuthorized } from '../utils/Authorized';
+import {routerRedux} from 'dva/router';
+import {fakeAccountLogin} from '../services/api';
+import {setAuthority, setAuthoritySession} from '../utils/authority';
+import {reloadAuthorized} from '../utils/Authorized';
 import cookies from 'js-cookie';
 
 export default {
@@ -13,16 +13,19 @@ export default {
   },
 
   effects: {
-    *login({ payload }, { call, put }) {
+    * login({payload}, {call, put}) {
       yield put({
         type: 'submittingStatus',
         payload: true,
       });
       const response = yield call(fakeAccountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
+      if (response && response.code && response.code == 1) {
+        let user_type = cookies.get('user_type');
+        yield put({
+          type: 'changeLoginStatus',
+          payload: {...response, user_type},
+        });
+      }
       // Login successfully
       yield put({
         type: 'submittingStatus',
@@ -43,7 +46,7 @@ export default {
         payload: '',
       });
     },
-    *logout(_, { put, select }) {
+    * logout(_, {put, select}) {
       try {
         // get location pathname
         const urlParams = new URL(window.location.href);
@@ -53,8 +56,8 @@ export default {
         window.history.replaceState(null, 'login', urlParams.href);
         localStorage.clear();
         let cookieData = cookies.get();
-        for(let i in cookieData){
-          cookies.set(i,'');
+        for (let i in cookieData) {
+          cookies.set(i, '');
         }
       } finally {
         yield put({
@@ -66,27 +69,28 @@ export default {
           },
         });
         setAuthority('');
+        setAuthoritySession('');
         yield put(routerRedux.push('/user/login'));
       }
     },
   },
 
   reducers: {
-    changeLoginStatus(state, { payload }) {
-      setAuthority(payload.data);
+    changeLoginStatus(state, {payload}) {
+      setAuthority(payload.user_type);
       return {
         ...state,
         status: payload.status,
         type: payload.type,
       };
     },
-    submittingStatus(state, { payload }) {
+    submittingStatus(state, {payload}) {
       return {
         ...state,
         submittingLogin: payload,
       };
     },
-    statusIf(state, { payload }) {
+    statusIf(state, {payload}) {
       return {
         ...state,
         status: payload,

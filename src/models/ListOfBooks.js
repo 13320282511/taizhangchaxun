@@ -27,11 +27,13 @@ export default {
       let org_id = { org_id: cookie };
       let payloads = { ...payload, ...org_id };
       const response = yield call(queryListOfBooks, payloads);
-      let data = response && response.data;
-      yield put({
-        type: 'save',
-        payload: data,
-      });
+      let data = response && (response.data ? response.data : []);
+      if(response.code && response.code ==1){
+        yield put({
+          type: 'save',
+          payload: data,
+        });
+      }
     },
     // *queryChengban({ payload }, { call, put }) {
     //   const response = yield call(getUnitName, payload);

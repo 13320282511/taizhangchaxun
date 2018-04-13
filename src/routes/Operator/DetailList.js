@@ -1,7 +1,7 @@
 import React, { Component,Fragment } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import { Card, Badge, Table, Divider,Button  } from 'antd';
+import { Card, Badge, Table, Divider,Button,message } from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './BasicProfile.less';
@@ -11,7 +11,9 @@ const detailAlink = (value,standingId,id,type)=>{
   if(getAuthority() == 'sqyh' || getAuthority()=='auditor'){
     return '';
   }else if(value){
-    return (<Link to={`/operator/uploadResult/${standingId}/${id}/${type}`}>上传</Link>)
+    if(!value.feedback_time){
+      return (<Link to={`/operator/uploadResult/${standingId}/${id}/${type}`}>上传</Link>)
+    }
   }
   return '';
 };
@@ -19,7 +21,6 @@ const downLoadDisplay = (value,id)=>{
   if(getAuthority() == 'sqyh' || getAuthority()=='auditor'){
     return '';
   }else if(value.length>0){
-    // return (<Link to={`/operator/uploadResult/${id}`}>下载结果</Link>)
     return <a href={`/api/service/Standing/feedbackDownload?id=${id}`} target="_blank">下载结果</a>
   }
   return '';
@@ -81,7 +82,6 @@ const progressColumns = [
 
       return (
         <Fragment>
-          {/*<Link to={`/operator/detailList/${val.id}`}>详情</Link>&nbsp;&nbsp;*/}
           {detailAlink(val,val.standing_id,val.id,val.type)} &nbsp;&nbsp;
           {downLoadDisplay(val.feedback_file,val.id)}
         </Fragment>
@@ -97,15 +97,30 @@ const progressColumns = [
 export default class BasicProfile extends Component {
   constructor(props) {
     super(props);
-    let {detailListOfBooks} = this.props;
-    // this.state={
-    //   name:'7777'
-    // }
-    // setTimeout(()=>{
-    //   this.setState({
-    //     name:'wydi'
-    //   })
-    // },3000)
+  }
+  sendLoadDisplay = ()=>{
+    if(getAuthority() == 'sjfxy' || getAuthority()=='cxy' || getAuthority()=='dzqzy'){
+     return (<Button className="btn" type="primary" onClick={this.onSendQuery}>发送结果</Button>);
+    }
+    return '';
+  }
+  onSendQuery=()=>{
+    const { dispatch, match } = this.props;
+    let urlArray = match.url.split('/');
+    dispatch({
+      type: 'detailListOfBooks/detailSendResult',
+      payload: { id: parseInt(urlArray[urlArray.length - 1]) },
+    }).then((res)=>{
+        if(res && res.code && res.code == 1) {
+          message.success('发送结果成功');
+          console.log('res1',res)
+        }else{
+          message.error("发送结果失败");
+          console.log('res2',res)
+        }
+    }).catch((error)=>{
+      cosnole.log('error',error);
+    })
   }
   componentDidMount() {
     const { dispatch, match } = this.props;
@@ -141,31 +156,6 @@ export default class BasicProfile extends Component {
         amount,
       });
     }
-    const renderContent = (value, row, index) => {
-      const obj = {
-        children: value,
-        props: {},
-      };
-      if (index === basicstandingDetail.length) {
-        obj.props.colSpan = 0;
-      }
-      return obj;
-    };
-    // const detailOfBooks = {
-    //   approver: '最高级别审批人',
-    //   proposer_1st_phone: '18581019181',
-    //   create_time: 'null',
-    //   proposer: '申请单位',
-    //   doc_type: '一般',
-    //   feedback_time: 'null',
-    //   proposer_2nd: '李四',
-    //   proposer_name: '各区县纪委监委',
-    //   proposer_1st: '张三',
-    //   doc_name: 'null',
-    //   id: 1,
-    //   org_name: '第1纪监察室',
-    //   proposer_2nd_phone: '18581019181',
-    // };
     return (
       <PageHeaderLayout title="">
         <Card bordered={false}>
@@ -193,19 +183,14 @@ export default class BasicProfile extends Component {
             <span>批文</span>
           </div>
           <div className={styles["piwen-img"]}>
-            {/*{this.state.name}*/}
-            <img src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"/>
             {detailListOfBooks.imgSrcPiwen.map((item,index)=>{
               return <img src={item} key={index} alt={index}/>
             })}
-            {/*{this.state.imgUrlPiwen.map((item,index)=>{*/}
-              {/*return <img src={item} key={index} alt={index}/>*/}
-            {/*})}*/}
           </div>
           <Divider style={{ marginBottom: 32 }} />
           <div className={styles.title}>
             <span>查询结果</span>
-            <Button className="btn" type="primary">发送结果</Button>
+            {this.sendLoadDisplay()}
           </div>
           <Table
             style={{ marginBottom: 16 }}

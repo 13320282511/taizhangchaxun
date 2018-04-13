@@ -7,6 +7,13 @@ export function getAuthority() {
 export function setAuthority(authority) {
   return localStorage.setItem('antd-pro-authority', authority);
 }
+
+export function setAuthoritySession(authority) {
+  return sessionStorage.setItem('Authority-set', authority);
+}
+export function getAuthoritySession() {
+  return sessionStorage.getItem('Authority-set');
+}
 // export function getAuthority() {
 //   console.log('cookie',Cookies)
 //   return Cookies.get('antd-pro-authority') || '';
