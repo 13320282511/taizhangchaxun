@@ -77,8 +77,8 @@ class Step2 extends React.PureComponent {
           >
             {fileList.length >= 20 ? null : uploadButton}
           </Upload>
-          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-            <img alt="example" style={{width: '100%'}} src={previewImage}/>
+          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel} width='100%'>
+            <img alt="example" style={{width: '95%'}} src={previewImage}/>
           </Modal>
         </div>
         <Form.Item>

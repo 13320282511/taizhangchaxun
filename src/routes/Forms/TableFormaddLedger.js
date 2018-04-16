@@ -187,7 +187,9 @@ class TableFormaddLedger extends PureComponent {
         } else {
           target[fieldName] = e;
         }
-      } else {
+      } else if(fieldName == 'num'){
+        target[fieldName] = e || 1;
+      }else{
         target[fieldName] = e.target.value;
       }
       this.setState({data: newData});

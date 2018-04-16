@@ -31,10 +31,20 @@ export default {
         type: 'submittingStatus',
         payload: false,
       });
+      // if (response && response.code && response.code == 1) {
+      //   reloadAuthorized();
+      //   yield put(routerRedux.push('/operator/listOfBooks'));
+      // } else if (response && response.code && response.code == -1) {
+      //   yield put({
+      //     type: 'statusIf',
+      //     payload: 'error',
+      //   });
+      //   return;
+      // }
       if (response && response.code && response.code == 1) {
         reloadAuthorized();
         yield put(routerRedux.push('/operator/listOfBooks'));
-      } else if (response && response.code && response.code == -1) {
+      } else {
         yield put({
           type: 'statusIf',
           payload: 'error',

@@ -41,12 +41,15 @@ export default {
       let payloads = {...payload, ...dataId};
       let response = yield call(addStanding, payloads);
       if (response.code == 1) {
+        yield put({
+          type:'clearDoc',
+        });
         yield put(routerRedux.push('/addLedger/step-form/confirm'));
         localStorage.setItem('dataId', response.data);
       } else if (response.code == -1) {
-        message.success('提交失败');
+        message.error('提交失败');
       } else if (response.code == -1) {
-        message.success('序号已被占用');
+        message.info('序号已被占用');
       }
       //message.success('提交成功');
     },
@@ -169,5 +172,13 @@ export default {
         seletType: [...payload],
       };
     },
+    clearDoc(state,{payload}) {
+      return {
+        ...state,
+        step:{
+          doc_name:[],
+        }
+      }
+    }
   },
 };

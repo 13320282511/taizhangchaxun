@@ -11,6 +11,7 @@ import {
   Menu,
   InputNumber,
   Modal,
+  DatePicker,
 } from 'antd';
 import { Link } from 'dva/router';
 import StandardTable from 'components/StandardTable';
@@ -20,6 +21,7 @@ import {getAuthority} from "../../utils/authority";
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
@@ -217,6 +219,15 @@ export default class TableList extends PureComponent {
                       })
                     : ''}
                 </Select>
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+          <Col md={8} sm={24}>
+            <FormItem label="选择日期：">
+              {getFieldDecorator('date')(
+                <RangePicker />
               )}
             </FormItem>
           </Col>

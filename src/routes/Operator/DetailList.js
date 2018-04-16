@@ -1,7 +1,7 @@
 import React, { Component,Fragment } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import { Card, Badge, Table, Divider,Button,message } from 'antd';
+import { Card, Badge, Table, Divider,Button,message,Modal } from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './BasicProfile.less';
@@ -48,14 +48,14 @@ const progressColumns = [
   },
   {
     title:'反馈结果',
-    dataIndex:'feedback_file',
-    key:'feedback_file',
+    dataIndex:'feedback_real_file',
+    key:'feedback_real_file',
     render(val) {
       const feedback_file = val? val: [];
       return (
         <div className={styles.huizhidan}>
           {feedback_file.map((item,index)=>{
-            return (<img src={item} key={index}/>)
+            return (<div key={index}>{item}</div>)
           })}
         </div>
       );
@@ -70,7 +70,7 @@ const progressColumns = [
       return (
         <div className={styles.huizhidan}>
           {feedbackFile.map((item,index)=>{
-            return (<img src={item} key={index}/>)
+            return (<a href={item} target='_blank' style={{width:'20px',height:'20px',display:'inline-block',marginRight:'10px'}}><img src={item} key={index} style={{width:'100%',height:'100%',display:'block'}}/></a>)
           })}
         </div>
       );
@@ -97,6 +97,18 @@ const progressColumns = [
 export default class BasicProfile extends Component {
   constructor(props) {
     super(props);
+    this.state={
+      previewVisible:false,
+      previewImage:'',
+    }
+  }
+  handleCancel = () => this.setState({previewVisible: false})
+
+  handlePreview(file){
+    this.setState({
+      previewImage: file,
+      previewVisible: true,
+    })
   }
   sendLoadDisplay = ()=>{
     if(getAuthority() == 'sjfxy' || getAuthority()=='cxy' || getAuthority()=='dzqzy'){
@@ -166,7 +178,7 @@ export default class BasicProfile extends Component {
             style={{ marginBottom: 32 }}
           >
             <Description term="查询类型">{basicstandingDetail.doc_type}</Description>
-            <Description term="查询员" />
+            <Description term="查询员账号" >{basicstandingDetail.account}</Description>
             <Description term="申请人1">{basicstandingDetail.proposer_1st}</Description>
             <Description term="联系电话">{basicstandingDetail.proposer_1st_phone}</Description>
             <Description term="申请人2">{basicstandingDetail.proposer_2nd}</Description>
@@ -184,7 +196,8 @@ export default class BasicProfile extends Component {
           </div>
           <div className={styles["piwen-img"]}>
             {detailListOfBooks.imgSrcPiwen.map((item,index)=>{
-              return <img src={item} key={index} alt={index}/>
+              // return <img src={item} key={index} alt={index} onClick={this.handlePreview.bind(this,item)}/>
+              return <a href={item} target='_blank' style={{width:'20px',height:'20px',marginRight:'10px',display:'inline-block'}}><img src={item} key={index} alt={index} style={{display:'block',width:'100%',height:'100%'}}/></a>
             })}
           </div>
           <Divider style={{ marginBottom: 32 }} />
@@ -201,6 +214,9 @@ export default class BasicProfile extends Component {
             // rowKey="num"
           />
         </Card>
+        <Modal visible={this.state.previewVisible} footer={null} onCancel={this.handleCancel} width='60%'>
+          <img alt="example" style={{width: '50%'}} src={this.state.previewImage}/>
+        </Modal>
       </PageHeaderLayout>
     );
   }

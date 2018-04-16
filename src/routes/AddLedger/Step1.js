@@ -23,6 +23,7 @@ class Step1 extends React.PureComponent {
       fankuiUnit: {},
       disabled: true,
       arrayKes: [],
+      isFankui:'请选择',
     };
     this.props.dispatch({
       type: 'addLedger/querySelectUnit',
@@ -40,6 +41,9 @@ class Step1 extends React.PureComponent {
 
   handleChangeJilian = (val) => {
     // console.log('val', val)
+    // this.setState({
+    //   isFankui:val,
+    // })
   }
   handleChangeChengban = (val) => {
     let params = {id: val};
@@ -49,11 +53,12 @@ class Step1 extends React.PureComponent {
       payload: params,
     }).then((res) => {
       that.setState({
-        fankuiUnit: {...res.data}
+        fankuiUnit: {...res.data},
       }, function () {
         that.setState({
           arrayKes: [...Object.keys(that.state.fankuiUnit)],
-          disabled: false
+          disabled: false,
+          isFankui:this.state.fankuiUnit.direct[0].user_name,
         })
       })
 
@@ -62,6 +67,7 @@ class Step1 extends React.PureComponent {
     });
   }
   selectJilian = (val, key) => {
+    console.log('val3636',val)
     // console.log('key',key);
     // console.log('valuee',val)
   }
@@ -196,15 +202,16 @@ class Step1 extends React.PureComponent {
 
           <Form.Item {...formItemLayout} label="反馈单位/账号">
             {getFieldDecorator('proposer', {
-              // initialValue: data.payAccount,
+              initialValue: this.state.isFankui,
               rules: [{required: true, message: '请选择反馈单位/账号'}],
             })(
               <Select
-                defaultValue="lucy"
+                // defaultValue={this.state.isFankui}
+                value={this.state.isFankui}
                 style={{}}
                 onChange={this.handleChangeJilian}
                 onSelect={this.selectJilian}
-                placeholder="请选择反馈单位类型"
+                // placeholder="请选择"
                 disabled={this.state.disabled ? true : false}
               >
                 {this.state.arrayKes.map((item, index) => {
@@ -212,12 +219,14 @@ class Step1 extends React.PureComponent {
                     return (<OptGroup label="direct">
                       {this.state.fankuiUnit.direct.map((item, index) => {
                         return (<Option value={item.id} key={index}>{item.user_name}</Option>)
+                        // return (<Option ey={index}>{item.user_name}</Option>)
                       })}
-                    </OptGroup>)
+                   </OptGroup>)
                   } else {
                     return (<OptGroup label="other">
                       {this.state.fankuiUnit.other.map((item, index) => {
                         return (<Option value={item.id} key={index}>{item.user_name}</Option>)
+                        // return (<Option key={index}>{item.user_name}</Option>)
                       })}
                     </OptGroup>)
                   }
@@ -229,8 +238,8 @@ class Step1 extends React.PureComponent {
           <Form.Item {...formItemLayout} label="最高级别审批人">
             {getFieldDecorator('approver', {
               // initialValue: data.receiverName,
-              rules: [{required: true, message: '请输入输入申请人'}],
-            })(<Input placeholder="请输入输入申请人"/>)}
+              rules: [{required: true, message: '请输入申请人'}],
+            })(<Input placeholder="请输入申请人"/>)}
           </Form.Item>
           <Form.Item
             wrapperCol={{

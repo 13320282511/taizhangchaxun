@@ -36,7 +36,10 @@ class UploadResult extends PureComponent {
     this.setState({fileList})
   }
   handleChangeResult = ({fileList}) => {
-    this.setState({fileListResult:fileList})
+    console.log('fileList',fileList)
+    this.setState({fileListResult:fileList},()=>{
+
+    })
   }
 
   render() {
@@ -48,7 +51,7 @@ class UploadResult extends PureComponent {
         urlNumber.push(this.state.fileList[i].response.url);
       }
       for(let i=0;i<this.state.fileListResult.length;i++){
-        urlNumberResult.push(this.state.fileListResult[i].response.url);
+        urlNumberResult.push({url:this.state.fileListResult[i].response.url,name:this.state.fileListResult[i].response.fname});
       }
       let dataId = cookies.get('user_id');
       // let params = {feedbackFile:{fileId:2,url:urlNumberResult},feedbackUpload:{fileId:1,url:urlNumber},id:parseInt(dataId)};
@@ -106,8 +109,8 @@ class UploadResult extends PureComponent {
           >
             {fileListResult.length >= 20 ? null : uploadButton}
           </Upload>
-          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-            <img alt="example" style={{width: '100%'}} src={previewImage}/>
+          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel} width='100%'>
+            <img alt="example" style={{width: '95%'}} src={previewImage}/>
           </Modal>
         </div>
         <div>

@@ -35,7 +35,7 @@ export default class StepForm extends PureComponent {
             <Steps current={this.getCurrentStep()} className={styles.steps}>
               <Step title="填写台账信息" />
               <Step title="上传批文" />
-              <Step title="查询内容" />
+              <Step title="录入申请内容" />
               <Step title="完成" />
             </Steps>
             <Switch>
