@@ -29,7 +29,7 @@ export default {
       let payloads = { ...payload, ...org_id };
       const response = yield call(queryListOfBooks, payloads);
       let data = response && (response.data ? response.data : []);
-      if(response.code && response.code ==1){
+      if (response.code && response.code == 1) {
         yield put({
           type: 'save',
           payload: data,
@@ -68,14 +68,14 @@ export default {
       });
       if (callback) callback();
     },
-    *uploadFile({payload},{call,put}){
-      const res = yield call(uploadFile,payload);
+    *uploadFile({ payload }, { call, put }) {
+      const res = yield call(uploadFile, payload);
       return res;
     },
-    *deleteList({payload},{call,put}) {
-      let res = yield call(userDeleteStanding,payload);
+    *deleteList({ payload }, { call, put }) {
+      let res = yield call(userDeleteStanding, payload);
       return res;
-    }
+    },
   },
 
   reducers: {

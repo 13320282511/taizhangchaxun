@@ -1,21 +1,21 @@
 import React from 'react';
-import {routerRedux, Route, Switch} from 'dva/router';
-import {LocaleProvider, Spin} from 'antd';
+import { routerRedux, Route, Switch } from 'dva/router';
+import { LocaleProvider, Spin } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import dynamic from 'dva/dynamic';
-import {getRouterData} from './common/router';
+import { getRouterData } from './common/router';
 import Authorized from './utils/Authorized';
-import {setAuthoritySession} from './utils/authority';
-import {postAuthority} from './services/api';
+import { setAuthoritySession } from './utils/authority';
+import { postAuthority } from './services/api';
 import styles from './index.less';
 
-const {ConnectedRouter} = routerRedux;
-const {AuthorizedRoute} = Authorized;
+const { ConnectedRouter } = routerRedux;
+const { AuthorizedRoute } = Authorized;
 dynamic.setDefaultLoadingComponent(() => {
-  return <Spin size="large" className={styles.globalSpin}/>;
+  return <Spin size="large" className={styles.globalSpin} />;
 });
 
-function RouterConfig({history, app}) {
+function RouterConfig({ history, app }) {
   const routerData = getRouterData(app);
   const UserLayout = routerData['/user'].component;
   const BasicLayout = routerData['/'].component;
@@ -24,20 +24,22 @@ function RouterConfig({history, app}) {
     <LocaleProvider locale={zhCN}>
       <ConnectedRouter history={history}>
         <Switch>
-          <Route path="/errorlogin" component={ErrorRouteLogin}/>
-          <Route path="/user" component={UserLayout}/>
+          <Route path="/errorlogin" component={ErrorRouteLogin} />
+          <Route path="/user" component={UserLayout} />
           <AuthorizedRoute
             path="/"
             render={props => <BasicLayout {...props} />}
-            authority={postAuthority().then((res) => {
-              if (res && res.code && res.code == 1 && res.data) {
-                let authorityToal = [...res.data];
-                setAuthoritySession(authorityToal);
-                return authorityToal;
-              }
-            }).catch((error) => {
-              return '';
-            })}
+            authority={postAuthority()
+              .then(res => {
+                if (res && res.code && res.code == 1 && res.data) {
+                  let authorityToal = [...res.data];
+                  setAuthoritySession(authorityToal);
+                  return authorityToal;
+                }
+              })
+              .catch(error => {
+                return '';
+              })}
             redirectPath="/user/login"
           />
         </Switch>

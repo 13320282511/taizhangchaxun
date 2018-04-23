@@ -1,5 +1,5 @@
-import React, {PureComponent, Fragment} from 'react';
-import {connect} from 'dva';
+import React, { PureComponent, Fragment } from 'react';
+import { connect } from 'dva';
 import {
   Row,
   Col,
@@ -14,23 +14,23 @@ import {
   DatePicker,
   message,
 } from 'antd';
-import {Link} from 'dva/router';
+import { Link } from 'dva/router';
 import StandardTable from 'components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './TableList.less';
-import {getAuthority} from "../../utils/authority";
+import { getAuthority } from '../../utils/authority';
 
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
-const {Option} = Select;
-const {RangePicker} = DatePicker;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
 const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
 
 const CreateForm = Form.create()(props => {
-  const {modalVisible, form, handleAdd, handleModalVisible} = props;
+  const { modalVisible, form, handleAdd, handleModalVisible } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -44,12 +44,10 @@ const CreateForm = Form.create()(props => {
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
-    >
-
-    </Modal>
+    />
   );
 });
-@connect(({ListOfBooks, loading}) => ({
+@connect(({ ListOfBooks, loading }) => ({
   ListOfBooks,
   loading: loading.models.rule,
 }))
@@ -68,17 +66,19 @@ export default class TableList extends PureComponent {
 
   newCreateProject = () => {
     if (getAuthority() == 'sjfxy' || getAuthority() == 'cxy' || getAuthority() == 'dzqzy') {
-      return (<Link to="/addLedger/step-form">
-        <Button icon="plus" type="primary">
-          新建
-        </Button>
-      </Link>);
+      return (
+        <Link to="/addLedger/step-form">
+          <Button icon="plus" type="primary">
+            新建
+          </Button>
+        </Link>
+      );
     }
     return '';
-  }
+  };
 
   componentDidMount() {
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
     dispatch({
       type: 'ListOfBooks/fetch',
     });
@@ -88,11 +88,11 @@ export default class TableList extends PureComponent {
   }
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    const {dispatch} = this.props;
-    const {formValues} = this.state;
+    const { dispatch } = this.props;
+    const { formValues } = this.state;
 
     const filters = Object.keys(filtersArg).reduce((obj, key) => {
-      const newObj = {...obj};
+      const newObj = { ...obj };
       newObj[key] = getValue(filtersArg[key]);
       return newObj;
     }, {});
@@ -114,7 +114,7 @@ export default class TableList extends PureComponent {
   };
 
   handleFormReset = () => {
-    const {form, dispatch} = this.props;
+    const { form, dispatch } = this.props;
     form.resetFields();
     this.setState({
       formValues: {},
@@ -132,8 +132,8 @@ export default class TableList extends PureComponent {
   };
 
   handleMenuClick = e => {
-    const {dispatch} = this.props;
-    const {selectedRows} = this.state;
+    const { dispatch } = this.props;
+    const { selectedRows } = this.state;
 
     if (!selectedRows) return;
 
@@ -165,7 +165,7 @@ export default class TableList extends PureComponent {
   handleSearch = e => {
     e.preventDefault();
 
-    const {dispatch, form} = this.props;
+    const { dispatch, form } = this.props;
 
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -193,54 +193,50 @@ export default class TableList extends PureComponent {
   };
 
   renderAdvancedForm() {
-    const {getFieldDecorator} = this.props.form;
-    const {ListOfBooks} = this.props;
+    const { getFieldDecorator } = this.props.form;
+    const { ListOfBooks } = this.props;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{md: 8, lg: 24, xl: 48}}>
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="文号">
-              {getFieldDecorator('doc_name')(<Input placeholder="请输入文号"/>)}
+              {getFieldDecorator('doc_name')(<Input placeholder="请输入文号" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="申请单位：">
-              {getFieldDecorator('proposer_unit')(<InputNumber style={{width: '100%'}}/>)}
+              {getFieldDecorator('proposer_unit')(<InputNumber style={{ width: '100%' }} />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="承办单位：">
               {getFieldDecorator('undertaker_unit')(
-                <Select placeholder="请选择" style={{width: '100%'}}>
+                <Select placeholder="请选择" style={{ width: '100%' }}>
                   {ListOfBooks.getShortName.length > 0
                     ? ListOfBooks.getShortName.map((item, index) => {
-                      return (
-                        <Option value={item.id} key={index}>
-                          {item.org_short}
-                        </Option>
-                      );
-                    })
+                        return (
+                          <Option value={item.id} key={index}>
+                            {item.org_short}
+                          </Option>
+                        );
+                      })
                     : ''}
                 </Select>
               )}
             </FormItem>
           </Col>
         </Row>
-        <Row gutter={{md: 8, lg: 24, xl: 48}}>
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="选择日期：">
-              {getFieldDecorator('date')(
-                <RangePicker/>
-              )}
-            </FormItem>
+            <FormItem label="选择日期：">{getFieldDecorator('date')(<RangePicker />)}</FormItem>
           </Col>
         </Row>
-        <div style={{overflow: 'hidden'}}>
-          <span style={{float: 'right', marginBottom: 24}}>
+        <div style={{ overflow: 'hidden' }}>
+          <span style={{ float: 'right', marginBottom: 24 }}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
-            <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>
+            <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
               重置
             </Button>
             {/*<a style={{marginLeft: 8}} onClick={this.toggleForm}>*/}
@@ -258,17 +254,20 @@ export default class TableList extends PureComponent {
   }
 
   render() {
-
-    const {ListOfBooks, loading, dispatch} = this.props;
-    const {data} = ListOfBooks;
-    const {selectedRows, modalVisible} = this.state;
-    const isDelete = (id) => {
+    const { ListOfBooks, loading, dispatch } = this.props;
+    const { data } = ListOfBooks;
+    const { selectedRows, modalVisible } = this.state;
+    const isDelete = id => {
       if (getAuthority() == 'sqyh') {
-        return (<span onClick={showDeleteConfirm.bind(this, id)} className={styles.deleteYuansu}>删除</span>);
+        return (
+          <span onClick={showDeleteConfirm.bind(this, id)} className={styles.deleteYuansu}>
+            删除
+          </span>
+        );
       }
       return '';
-    }
-    const showDeleteConfirm = (id) => {
+    };
+    const showDeleteConfirm = id => {
       confirm({
         title: '删除',
         content: '确认删除？',
@@ -276,29 +275,29 @@ export default class TableList extends PureComponent {
         okType: 'danger',
         cancelText: '取消',
         onOk() {
-          let params = {id: id};
+          let params = { id: id };
           let queryRes = dispatch({
             type: 'ListOfBooks/deleteList',
             payload: params,
-          })
-          queryRes.then((res)=>{
-            if(res && res.code ==1){
-              message.success("删除成功");
-              dispatch({
-                type: 'ListOfBooks/fetch',
-              });
-            }else {
-              message.error("删除失败");
-            }
-          }).catch((error)=>{
-
-          })
+          });
+          queryRes
+            .then(res => {
+              if (res && res.code == 1) {
+                message.success('删除成功');
+                dispatch({
+                  type: 'ListOfBooks/fetch',
+                });
+              } else {
+                message.error('删除失败');
+              }
+            })
+            .catch(error => {});
         },
         onCancel() {
           // console.log('Cancel');
         },
       });
-    }
+    };
     const columns = [
       {
         dataIndex: 'id',
@@ -371,9 +370,7 @@ export default class TableList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
-              {this.newCreateProject()}
-            </div>
+            <div className={styles.tableListOperator}>{this.newCreateProject()}</div>
             <StandardTable
               selectedRows={selectedRows}
               loading={loading}
@@ -385,7 +382,7 @@ export default class TableList extends PureComponent {
             />
           </div>
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible}/>
+        <CreateForm {...parentMethods} modalVisible={modalVisible} />
       </PageHeaderLayout>
     );
   }

@@ -8,9 +8,9 @@ import FooterToolbar from 'components/FooterToolbar';
 import styles from './style.less';
 const tableData = [];
 const leaderColor = {
-  departmentLevel:'blue',
-  hallLevel:'orange',
-  ministryLevel:'red'
+  departmentLevel: 'blue',
+  hallLevel: 'orange',
+  ministryLevel: 'red',
 };
 
 class Step3 extends React.PureComponent {
@@ -76,15 +76,24 @@ class Step3 extends React.PureComponent {
     };
     return (
       <div>
-        <div className={styles["class-leaver-wrap"]}>
-          <div className={styles["class-leaver"]}><h1 style={{backgroundColor:leaderColor['departmentLevel']}}></h1><span style={{color:leaderColor['departmentLevel']}}>处级</span></div>
-          <div className={styles["class-leaver"]}><h1 style={{backgroundColor:leaderColor['hallLevel']}}></h1><span style={{color:leaderColor['hallLevel']}}>厅级</span></div>
-          <div className={styles["class-leaver"]}><h1 style={{backgroundColor:leaderColor['ministryLevel']}}></h1><span style={{color:leaderColor['ministryLevel']}}>部级及以上</span></div>
+        <div className={styles['class-leaver-wrap']}>
+          <div className={styles['class-leaver']}>
+            <h1 style={{ backgroundColor: leaderColor['departmentLevel'] }} />
+            <span style={{ color: leaderColor['departmentLevel'] }}>处级</span>
+          </div>
+          <div className={styles['class-leaver']}>
+            <h1 style={{ backgroundColor: leaderColor['hallLevel'] }} />
+            <span style={{ color: leaderColor['hallLevel'] }}>厅级</span>
+          </div>
+          <div className={styles['class-leaver']}>
+            <h1 style={{ backgroundColor: leaderColor['ministryLevel'] }} />
+            <span style={{ color: leaderColor['ministryLevel'] }}>部级及以上</span>
+          </div>
         </div>
         <Card title="成员管理" bordered={false}>
           {getFieldDecorator('members', {
             initialValue: tableData,
-          })(<TableFormaddLedger leaderColor={leaderColor}/>)}
+          })(<TableFormaddLedger leaderColor={leaderColor} />)}
         </Card>
         <FooterToolbar style={{ width: this.state.width }}>
           {getErrorInfo()}

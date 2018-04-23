@@ -105,7 +105,7 @@ class BasicLayout extends React.PureComponent {
       });
     });
     let userId = cookies.get('user_id');
-    let params = {id:parseInt(userId)}
+    let params = { id: parseInt(userId) };
     // if(!userId){
     //   this.props.dispatch(routerRedux.push('/'))
     // }else{
@@ -113,7 +113,7 @@ class BasicLayout extends React.PureComponent {
     // }
     this.props.dispatch({
       type: 'user/fetchCurrent',
-      payload:params
+      payload: params,
     });
   }
   getPageTitle() {

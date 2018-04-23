@@ -1,7 +1,7 @@
-import {routerRedux} from 'dva/router';
-import {fakeAccountLogin, editePassword} from '../services/api';
-import {setAuthority, setAuthoritySession} from '../utils/authority';
-import {reloadAuthorized} from '../utils/Authorized';
+import { routerRedux } from 'dva/router';
+import { fakeAccountLogin, editePassword } from '../services/api';
+import { setAuthority, setAuthoritySession } from '../utils/authority';
+import { reloadAuthorized } from '../utils/Authorized';
 import cookies from 'js-cookie';
 
 export default {
@@ -13,7 +13,7 @@ export default {
   },
 
   effects: {
-    * login({payload}, {call, put}) {
+    *login({ payload }, { call, put }) {
       yield put({
         type: 'submittingStatus',
         payload: true,
@@ -23,7 +23,7 @@ export default {
         let user_type = cookies.get('user_type');
         yield put({
           type: 'changeLoginStatus',
-          payload: {...response, user_type},
+          payload: { ...response, user_type },
         });
       }
       // Login successfully
@@ -56,7 +56,7 @@ export default {
         payload: '',
       });
     },
-    * logout(_, {put, select}) {
+    *logout(_, { put, select }) {
       try {
         // get location pathname
         const urlParams = new URL(window.location.href);
@@ -83,7 +83,7 @@ export default {
         yield put(routerRedux.push('/user/login'));
       }
     },
-    * edite({payload}, {call, put}) {
+    *edite({ payload }, { call, put }) {
       let res = yield call(editePassword, payload);
       try {
         if (res && res.code == 1) {
@@ -110,19 +110,16 @@ export default {
           setAuthoritySession('');
           yield put(routerRedux.push('/user/login'));
           return res;
-
         }
       } catch {
-
       } finally {
         return res;
       }
     },
-
   },
 
   reducers: {
-    changeLoginStatus(state, {payload}) {
+    changeLoginStatus(state, { payload }) {
       setAuthority(payload.user_type);
       return {
         ...state,
@@ -130,13 +127,13 @@ export default {
         type: payload.type,
       };
     },
-    submittingStatus(state, {payload}) {
+    submittingStatus(state, { payload }) {
       return {
         ...state,
         submittingLogin: payload,
       };
     },
-    statusIf(state, {payload}) {
+    statusIf(state, { payload }) {
       return {
         ...state,
         status: payload,

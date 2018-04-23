@@ -72,7 +72,7 @@ export default class GlobalHeader extends PureComponent {
         {/*<Icon type="user" />个人中心*/}
         {/*</Menu.Item>*/}
         <Menu.Item key="edite">
-        <Icon type="setting" />修改密码
+          <Icon type="setting" />修改密码
         </Menu.Item>
         {/*<Menu.Item key="triggerError">*/}
         {/*<Icon type="close-circle" />xiu*/}

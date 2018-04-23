@@ -1,5 +1,5 @@
-import {routerRedux} from 'dva/router';
-import {message} from 'antd';
+import { routerRedux } from 'dva/router';
+import { message } from 'antd';
 import {
   fakeSubmitForm,
   getProposer,
@@ -34,15 +34,15 @@ export default {
   },
 
   effects: {
-    * submitRegularForm({payload}, {call, put}) {
+    *submitRegularForm({ payload }, { call, put }) {
       let cookie = Cookies.get('user_id');
       cookie = cookie ? cookie : '';
-      let dataId = {user_id: cookie};
-      let payloads = {...payload, ...dataId};
+      let dataId = { user_id: cookie };
+      let payloads = { ...payload, ...dataId };
       let response = yield call(addStanding, payloads);
       if (response.code == 1) {
         yield put({
-          type:'clearDoc',
+          type: 'clearDoc',
         });
         yield put(routerRedux.push('/addLedger/step-form/confirm'));
         localStorage.setItem('dataId', response.data);
@@ -53,7 +53,7 @@ export default {
       }
       //message.success('提交成功');
     },
-    * querySelectUnit({payload}, {call, put}) {
+    *querySelectUnit({ payload }, { call, put }) {
       // let response = yield call(getProposer, payload);
       let response = yield call(getUnitName, payload);
       let data = response && response.data;
@@ -62,7 +62,7 @@ export default {
         payload: data,
       });
     },
-    * queryProposer({payload}, {call, put}) {
+    *queryProposer({ payload }, { call, put }) {
       let response = yield call(getProposer, payload);
       let data = response && response.data;
       yield put({
@@ -70,16 +70,16 @@ export default {
         payload: data,
       });
     },
-    * querySelectName({payload}, {call, put}) {
+    *querySelectName({ payload }, { call, put }) {
       let response = yield call(getDocName, payload);
       let data = response && response.data && response.data.doc_name;
-      let params = {doc_name: data};
+      let params = { doc_name: data };
       yield put({
         type: 'saveDocName',
         payload: params,
       });
     },
-    * selectShortName({payload}, {call, put}) {
+    *selectShortName({ payload }, { call, put }) {
       let res = yield call(getShortName, payload);
       let data = res.code == 1 ? res.data : '';
       yield put({
@@ -87,7 +87,7 @@ export default {
         payload: data,
       });
     },
-    * submitStepForm({payload}, {call, put}) {
+    *submitStepForm({ payload }, { call, put }) {
       yield call(fakeSubmitForm, payload);
       yield put({
         type: 'saveStepFormData',
@@ -95,15 +95,15 @@ export default {
       });
       yield put(routerRedux.push('/form/step-form/result'));
     },
-    * submitAdvancedForm({payload}, {call}) {
+    *submitAdvancedForm({ payload }, { call }) {
       yield call(fakeSubmitForm, payload);
       message.success('提交成功');
     },
-    * saveOperationApply({payload}, {call}) {
+    *saveOperationApply({ payload }, { call }) {
       let res = yield call(operationApply, payload);
       return res;
     },
-    * getApplyTypePost({payload}, {call, put}) {
+    *getApplyTypePost({ payload }, { call, put }) {
       let res = yield call(getApplyType, payload);
       let data = res && res.data && res.data.list;
       yield put({
@@ -111,26 +111,26 @@ export default {
         payload: data,
       });
     },
-    * getAddApply({payload}, {call, put}) {
+    *getAddApply({ payload }, { call, put }) {
       let res = yield call(addApply, payload);
       return res;
     },
-    * postMakeEffect({payload}, {call, put}) {
+    *postMakeEffect({ payload }, { call, put }) {
       let res = yield call(submitmakeEffect, payload);
       yield put(routerRedux.push('/addLedger/step-form/result'));
     },
-    * uploadImg({payload}, {call, put}) {
+    *uploadImg({ payload }, { call, put }) {
       let res = yield call(uploadImg, payload);
       return res;
     },
-    * getAccountNameTo({payload}, {call, put}) {
+    *getAccountNameTo({ payload }, { call, put }) {
       let res = yield call(getAccountName, payload);
       return res;
     },
   },
 
   reducers: {
-    saveStepFormData(state, {payload}) {
+    saveStepFormData(state, { payload }) {
       return {
         ...state,
         step: {
@@ -139,13 +139,13 @@ export default {
         },
       };
     },
-    saveSelect(state, {payload}) {
+    saveSelect(state, { payload }) {
       return {
         ...state,
         select: [...payload],
       };
     },
-    saveDocName(state, {payload}) {
+    saveDocName(state, { payload }) {
       return {
         ...state,
         step: {
@@ -154,31 +154,31 @@ export default {
         },
       };
     },
-    saveSelectProposer(state, {payload}) {
+    saveSelectProposer(state, { payload }) {
       return {
         ...state,
         selectProposer: [...payload],
       };
     },
-    saveSelectShortName(state, {payload}) {
+    saveSelectShortName(state, { payload }) {
       return {
         ...state,
         selectShortName: [...payload],
       };
     },
-    saveSelectType(state, {payload}) {
+    saveSelectType(state, { payload }) {
       return {
         ...state,
         seletType: [...payload],
       };
     },
-    clearDoc(state,{payload}) {
+    clearDoc(state, { payload }) {
       return {
         ...state,
-        step:{
-          doc_name:[],
-        }
-      }
-    }
+        step: {
+          doc_name: [],
+        },
+      };
+    },
   },
 };

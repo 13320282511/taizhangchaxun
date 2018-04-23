@@ -1,10 +1,10 @@
-import React, {Fragment} from 'react';
-import {connect} from 'dva';
-import {Form, Input, Button, Select, Divider, Radio} from 'antd';
-import {routerRedux} from 'dva/router';
+import React, { Fragment } from 'react';
+import { connect } from 'dva';
+import { Form, Input, Button, Select, Divider, Radio,message } from 'antd';
+import { routerRedux } from 'dva/router';
 import styles from './style.less';
 
-const {Option, OptGroup} = Select;
+const { Option, OptGroup } = Select;
 
 const formItemLayout = {
   labelCol: {
@@ -23,7 +23,7 @@ class Step1 extends React.PureComponent {
       fankuiUnit: {},
       disabled: true,
       arrayKes: [],
-      isFankui:'请选择',
+      isFankui: '请选择',
     };
     this.props.dispatch({
       type: 'addLedger/querySelectUnit',
@@ -39,40 +39,47 @@ class Step1 extends React.PureComponent {
     });
   }
 
-  handleChangeJilian = (val) => {
+  handleChangeJilian = val => {
     // console.log('val', val)
     // this.setState({
     //   isFankui:val,
     // })
-  }
-  handleChangeChengban = (val) => {
-    let params = {id: val};
+  };
+  handleChangeChengban = val => {
+    let params = { id: val };
     let that = this;
-    this.props.dispatch({
-      type: 'addLedger/getAccountNameTo',
-      payload: params,
-    }).then((res) => {
-      that.setState({
-        fankuiUnit: {...res.data},
-      }, function () {
-        that.setState({
-          arrayKes: [...Object.keys(that.state.fankuiUnit)],
-          disabled: false,
-          isFankui:this.state.fankuiUnit.direct[0].user_name,
-        })
+    this.props.form.resetFields('proposer');
+    this.props
+      .dispatch({
+        type: 'addLedger/getAccountNameTo',
+        payload: params,
       })
-
-    }).catch((error) => {
-      console.log('error', error);
-    });
-  }
+      .then(res => {
+        that.setState(
+          {
+            fankuiUnit: { ...res.data },
+          },
+          function() {
+            that.setState({
+              arrayKes: [...Object.keys(that.state.fankuiUnit)],
+              disabled: false,
+              isFankui: this.state.fankuiUnit.direct[0].user_name,
+            });
+          }
+        );
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  };
   selectJilian = (val, key) => {
-    //console.log('val3636',val)
+    // console.log('val3636',val)
     // console.log('key',key);
     // console.log('valuee',val)
-  }
+
+  };
   selectValue = (val, option) => {
-    let params = {org_id: val, org_short: option.props.children};
+    let params = { org_id: val, org_short: option.props.children };
     this.props.dispatch({
       type: 'addLedger/querySelectName',
       payload: params,
@@ -80,11 +87,16 @@ class Step1 extends React.PureComponent {
   };
 
   render() {
-    const {form, dispatch, data} = this.props;
-    const {getFieldDecorator, validateFields} = form;
+    const { form, dispatch, data } = this.props;
+    const { getFieldDecorator, validateFields } = form;
     const onValidateForm = () => {
       validateFields((err, values) => {
+        // console.log('values',values)
         if (!err) {
+          if(values.proposer=='请选择'){
+            message.info('请选择反馈账号');
+            return false;
+          }
           dispatch({
             type: 'addLedger/submitRegularForm',
             payload: values,
@@ -112,9 +124,9 @@ class Step1 extends React.PureComponent {
             <Input.Group compact>
               {getFieldDecorator('org_id', {
                 // initialValue: data.payAccount,
-                rules: [{required: true, message: '请选择申请单位类型'}],
+                rules: [{ required: true, message: '请选择申请单位类型' }],
               })(
-                <Select placeholder="请选择" style={{width: '160px'}} onSelect={this.selectValue}>
+                <Select placeholder="请选择" style={{ width: '160px' }} onSelect={this.selectValue}>
                   {this.props.select.map((item, index) => {
                     return (
                       <Option value={item.id} key={index}>
@@ -126,69 +138,73 @@ class Step1 extends React.PureComponent {
               )}
               {getFieldDecorator('doc_name', {
                 initialValue: data.doc_name,
-              })(<Input style={{width: 'calc(100% - 160px)'}} disabled={true}/>)}
+              })(<Input style={{ width: 'calc(100% - 160px)' }} disabled={true} />)}
             </Input.Group>
           </Form.Item>
           <Form.Item {...formItemLayout} label="申请人1">
             {getFieldDecorator('proposer_1st', {
               // initialValue: data.receiverName,
-              rules: [{required: true, message: '请输入申请人'}],
-            })(<Input placeholder="请输入申请人"/>)}
+              rules: [{ required: true, message: '请输入申请人' }],
+            })(<Input placeholder="请输入申请人" />)}
           </Form.Item>
           <Form.Item {...formItemLayout} label="联系电话">
             {getFieldDecorator('proposer_1st_phone', {
               // initialValue: data.receiverName,
-              rules: [{required: true, message: '请输入联系电话'}, {
-                pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/,
-                message: '电话格式错误'
-              }],
+              rules: [
+                { required: true, message: '请输入联系电话' },
+                {
+                  pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/,
+                  message: '电话格式错误',
+                },
+              ],
               // trigger:'onBlur',
               validateTrigger: 'onBlur',
-            })(<Input placeholder="请输入联系电话"/>)}
+            })(<Input placeholder="请输入联系电话" />)}
             {/*pattern:new RegExp(/^((/(/d{3}/))|(/d{3}/-))?13[0-9]/d{8}|15[89]/d{8}/)*/}
           </Form.Item>
           <Form.Item {...formItemLayout} label="申请人2">
             {getFieldDecorator('proposer_2nd', {
               // initialValue: data.receiverName,
-              rules: [{required: true, message: '请输入申请人'}],
-            })(<Input placeholder="请输入申请人"/>)}
+              rules: [{ required: true, message: '请输入申请人' }],
+            })(<Input placeholder="请输入申请人" />)}
           </Form.Item>
           <Form.Item {...formItemLayout} label="联系电话">
             {getFieldDecorator('proposer_2nd_phone', {
               // initialValue: data.receiverName,
-              rules: [{required: true, message: '请输入联系电话'}, {
-                pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/,
-                message: '电话格式错误'
-              }],
+              rules: [
+                { required: true, message: '请输入联系电话' },
+                {
+                  pattern: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/,
+                  message: '电话格式错误',
+                },
+              ],
               // trigger:'onBlur',
               validateTrigger: 'onBlur',
-            })(<Input placeholder="请输入联系电话"/>)}
+            })(<Input placeholder="请输入联系电话" />)}
           </Form.Item>
           <Form.Item {...formItemLayout} label="申请单位类型">
             {getFieldDecorator('proposer_org_type', {
               // initialValue: data.payAccount,
-              rules: [{required: true, message: '请选择申请单位类型'}],
+              rules: [{ required: true, message: '请选择申请单位类型' }],
             })(
               <Select placeholder="请选择">
                 {this.props.selectProposer.length > 0 &&
-                this.props.selectProposer.map((item, index) => {
-                  return (
-                    <Option value={item.id} key={index}>
-                      {item.proposer_name}
-                    </Option>
-                  );
-                })}
+                  this.props.selectProposer.map((item, index) => {
+                    return (
+                      <Option value={item.id} key={index}>
+                        {item.proposer_name}
+                      </Option>
+                    );
+                  })}
               </Select>
             )}
           </Form.Item>
           <Form.Item {...formItemLayout} label="承办单位">
             {getFieldDecorator('undertaker_id', {
               // initialValue: data.payAccount,
-              rules: [{required: true, message: '请选择承办单位'}],
+              rules: [{ required: true, message: '请选择承办单位' }],
             })(
-              <Select
-                onChange={this.handleChangeChengban}
-                placeholder="请选择">
+              <Select onChange={this.handleChangeChengban} placeholder="请选择">
                 {this.props.selectShortName.map((item, index) => {
                   return (
                     <Option value={item.id} key={index}>
@@ -202,33 +218,48 @@ class Step1 extends React.PureComponent {
 
           <Form.Item {...formItemLayout} label="反馈单位/账号">
             {getFieldDecorator('proposer', {
-              initialValue: this.state.isFankui,
-              rules: [{required: true, message: '请选择反馈单位/账号'}],
+              // initialValue: this.state.isFankui,
+              initialValue: '请选择',
+              rules: [{ required: true, message: '请选择反馈单位/账号' }],
             })(
               <Select
-                // defaultValue={this.state.isFankui}
+                defaultValue={this.state.isFankui}
                 // value={this.state.isFankui}
                 style={{}}
+                // mode="tags"
                 onChange={this.handleChangeJilian}
                 onSelect={this.selectJilian}
                 // placeholder="请选择"
+                // notFoundContent="meiyou"
                 disabled={this.state.disabled ? true : false}
               >
                 {this.state.arrayKes.map((item, index) => {
                   if (item == 'direct') {
-                    return (<OptGroup label="direct">
-                      {this.state.fankuiUnit.direct.map((item, index) => {
-                        return (<Option value={item.id} key={index}>{item.user_name}</Option>)
-                        // return (<Option ey={index}>{item.user_name}</Option>)
-                      })}
-                   </OptGroup>)
+                    return (
+                      <OptGroup label="direct">
+                        {this.state.fankuiUnit.direct.map((item, index) => {
+                          return (
+                            <Option value={item.id} key={index}>
+                              {item.user_name}
+                            </Option>
+                          );
+                          // return (<Option ey={index}>{item.user_name}</Option>)
+                        })}
+                      </OptGroup>
+                    );
                   } else {
-                    return (<OptGroup label="other">
-                      {this.state.fankuiUnit.other.map((item, index) => {
-                        return (<Option value={item.id} key={index}>{item.user_name}</Option>)
-                        // return (<Option key={index}>{item.user_name}</Option>)
-                      })}
-                    </OptGroup>)
+                    return (
+                      <OptGroup label="other">
+                        {this.state.fankuiUnit.other.map((item, index) => {
+                          return (
+                            <Option value={item.id} key={index}>
+                              {item.user_name}
+                            </Option>
+                          );
+                          // return (<Option key={index}>{item.user_name}</Option>)
+                        })}
+                      </OptGroup>
+                    );
                   }
                 })}
               </Select>
@@ -238,12 +269,12 @@ class Step1 extends React.PureComponent {
           <Form.Item {...formItemLayout} label="最高级别审批人">
             {getFieldDecorator('approver', {
               // initialValue: data.receiverName,
-              rules: [{required: true, message: '请输入申请人'}],
-            })(<Input placeholder="请输入申请人"/>)}
+              rules: [{ required: true, message: '请输入申请人' }],
+            })(<Input placeholder="请输入申请人" />)}
           </Form.Item>
           <Form.Item
             wrapperCol={{
-              xs: {span: 24, offset: 0},
+              xs: { span: 24, offset: 0 },
               sm: {
                 span: formItemLayout.wrapperCol.span,
                 offset: formItemLayout.labelCol.span,
@@ -256,14 +287,14 @@ class Step1 extends React.PureComponent {
             </Button>
           </Form.Item>
         </Form>
-        <Divider style={{margin: '40px 0 24px'}}/>
-        <div className={styles.desc}/>
+        <Divider style={{ margin: '40px 0 24px' }} />
+        <div className={styles.desc} />
       </Fragment>
     );
   }
 }
 
-export default connect(({addLedger}) => ({
+export default connect(({ addLedger }) => ({
   data: addLedger.step,
   select: addLedger.select,
   selectShortName: addLedger.selectShortName,

@@ -16,9 +16,9 @@ export default {
         payload: response,
       });
     },
-    *fetchCurrent({payload}, { call, put }) {
-      const response = yield call(queryCurrent,payload);
-      if(response && response.code == 1){
+    *fetchCurrent({ payload }, { call, put }) {
+      const response = yield call(queryCurrent, payload);
+      if (response && response.code == 1) {
         yield put({
           type: 'saveCurrentUser',
           payload: response.data,
@@ -45,7 +45,7 @@ export default {
         ...state,
         currentUser: {
           ...state.currentUser,
-          ...action
+          ...action,
         },
       };
     },

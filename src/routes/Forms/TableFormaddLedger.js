@@ -1,8 +1,8 @@
-import React, {PureComponent, Fragment} from 'react';
-import {Table, Button, Input, message, Popconfirm, Divider, InputNumber, Select} from 'antd';
+import React, { PureComponent, Fragment } from 'react';
+import { Table, Button, Input, message, Popconfirm, Divider, InputNumber, Select } from 'antd';
 import styles from './style.less';
-import {connect} from 'dva';
-import {Form} from 'antd/lib/index';
+import { connect } from 'dva';
+import { Form } from 'antd/lib/index';
 
 // const returnData = [45643, 34343434, 123, 1234];
 class TableFormaddLedger extends PureComponent {
@@ -14,7 +14,7 @@ class TableFormaddLedger extends PureComponent {
       leaderColor: this.props.leaderColor,
     };
     let codeAdmin = localStorage.getItem('antd-pro-authority');
-    let quanx = {code: codeAdmin};
+    let quanx = { code: codeAdmin };
     this.props.dispatch({
       type: 'addLedger/getApplyTypePost',
       payload: quanx,
@@ -35,22 +35,21 @@ class TableFormaddLedger extends PureComponent {
 
   index = 0;
   cacheOriginData = {};
-  toggleEditable = (e, key, boolean, dataReturnTtoal,action) => {
+  toggleEditable = (e, key, boolean, dataReturnTtoal, action) => {
     e.preventDefault();
-    const newData = this.state.data.map(item => ({...item}));
+    const newData = this.state.data.map(item => ({ ...item }));
     const target = this.getRowByKey(key, newData);
     let contentData = target.content;
 
     function showhtml(contentData) {
-      let html = {__html: contentData};
-      return <div dangerouslySetInnerHTML={html}/>;
+      let html = { __html: contentData };
+      return <div dangerouslySetInnerHTML={html} />;
     }
 
     if (boolean == 'true') {
       let dataReturn = dataReturnTtoal;
-      if(action == 'edite'){
-
-      }else if(action == 'add'){
+      if (action == 'edite') {
+      } else if (action == 'add') {
         dataReturn = dataReturnTtoal.verifyCard ? dataReturnTtoal.verifyCard : {};
         target.id = dataReturnTtoal.id;
       }
@@ -61,21 +60,27 @@ class TableFormaddLedger extends PureComponent {
       for (let i = 0; i < arrayData.length; i++) {
         for (let j = 0; j < ministryLevel.length; j++) {
           if (arrayData[i] == ministryLevel[j]) {
-            arrayData[i] = `<span style='color:${this.state.leaderColor.ministryLevel}'>${arrayData[i]}</span>`;
+            arrayData[i] = `<span style='color:${this.state.leaderColor.ministryLevel}'>${
+              arrayData[i]
+            }</span>`;
           }
         }
         for (let j = 0; j < hallLevel.length; j++) {
           if (arrayData[i] == hallLevel[j]) {
-            arrayData[i] = `<span style='color:${this.state.leaderColor.hallLevel}'>${arrayData[i]}</span>`;
+            arrayData[i] = `<span style='color:${this.state.leaderColor.hallLevel}'>${
+              arrayData[i]
+            }</span>`;
           }
         }
         for (let j = 0; j < departmentLevel.length; j++) {
           if (arrayData[i] == departmentLevel[j]) {
-            arrayData[i] = `<span style='color:${this.state.leaderColor.departmentLevel}'>${arrayData[i]}</span>`;
+            arrayData[i] = `<span style='color:${this.state.leaderColor.departmentLevel}'>${
+              arrayData[i]
+            }</span>`;
           }
         }
       }
-      console.log('arrayData',arrayData)
+      console.log('arrayData', arrayData);
       let stringData = arrayData.join(',');
       target.content = showhtml(stringData);
     } else {
@@ -86,10 +91,10 @@ class TableFormaddLedger extends PureComponent {
     if (target) {
       // 进入编辑状态时保存原始数据
       if (!target.editable) {
-        this.cacheOriginData[key] = {...target};
+        this.cacheOriginData[key] = { ...target };
       }
       target.editable = !target.editable;
-      this.setState({data: newData});
+      this.setState({ data: newData });
     }
   };
 
@@ -117,7 +122,7 @@ class TableFormaddLedger extends PureComponent {
       num: target.num,
       operation: 'delete',
       standing_id: standing_id,
-      id:target.id,
+      id: target.id,
     };
     let that = this;
     let dispatch = this.props.dispatch;
@@ -128,7 +133,7 @@ class TableFormaddLedger extends PureComponent {
       .then(value => {
         if (value && value.code && value.code == 1) {
           const newData = this.state.data.filter(item => item.key !== key);
-          this.setState({data: newData});
+          this.setState({ data: newData });
           that.setState({
             loading: false,
           });
@@ -139,23 +144,23 @@ class TableFormaddLedger extends PureComponent {
           message.error('删除失败');
         }
       })
-      .catch((error) => {
+      .catch(error => {
         that.setState({
           loading: false,
         });
       });
     const newData = this.state.data.filter(item => item.key !== key);
-    this.setState({data: newData});
+    this.setState({ data: newData });
   }
 
   newMember = () => {
     let standing_id = parseInt(localStorage.getItem('dataId'));
-    const newData = this.state.data.map(item => ({...item}));
+    const newData = this.state.data.map(item => ({ ...item }));
     console.log('newData', newData);
     newData.push({
       key: `NEW_TEMP_ID_${this.index}`,
       id: '',
-      type:'',
+      type: '',
       num: 1,
       content: '',
       condition: '',
@@ -163,7 +168,7 @@ class TableFormaddLedger extends PureComponent {
       isNew: true,
     });
     this.index += 1;
-    this.setState({data: newData});
+    this.setState({ data: newData });
   };
 
   handleKeyPress(e, key) {
@@ -174,7 +179,7 @@ class TableFormaddLedger extends PureComponent {
   }
 
   handleFieldChange(e, fieldName, key) {
-    const newData = this.state.data.map(item => ({...item}));
+    const newData = this.state.data.map(item => ({ ...item }));
     const target = this.getRowByKey(key, newData);
     if (target) {
       if (typeof e == 'number' || typeof e == 'string') {
@@ -187,12 +192,12 @@ class TableFormaddLedger extends PureComponent {
         } else {
           target[fieldName] = e;
         }
-      } else if(fieldName == 'num'){
+      } else if (fieldName == 'num') {
         target[fieldName] = e || 1;
-      }else{
+      } else {
         target[fieldName] = e.target.value;
       }
-      this.setState({data: newData});
+      this.setState({ data: newData });
     }
   }
 
@@ -222,7 +227,7 @@ class TableFormaddLedger extends PureComponent {
       num: target.num,
       operation: 'edit',
       standing_id: standing_id,
-      id:target.id,
+      id: target.id,
     };
     let that = this;
     let dispatch = this.props.dispatch;
@@ -237,7 +242,7 @@ class TableFormaddLedger extends PureComponent {
           //   123, 124, 222, 111, 58
           // ];
           let dataReturn = value.data ? value.data : {};
-          that.toggleEditable(e, key, 'true', dataReturn,'edite');
+          that.toggleEditable(e, key, 'true', dataReturn, 'edite');
           that.setState({
             loading: false,
           });
@@ -248,7 +253,7 @@ class TableFormaddLedger extends PureComponent {
           message.error('保存失败');
         }
       })
-      .catch((error) => {
+      .catch(error => {
         that.setState({
           loading: false,
         });
@@ -292,7 +297,7 @@ class TableFormaddLedger extends PureComponent {
         if (value && value.code && value.code == 1) {
           delete target.isNew;
           let dataReturn = value.data ? value.data : {};
-          that.toggleEditable(e, key, 'true', dataReturn,'add');
+          that.toggleEditable(e, key, 'true', dataReturn, 'add');
           that.setState({
             loading: false,
           });
@@ -303,8 +308,8 @@ class TableFormaddLedger extends PureComponent {
           message.error('增加失败');
         }
       })
-      .catch((error) => {
-        console.log('error',error)
+      .catch(error => {
+        console.log('error', error);
         that.setState({
           loading: false,
         });
@@ -314,23 +319,23 @@ class TableFormaddLedger extends PureComponent {
   cancel(e, key) {
     this.clickedCancel = true;
     e.preventDefault();
-    const newData = this.state.data.map(item => ({...item}));
+    const newData = this.state.data.map(item => ({ ...item }));
     const target = this.getRowByKey(key, newData);
     if (this.cacheOriginData[key]) {
       Object.assign(target, this.cacheOriginData[key]);
       target.editable = false;
       delete this.cacheOriginData[key];
     }
-    this.setState({data: newData});
+    this.setState({ data: newData });
     this.clickedCancel = false;
   }
 
   render() {
     const columns = [
       {
-        dataIndex:'id',
-        key:'id',
-        className:styles.cloumnsNone,
+        dataIndex: 'id',
+        key: 'id',
+        className: styles.cloumnsNone,
       },
       {
         title: '类型',
@@ -343,7 +348,7 @@ class TableFormaddLedger extends PureComponent {
               <Select
                 value={text ? text : '请输入类型'}
                 showSearch
-                style={{width: 200}}
+                style={{ width: 200 }}
                 onChange={e => this.handleFieldChange(e, 'type', record.key)}
                 filterOption={(input, option) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -429,7 +434,7 @@ class TableFormaddLedger extends PureComponent {
               return (
                 <span>
                   <a onClick={e => this.addsaveRow(e, record.key)}>验证</a>
-                  <Divider type="vertical"/>
+                  <Divider type="vertical" />
                   <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(record.key)}>
                     <a>删除</a>
                   </Popconfirm>
@@ -439,7 +444,7 @@ class TableFormaddLedger extends PureComponent {
             return (
               <span>
                 <a onClick={e => this.saveRow(e, record.key)}>验证</a>
-                <Divider type="vertical"/>
+                <Divider type="vertical" />
                 <a onClick={e => this.cancel(e, record.key)}>取消</a>
               </span>
             );
@@ -447,7 +452,7 @@ class TableFormaddLedger extends PureComponent {
           return (
             <span>
               <a onClick={e => this.toggleEditable(e, record.key)}>编辑</a>
-              <Divider type="vertical"/>
+              <Divider type="vertical" />
               <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(record.key)}>
                 <a>删除</a>
               </Popconfirm>
@@ -469,7 +474,7 @@ class TableFormaddLedger extends PureComponent {
           }}
         />
         <Button
-          style={{width: '100%', marginTop: 16, marginBottom: 8}}
+          style={{ width: '100%', marginTop: 16, marginBottom: 8 }}
           type="dashed"
           onClick={this.newMember}
           icon="plus"
@@ -481,7 +486,7 @@ class TableFormaddLedger extends PureComponent {
   }
 }
 
-export default connect(({addLedger, global, loading}) => ({
+export default connect(({ addLedger, global, loading }) => ({
   addLedger: addLedger,
   collapsed: addLedger.collapsed,
   loading: loading,

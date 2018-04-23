@@ -1,19 +1,19 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from 'dva';
-import {Link, routerRedux} from 'dva/router';
-import {Card, Badge, Table, Divider, Button, message, Modal} from 'antd';
+import React, { Component, Fragment } from 'react';
+import { connect } from 'dva';
+import { Link, routerRedux } from 'dva/router';
+import { Card, Badge, Table, Divider, Button, message, Modal } from 'antd';
 import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './BasicProfile.less';
-import {getAuthority} from "../../utils/authority";
+import { getAuthority } from '../../utils/authority';
 
-const {Description} = DescriptionList;
+const { Description } = DescriptionList;
 const detailAlink = (value, standingId, id, type) => {
   if (getAuthority() == 'sqyh' || getAuthority() == 'auditor') {
     return '';
   } else if (value) {
     if (!value.feedback_time) {
-      return (<Link to={`/operator/uploadResult/${standingId}/${id}/${type}`}>上传</Link>)
+      return <Link to={`/operator/uploadResult/${standingId}/${id}/${type}`}>上传</Link>;
     }
   }
   return '';
@@ -27,7 +27,11 @@ const downLoadDisplay = (value, id, file) => {
   // return '';
 
   if (value && file.length > 0) {
-    return <a href={`/api/service/Standing/feedbackDownload?id=${id}`} target="_blank">下载结果</a>
+    return (
+      <a href={`/api/service/Standing/feedbackDownload?id=${id}`} target="_blank">
+        下载结果
+      </a>
+    );
   } else {
     return '';
   }
@@ -63,11 +67,11 @@ const progressColumns = [
       return (
         <div className={styles.huizhidan}>
           {feedback_file.map((item, index) => {
-            return (<div key={index}>{item}</div>)
+            return <div key={index}>{item}</div>;
           })}
         </div>
       );
-    }
+    },
   },
   {
     title: '回执单',
@@ -78,18 +82,32 @@ const progressColumns = [
       return (
         <div className={styles.huizhidan}>
           {feedbackFile.map((item, index) => {
-            return (<a href={item} target='_blank'
-                       style={{width: '20px', height: '20px', display: 'inline-block', marginRight: '10px'}}><img
-              src={item} key={index} style={{width: '100%', height: '100%', display: 'block'}}/></a>)
+            return (
+              <a
+                href={item}
+                target="_blank"
+                style={{
+                  width: '20px',
+                  height: '20px',
+                  display: 'inline-block',
+                  marginRight: '10px',
+                }}
+              >
+                <img
+                  src={item}
+                  key={index}
+                  style={{ width: '100%', height: '100%', display: 'block' }}
+                />
+              </a>
+            );
           })}
         </div>
       );
-    }
+    },
   },
   {
     title: '操作',
     render(val) {
-
       return (
         <Fragment>
           {detailAlink(val, val.standing_id, val.id, val.type)} &nbsp;&nbsp;
@@ -97,10 +115,10 @@ const progressColumns = [
         </Fragment>
       );
     },
-  }
+  },
 ];
 
-@connect(({detailListOfBooks, loading}) => ({
+@connect(({ detailListOfBooks, loading }) => ({
   detailListOfBooks,
   loading: loading.effects['detailListOfBooks/fetchBasic'],
 }))
@@ -110,19 +128,19 @@ export default class BasicProfile extends Component {
     this.state = {
       previewVisible: false,
       previewImage: '',
-    }
+    };
   }
 
-  handleCancel = () => this.setState({previewVisible: false})
+  handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview(file) {
     this.setState({
       previewImage: file,
       previewVisible: true,
-    })
+    });
   }
 
-  isDeleteQuery = (item) => {
+  isDeleteQuery = item => {
     if (getAuthority() == 'sjfxy' || getAuthority() == 'cxy' || getAuthority() == 'dzqzy') {
       // if (Object.keys(item).length > 0) {
       //   console.log('item'.item)
@@ -130,72 +148,80 @@ export default class BasicProfile extends Component {
       // } else {
       //   return '';
       // }
-      return (<Description term="删除时间">{item.user_delete_time}</Description>);
+      return <Description term="删除时间">{item.user_delete_time}</Description>;
     }
-    return (<Description />);
+    return <Description />;
   };
   sendLoadDisplay = () => {
     if (getAuthority() == 'sjfxy' || getAuthority() == 'cxy' || getAuthority() == 'dzqzy') {
-      return (<Button className="btn" type="primary" onClick={this.onSendQuery}>发送结果</Button>);
+      return (
+        <Button className="btn" type="primary" onClick={this.onSendQuery}>
+          发送结果
+        </Button>
+      );
     }
     return '';
-  }
+  };
   onSendQuery = () => {
-    const {dispatch, match} = this.props;
+    const { dispatch, match } = this.props;
     let urlArray = match.url.split('/');
     dispatch({
       type: 'detailListOfBooks/detailSendResult',
-      payload: {id: parseInt(urlArray[urlArray.length - 1])},
-    }).then((res) => {
-      if (res && res.code && res.code == 1) {
-        message.success('发送结果成功');
-        //console.log('res1',res)
-        // dispatch({
-        //   type:'detailListOfBooks/piwenDetail',
-        //   payload:{ id: parseInt(urlArray[urlArray.length - 1]) },
-        // })
-        // dispatch({
-        //   type: 'detailListOfBooks/fetchDetailPiwen',
-        //   payload: { standing_id: parseInt(urlArray[urlArray.length - 1]) },
-        // });
-        dispatch(routerRedux.push(`/operator/detailList/${parseInt(urlArray[urlArray.length - 1])}`));
-      } else {
-        message.error("发送结果失败");
-        console.log('res2', res)
-      }
-    }).catch((error) => {
-      cosnole.log('error', error);
+      payload: { id: parseInt(urlArray[urlArray.length - 1]) },
     })
-  }
+      .then(res => {
+        if (res && res.code && res.code == 1) {
+          message.success('发送结果成功');
+          //console.log('res1',res)
+          // dispatch({
+          //   type:'detailListOfBooks/piwenDetail',
+          //   payload:{ id: parseInt(urlArray[urlArray.length - 1]) },
+          // })
+          // dispatch({
+          //   type: 'detailListOfBooks/fetchDetailPiwen',
+          //   payload: { standing_id: parseInt(urlArray[urlArray.length - 1]) },
+          // });
+          dispatch(
+            routerRedux.push(`/operator/detailList/${parseInt(urlArray[urlArray.length - 1])}`)
+          );
+        } else {
+          message.error('发送结果失败');
+          console.log('res2', res);
+        }
+      })
+      .catch(error => {
+        cosnole.log('error', error);
+      });
+  };
 
   componentDidMount() {
-    const {dispatch, match} = this.props;
+    const { dispatch, match } = this.props;
     let urlArray = match.url.split('/');
     dispatch({
       type: 'detailListOfBooks/fetchBasic',
-      payload: {id: parseInt(urlArray[urlArray.length - 1])},
+      payload: { id: parseInt(urlArray[urlArray.length - 1]) },
     });
     dispatch({
       type: 'detailListOfBooks/fetchDetailPiwen',
-      payload: {standing_id: parseInt(urlArray[urlArray.length - 1])},
+      payload: { standing_id: parseInt(urlArray[urlArray.length - 1]) },
     });
     dispatch({
       type: 'detailListOfBooks/piwenDetail',
-      payload: {id: parseInt(urlArray[urlArray.length - 1])},
-    })
+      payload: { id: parseInt(urlArray[urlArray.length - 1]) },
+    });
   }
 
   render() {
-    const {detailListOfBooks, loading} = this.props;
-    const {basicstandingDetail} = detailListOfBooks;
+    const { detailListOfBooks, loading } = this.props;
+    const { basicstandingDetail } = detailListOfBooks;
     return (
       <PageHeaderLayout title="">
         <Card bordered={false}>
-          <Divider style={{marginBottom: 32}}/>
+          <Divider style={{ marginBottom: 32 }} />
           <DescriptionList
             size="large"
             title={basicstandingDetail.doc_name}
-            style={{marginBottom: 32}}
+            style={{ marginBottom: 32 }}
           >
             <Description term="查询类型">{basicstandingDetail.doc_type}</Description>
             <Description term="反馈账号">{basicstandingDetail.account}</Description>
@@ -211,25 +237,41 @@ export default class BasicProfile extends Component {
             <Description term="结果反馈时间">{basicstandingDetail.feedback_time}</Description>
             {this.isDeleteQuery(basicstandingDetail)}
           </DescriptionList>
-          <Divider style={{marginBottom: 32}}/>
+          <Divider style={{ marginBottom: 32 }} />
           <div className={styles.title}>
             <span>批文</span>
           </div>
-          <div className={styles["piwen-img"]}>
+          <div className={styles['piwen-img']}>
             {detailListOfBooks.imgSrcPiwen.map((item, index) => {
               // return <img src={item} key={index} alt={index} onClick={this.handlePreview.bind(this,item)}/>
-              return <a href={item} target='_blank'
-                        style={{width: '20px', height: '20px', marginRight: '10px', display: 'inline-block'}}><img
-                src={item} key={index} alt={index} style={{display: 'block', width: '100%', height: '100%'}}/></a>
+              return (
+                <a
+                  href={item}
+                  target="_blank"
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    marginRight: '10px',
+                    display: 'inline-block',
+                  }}
+                >
+                  <img
+                    src={item}
+                    key={index}
+                    alt={index}
+                    style={{ display: 'block', width: '100%', height: '100%' }}
+                  />
+                </a>
+              );
             })}
           </div>
-          <Divider style={{marginBottom: 32}}/>
+          <Divider style={{ marginBottom: 32 }} />
           <div className={styles.title}>
             <span>查询结果</span>
             {this.sendLoadDisplay()}
           </div>
           <Table
-            style={{marginBottom: 16}}
+            style={{ marginBottom: 16 }}
             pagination={false}
             loading={loading}
             dataSource={this.props.detailListOfBooks.standingDetailQuery}
@@ -237,8 +279,13 @@ export default class BasicProfile extends Component {
             // rowKey="num"
           />
         </Card>
-        <Modal visible={this.state.previewVisible} footer={null} onCancel={this.handleCancel} width='60%'>
-          <img alt="example" style={{width: '50%'}} src={this.state.previewImage}/>
+        <Modal
+          visible={this.state.previewVisible}
+          footer={null}
+          onCancel={this.handleCancel}
+          width="60%"
+        >
+          <img alt="example" style={{ width: '50%' }} src={this.state.previewImage} />
         </Modal>
       </PageHeaderLayout>
     );

@@ -11,9 +11,9 @@ class Step3 extends React.PureComponent {
     const onFinish = () => {
       dispatch(routerRedux.push('/addLedger/step-form/info'));
     };
-    const onReturnList=()=>{
+    const onReturnList = () => {
       dispatch(routerRedux.push('/operator/listOfBooks'));
-    }
+    };
     const information = <div className={styles.information} />;
     const actions = (
       <Fragment>

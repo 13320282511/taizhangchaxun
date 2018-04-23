@@ -1,7 +1,12 @@
 /**
  * Created by zj on 2018/4/7.
  */
-import { postStandingDetai, DetailapplyList,standingApproval,postSendResult } from '../services/api';
+import {
+  postStandingDetai,
+  DetailapplyList,
+  standingApproval,
+  postSendResult,
+} from '../services/api';
 
 export default {
   namespace: 'detailListOfBooks',
@@ -9,7 +14,7 @@ export default {
   state: {
     basicstandingDetail: {},
     standingDetailQuery: [],
-    imgSrcPiwen:[],
+    imgSrcPiwen: [],
   },
 
   effects: {
@@ -36,27 +41,26 @@ export default {
         payload: data,
       });
     },
-    *piwenDetail({payload},{call,put}){
-      const res = yield call(standingApproval,payload);
-      if(res && res.code == 1 && res.data) {
-        if(res.data.approval){
+    *piwenDetail({ payload }, { call, put }) {
+      const res = yield call(standingApproval, payload);
+      if (res && res.code == 1 && res.data) {
+        if (res.data.approval) {
           yield put({
-            type:'imgPiwen',
-            payload:res.data.approval,
-          })
-        }else{
+            type: 'imgPiwen',
+            payload: res.data.approval,
+          });
+        } else {
           yield put({
-            type:'imgPiwen',
-            payload:'',
-          })
+            type: 'imgPiwen',
+            payload: '',
+          });
         }
-
       }
     },
-    *detailSendResult({payload},{call,put}) {
-      let res = yield call(postSendResult,payload);
+    *detailSendResult({ payload }, { call, put }) {
+      let res = yield call(postSendResult, payload);
       return res;
-    }
+    },
   },
 
   reducers: {
@@ -72,11 +76,11 @@ export default {
         standingDetailQuery: [...payload],
       };
     },
-    imgPiwen(state,{payload}) {
+    imgPiwen(state, { payload }) {
       return {
         ...state,
-        imgSrcPiwen:[...payload],
-      }
-    }
+        imgSrcPiwen: [...payload],
+      };
+    },
   },
 };
