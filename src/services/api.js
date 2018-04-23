@@ -194,6 +194,18 @@ export async function postAuthority(params) {
     body: params,
   });
 }
+export async function userDeleteStanding(params) {
+  return request('/api/service/Standing/userDeleteStanding', {
+    method: 'POST',
+    body: params,
+  });
+}
+export async function editePassword(params) {
+  return request('/api/service/pseron/editPassword', {
+    method: 'POST',
+    body: params,
+  });
+}
 export async function queryNotices() {
   return request('/api/notices');
 }

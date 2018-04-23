@@ -6,6 +6,7 @@ import {
   getUnitName,
   getShortName,
   uploadFile,
+  userDeleteStanding,
 } from '../services/api';
 import Cookies from 'js-cookie';
 
@@ -69,6 +70,10 @@ export default {
     },
     *uploadFile({payload},{call,put}){
       const res = yield call(uploadFile,payload);
+      return res;
+    },
+    *deleteList({payload},{call,put}) {
+      let res = yield call(userDeleteStanding,payload);
       return res;
     }
   },

@@ -71,11 +71,11 @@ export default class GlobalHeader extends PureComponent {
         {/*<Menu.Item disabled>*/}
         {/*<Icon type="user" />个人中心*/}
         {/*</Menu.Item>*/}
-        {/*<Menu.Item disabled>*/}
-        {/*<Icon type="setting" />设置*/}
-        {/*</Menu.Item>*/}
+        <Menu.Item key="edite">
+        <Icon type="setting" />修改密码
+        </Menu.Item>
         {/*<Menu.Item key="triggerError">*/}
-        {/*<Icon type="close-circle" />触发报错*/}
+        {/*<Icon type="close-circle" />xiu*/}
         {/*</Menu.Item>*/}
         <Menu.Divider />
         <Menu.Item key="logout">

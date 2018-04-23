@@ -19,9 +19,9 @@ export default class StepForm extends PureComponent {
       case 'confirm':
         return 1;
       case 'result':
-        return 2;
-      case 'content':
         return 3;
+      case 'content':
+        return 2;
       default:
         return 0;
     }

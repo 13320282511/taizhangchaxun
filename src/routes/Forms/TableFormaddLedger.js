@@ -156,7 +156,7 @@ class TableFormaddLedger extends PureComponent {
       key: `NEW_TEMP_ID_${this.index}`,
       id: '',
       type:'',
-      num: '',
+      num: 1,
       content: '',
       condition: '',
       editable: true,
@@ -428,7 +428,7 @@ class TableFormaddLedger extends PureComponent {
             if (record.isNew) {
               return (
                 <span>
-                  <a onClick={e => this.addsaveRow(e, record.key)}>添加</a>
+                  <a onClick={e => this.addsaveRow(e, record.key)}>验证</a>
                   <Divider type="vertical"/>
                   <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(record.key)}>
                     <a>删除</a>
@@ -438,7 +438,7 @@ class TableFormaddLedger extends PureComponent {
             }
             return (
               <span>
-                <a onClick={e => this.saveRow(e, record.key)}>保存</a>
+                <a onClick={e => this.saveRow(e, record.key)}>验证</a>
                 <Divider type="vertical"/>
                 <a onClick={e => this.cancel(e, record.key)}>取消</a>
               </span>

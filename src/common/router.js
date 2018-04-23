@@ -117,6 +117,10 @@ export const getRouterData = app => {
       name: '完成',
       component: dynamicWrapper(app, ['addLedger'], () => import('../routes/AddLedger/Step3')),
     },
+    '/user/edite': {
+      name: '修改密码',
+      component: dynamicWrapper(app, ['addLedger'], () => import('../routes/TaiZhang/User/EditePassword')),
+    },
     // '/result/success': {
     //   component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
     // },

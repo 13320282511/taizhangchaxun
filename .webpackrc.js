@@ -15,7 +15,7 @@ export default {
     components: path.resolve(__dirname, 'src/components/'),
   },
   ignoreMomentLocale: true,
-  theme: './src/theme.js',
+  theme: './theme.config.js',
   html: {
     template: './src/index.ejs',
   },

@@ -1,5 +1,5 @@
 import {routerRedux} from 'dva/router';
-import {fakeAccountLogin} from '../services/api';
+import {fakeAccountLogin, editePassword} from '../services/api';
 import {setAuthority, setAuthoritySession} from '../utils/authority';
 import {reloadAuthorized} from '../utils/Authorized';
 import cookies from 'js-cookie';
@@ -60,10 +60,10 @@ export default {
       try {
         // get location pathname
         const urlParams = new URL(window.location.href);
-        const pathname = yield select(state => state.routing.location.pathname);
+        // const pathname = yield select(state => state.routing.location.pathname);
         // add the parameters in the url
-        urlParams.searchParams.set('redirect', pathname);
-        window.history.replaceState(null, 'login', urlParams.href);
+        // urlParams.searchParams.set('redirect', pathname);
+        // window.history.replaceState(null, 'login', urlParams.href);
         localStorage.clear();
         let cookieData = cookies.get();
         for (let i in cookieData) {
@@ -83,6 +83,42 @@ export default {
         yield put(routerRedux.push('/user/login'));
       }
     },
+    * edite({payload}, {call, put}) {
+      let res = yield call(editePassword, payload);
+      try {
+        if (res && res.code == 1) {
+          // console.log('res.code',res.code)
+          const urlParams = new URL(window.location.href);
+          // const pathname = yield select(state => state.routing.location.pathname);
+          // // add the parameters in the url
+          // urlParams.searchParams.set('redirect', pathname);
+          // window.history.replaceState(null, 'login', urlParams.href);
+          localStorage.clear();
+          let cookieData = cookies.get();
+          for (let i in cookieData) {
+            cookies.set(i, '');
+          }
+          yield put({
+            type: 'changeLoginStatus',
+            payload: {
+              status: false,
+              data: '',
+              type: '',
+            },
+          });
+          setAuthority('');
+          setAuthoritySession('');
+          yield put(routerRedux.push('/user/login'));
+          return res;
+
+        }
+      } catch {
+
+      } finally {
+        return res;
+      }
+    },
+
   },
 
   reducers: {

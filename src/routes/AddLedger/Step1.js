@@ -67,7 +67,7 @@ class Step1 extends React.PureComponent {
     });
   }
   selectJilian = (val, key) => {
-    console.log('val3636',val)
+    //console.log('val3636',val)
     // console.log('key',key);
     // console.log('valuee',val)
   }
@@ -114,7 +114,7 @@ class Step1 extends React.PureComponent {
                 // initialValue: data.payAccount,
                 rules: [{required: true, message: '请选择申请单位类型'}],
               })(
-                <Select placeholder="请选择" style={{width: 100}} onSelect={this.selectValue}>
+                <Select placeholder="请选择" style={{width: '160px'}} onSelect={this.selectValue}>
                   {this.props.select.map((item, index) => {
                     return (
                       <Option value={item.id} key={index}>
@@ -126,7 +126,7 @@ class Step1 extends React.PureComponent {
               )}
               {getFieldDecorator('doc_name', {
                 initialValue: data.doc_name,
-              })(<Input style={{width: 'calc(100% - 100px)'}} disabled={true}/>)}
+              })(<Input style={{width: 'calc(100% - 160px)'}} disabled={true}/>)}
             </Input.Group>
           </Form.Item>
           <Form.Item {...formItemLayout} label="申请人1">
@@ -207,7 +207,7 @@ class Step1 extends React.PureComponent {
             })(
               <Select
                 // defaultValue={this.state.isFankui}
-                value={this.state.isFankui}
+                // value={this.state.isFankui}
                 style={{}}
                 onChange={this.handleChangeJilian}
                 onSelect={this.selectJilian}
